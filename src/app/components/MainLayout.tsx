@@ -17,8 +17,9 @@ export function MainLayout({ children }: MainLayoutProps) {
 }
 
 const mainLayoutContainer = css({
-    display: 'flex',
-    backgroundColor: 'background',
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    backgroundColor: 'white',
     minHeight: '100vh',
     width: '100%',
     padding: '0.5rem',

@@ -8,7 +8,7 @@ export function SearchHero() {
             <input
                 className={input}
                 type="search"
-                placeholder="Busque por estabelecimentos, locais e serviços"
+                placeholder="Busque por estabelecimentos ou serviços"
             />
         </section>
     )
