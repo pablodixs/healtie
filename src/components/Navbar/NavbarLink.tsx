@@ -4,11 +4,12 @@ import { cva } from '../../../styled-system/css'
 
 interface NavbarLinkProps {
     children: ReactNode
+    href: string
 }
 
-export function NavbarLink({ children }: NavbarLinkProps) {
+export function NavbarLink({ children, href }: NavbarLinkProps) {
     return (
-        <Link className={navbarLink()} href="/">
+        <Link className={navbarLink()} href={href}>
             {children}
         </Link>
     )

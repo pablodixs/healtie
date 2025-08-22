@@ -1,4 +1,4 @@
-import { Heading } from '@/components/Heading'
+import { Heading } from '@/components/Typography/Heading'
 import { css } from '../../../styled-system/css'
 
 export function SearchHero() {

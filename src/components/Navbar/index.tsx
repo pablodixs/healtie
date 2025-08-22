@@ -1,8 +1,6 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 
 import { css, cva } from '../../../styled-system/css'
 import { NavbarLink } from './NavbarLink'
@@ -25,21 +23,21 @@ export function Navbar({ isCollapsed = false }: NavbarProps) {
         <div className={navbarContainer()}>
             <div></div>
             <nav className={navbarItemsListContainer}>
-                <NavbarLink>
+                <NavbarLink href="/">
                     <HouseSimpleIcon /> Página Inicial
                 </NavbarLink>
-                <NavbarLink>
+                <NavbarLink href="/mapa">
                     <MapTrifoldIcon /> Mapa
                 </NavbarLink>
-                <NavbarLink>
+                <NavbarLink href="/estabelecimentos">
                     <HospitalIcon /> Estabelecimentos
                 </NavbarLink>
-                <NavbarLink>
+                <NavbarLink href="/onde-ir">
                     <PathIcon /> Onde ir?
                 </NavbarLink>
             </nav>
             <div>
-                <NavbarLink>
+                <NavbarLink href="/ajuda">
                     <QuestionIcon /> Ajuda
                 </NavbarLink>
             </div>
