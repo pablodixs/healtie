@@ -1,13 +1,46 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { CheckCircleIcon, GpsFixIcon } from '@phosphor-icons/react'
+
 import { css } from '../../styled-system/css'
 import { SearchHero } from './components/SearchHero'
+import { Button } from '@/components/Button'
+import { Banner } from '@/components/Banner'
 
 export default function Home() {
+    const [showLocationBanner, setShowLocationBanner] = useState(true)
+
+    const handleAllowLocation = () => {
+        console.log('allowed')
+    }
+
+    const message = () => {
+        return (
+            <p>
+                Isso nos ajudará a mostrar resultados mais relevantes para você.{' '}
+                <Link href={'/ajuda/localizacao'}>Saiba mais...</Link>
+            </p>
+        )
+    }
     return (
         <div>
             <header className={headerContainer}>
-                <button>Entrar</button>
-                <button>Criar conta</button>
+                <Button variant="text">Entrar</Button>
+                <Button variant="secondary">Criar conta</Button>
             </header>
+            {showLocationBanner && (
+                <Banner
+                    icon={<GpsFixIcon />}
+                    title="Autorize o uso de sua localização para obter melhores resultados"
+                    message={message()}
+                    actionIcon={<CheckCircleIcon />}
+                    actionLabel="Permitir"
+                    action={handleAllowLocation}
+                    onClose={() => setShowLocationBanner(false)}
+                />
+            )}
             <SearchHero />
         </div>
     )

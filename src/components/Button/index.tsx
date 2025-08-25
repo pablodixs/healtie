@@ -3,7 +3,7 @@ import { buttonStyles } from './styles'
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     children: ReactNode
-    variant?: 'primary' | 'secondary' | 'subtle'
+    variant?: 'primary' | 'secondary' | 'subtle' | 'text'
     size?: 'small' | 'medium' | 'large'
 }
 

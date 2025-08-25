@@ -39,6 +39,11 @@ export const buttonStyles = cva({
                 backgroundColor: 'cream',
                 color: '#151515',
             },
+            text: {
+                backgroundColor: 'transparent',
+                color: 'primary',
+                padding: 0,
+            },
         },
         size: {
             small: {
