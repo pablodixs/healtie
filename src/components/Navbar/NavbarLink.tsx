@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
+import { motion } from 'motion/react'
 import { cva } from '../../../styled-system/css'
 
 interface NavbarLinkProps {
@@ -9,9 +10,59 @@ interface NavbarLinkProps {
 
 export function NavbarLink({ children, href }: NavbarLinkProps) {
     return (
-        <Link className={navbarLink()} href={href}>
-            {children}
-        </Link>
+        <motion.div
+            whileHover={{
+                scale: 1.05,
+                transition: {
+                    type: 'spring',
+                    damping: 20,
+                    stiffness: 300,
+                },
+            }}
+            whileTap={{
+                scale: 0.98,
+                transition: {
+                    type: 'spring',
+                    damping: 15,
+                    stiffness: 600,
+                },
+            }}
+        >
+            <Link className={navbarLink()} href={href}>
+                <motion.span
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{
+                        opacity: 1,
+                        transition: { duration: 0.2 },
+                    }}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                    }}
+                >
+                    <motion.span
+                        whileHover={{
+                            transition: {
+                                scale: {
+                                    type: 'spring',
+                                    damping: 15,
+                                    stiffness: 400,
+                                },
+                                rotate: { duration: 0.3, ease: 'easeInOut' },
+                            },
+                        }}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '.5rem',
+                        }}
+                    >
+                        {children}
+                    </motion.span>
+                </motion.span>
+            </Link>
+        </motion.div>
     )
 }
 
@@ -21,12 +72,12 @@ const navbarLink = cva({
         display: 'flex',
         alignItems: 'center',
         gap: '.5rem',
-        borderRadius: '8px',
+        borderRadius: 'full',
         lineHeight: 1,
         fontWeight: 450,
         fontSize: '0.875rem',
         color: 'primary',
-        transition: 'all 0.1s ease-in-out',
+        width: '100%',
 
         '& svg': {
             fontSize: '1.25rem',

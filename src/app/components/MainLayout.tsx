@@ -1,7 +1,10 @@
+'use client'
+
 import { ReactNode } from 'react'
 import { css } from '../../../styled-system/css'
 
 import { Navbar } from '@/components/Navbar'
+import { Button } from '@/components/Button'
 
 interface MainLayoutProps {
     children: ReactNode
@@ -9,27 +12,34 @@ interface MainLayoutProps {
 
 export function MainLayout({ children }: MainLayoutProps) {
     return (
-        <div className={mainLayoutContainer}>
-            <Navbar />
+        <>
+            <section className={navbarContainer}>
+                <Navbar />
+                <div>
+                    <Button variant="text">Entrar</Button>
+                    <Button variant="secondary">Criar conta</Button>
+                </div>
+            </section>
             <div className={contentContainer}>{children}</div>
-        </div>
+        </>
     )
 }
 
-const mainLayoutContainer = css({
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
-    backgroundColor: 'white',
-    minHeight: '100vh',
+const navbarContainer = css({
     width: '100%',
-    padding: '0.5rem',
+    position: 'fixed',
+    top: 0,
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '1rem',
+    zIndex: 1000,
 })
 
 const contentContainer = css({
     borderRadius: '8px',
     padding: '1rem',
+    paddingTop: '6rem', // Espaço para a navbar fixa
     backgroundColor: 'white',
     width: '100%',
-    maxHeight: 'calc(100vh - 1rem)',
-    overflowY: 'auto',
+    minHeight: '100vh', // Garante que a página tenha altura suficiente para scroll
 })
