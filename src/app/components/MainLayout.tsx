@@ -13,27 +13,11 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
     return (
         <>
-            <section className={navbarContainer}>
-                <Navbar />
-                <div>
-                    <Button variant="text">Entrar</Button>
-                    <Button variant="secondary">Criar conta</Button>
-                </div>
-            </section>
+            <Navbar />
             <div className={contentContainer}>{children}</div>
         </>
     )
 }
-
-const navbarContainer = css({
-    width: '100%',
-    position: 'fixed',
-    top: 0,
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '1rem',
-    zIndex: 1000,
-})
 
 const contentContainer = css({
     borderRadius: '8px',

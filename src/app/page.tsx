@@ -38,24 +38,6 @@ export default function Home() {
                 />
             )}
             <SearchHero />
-
-            {/* Conteúdo temporário para testar scroll */}
-            <div
-                style={{
-                    height: '150vh',
-                    padding: '2rem',
-                    background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)',
-                }}
-            >
-                <h2>Conteúdo para testar scroll</h2>
-                <p>Role para baixo para testar o colapso da navbar...</p>
-                {Array.from({ length: 50 }, (_, i) => (
-                    <p key={i}>
-                        Linha {i + 1} - Este é um conteúdo de teste para
-                        garantir que há scroll na página.
-                    </p>
-                ))}
-            </div>
         </div>
     )
 }
