@@ -26,7 +26,7 @@ export default function Home() {
     return (
         <div>
             <header className={headerContainer}></header>
-            {showLocationBanner && (
+            {/* {showLocationBanner && (
                 <Banner
                     icon={<GpsFixIcon />}
                     title="Autorize o uso de sua localização para obter melhores resultados"
@@ -36,7 +36,7 @@ export default function Home() {
                     action={handleAllowLocation}
                     onClose={() => setShowLocationBanner(false)}
                 />
-            )}
+            )} */}
             <SearchHero />
         </div>
     )

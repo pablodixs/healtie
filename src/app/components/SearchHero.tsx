@@ -4,7 +4,9 @@ import { css } from '../../../styled-system/css'
 export function SearchHero() {
     return (
         <section className={heroContainer}>
-            <Heading>Seu guia na saúde pública do Distrito Federal</Heading>
+            <Heading centered>
+                Seu guia na saúde pública do Distrito Federal
+            </Heading>
             <input
                 className={input}
                 type="search"
@@ -21,6 +23,10 @@ const heroContainer = css({
     justifyContent: 'center',
     alignItems: 'center',
     gap: '1.5rem',
+
+    '& h1': {
+        maxWidth: '32ch',
+    },
 })
 
 const input = css({

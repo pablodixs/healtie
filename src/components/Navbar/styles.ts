@@ -8,7 +8,7 @@ export const navbarContainer = css({
     gap: '.25rem',
     position: 'fixed',
     top: 0,
-    bgColor: 'white',
+    backgroundColor: 'white',
     padding: '1rem',
 
     '& h1': {
