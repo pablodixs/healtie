@@ -16,7 +16,10 @@ export function SearchBar({ ...props }: SearchBarProps) {
 }
 
 const searchBarContainer = css({
-    display: 'flex',
+    display: {
+        md: 'flex',
+        base: 'none',
+    },
     alignItems: 'center',
     gap: '0.25rem',
     bgColor: 'background',

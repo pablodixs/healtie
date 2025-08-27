@@ -9,22 +9,18 @@ export const navbarContainer = css({
     position: 'fixed',
     top: 0,
     backgroundColor: 'white',
-    padding: '1rem',
+    padding: {
+        lg: '1rem',
+        base: '.5rem',
+    },
 
     '& h1': {
         fontSize: '1.5rem',
         fontWeight: 600,
     },
 
-    '& nav': {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        margin: '0 auto',
-    },
-
     '& .logo-search': {
+        justifyContent: { md: 'flex-start', base: 'space-between' },
         display: 'flex',
         gap: '1rem',
         alignItems: 'center',

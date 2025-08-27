@@ -13,6 +13,19 @@ export default defineConfig({
     // Useful for theme customization
     theme: {
         extend: {
+            keyframes: {
+                gradientMove: {
+                    '0%': {
+                        backgroundPosition: '0% 50%',
+                    },
+                    '50%': {
+                        backgroundPosition: '100% 50%',
+                    },
+                    '100%': {
+                        backgroundPosition: '0% 50%',
+                    },
+                },
+            },
             tokens: {
                 fonts: {
                     text: { value: 'Sans Text, sans-serif' },
