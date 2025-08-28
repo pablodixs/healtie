@@ -24,9 +24,9 @@ const heroContainer = css({
     alignItems: 'center',
     gap: '1.5rem',
     borderRadius: 'xl',
-    background: 'url("/pictures/stills/home_hero_gradient.png")',
+    backgroundColor: 'background',
     backgroundPosition: 'center',
-    backgroundSize: 'cover',
+    // backgroundSize: 'cover',
     // backgroundColor: 'hsla(196, 94%, 55%, 1.00)',
     // backgroundImage: `
     //     radial-gradient(at 46% 88%, hsla(28,81%,80%,1) 0px, transparent 50%),
@@ -40,8 +40,6 @@ const heroContainer = css({
 
     '& h1': {
         maxWidth: '32ch',
-        color: 'white',
-        textShadow: '0 1px 4px rgba(0, 0, 0, 0.2)',
     },
 })
 
