@@ -1,16 +1,19 @@
 import { css } from '../../../styled-system/css'
 
 export const navbarContainer = css({
-    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: '.25rem',
     position: 'fixed',
     top: 0,
+    right: 0,
+    left: 0,
+    maxWidth: '1280px',
+    margin: '0 auto',
     backgroundColor: 'white',
     padding: {
-        lg: '1rem',
+        lg: '1rem 0',
         base: '.5rem',
     },
 

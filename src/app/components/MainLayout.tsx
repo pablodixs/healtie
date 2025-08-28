@@ -20,7 +20,6 @@ export function MainLayout({ children }: MainLayoutProps) {
 
 const contentContainer = css({
     borderRadius: '8px',
-    padding: '1rem',
     paddingTop: '5rem',
     backgroundColor: 'white',
     width: '100%',

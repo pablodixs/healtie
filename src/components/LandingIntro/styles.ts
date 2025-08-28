@@ -2,17 +2,16 @@ import { cva } from '../../../styled-system/css'
 
 export const landingIntroStyles = cva({
     base: {
-        padding: {
-            md: '3rem',
-            base: '1rem',
-        },
+        minHeight: '60dvh',
         display: 'flex',
         flexDir: 'column',
         alignItems: 'center',
-        gap: { md: 0, base: '1.25rem' },
+        justifyContent: 'center',
+        gap: { md: '1rem', base: '1.25rem' },
 
         '& img': {
             maxWidth: '100%',
+            maxHeight: '400px',
             borderRadius: 'lg',
         },
 

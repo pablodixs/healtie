@@ -2,11 +2,11 @@ import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../styled-system/css'
 
 import { SearchHero } from './components/SearchHero'
-import { Stack } from '@/components/Stacks'
+import { LayoutStack, Stack } from '@/components/Stacks'
 
 export default function Home() {
     return (
-        <div>
+        <LayoutStack>
             <header className={headerContainer}></header>
             <SearchHero />
             <Stack padding center direction="row">
@@ -14,7 +14,7 @@ export default function Home() {
                     Role para ver mais <CaretDownIcon />
                 </span>
             </Stack>
-        </div>
+        </LayoutStack>
     )
 }
 

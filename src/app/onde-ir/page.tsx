@@ -1,10 +1,11 @@
 import { LandingIntro } from '@/components/LandingIntro'
+import { LayoutStack } from '@/components/Stacks'
 import { ActionBar } from './components/ActionBar'
 import { LandingInfo } from './components/ui/LandingInfo'
 
 export default function Page() {
     return (
-        <main>
+        <LayoutStack compact>
             <LandingIntro
                 preTitle="Onde Ir?"
                 title="Encontre o atendimento certo, sem sair de casa"
@@ -12,7 +13,10 @@ export default function Page() {
             >
                 <ActionBar />
             </LandingIntro>
-            <LandingInfo />
-        </main>
+            <LayoutStack compact>
+                <LandingInfo />
+                <LandingInfo />
+            </LayoutStack>
+        </LayoutStack>
     )
 }
