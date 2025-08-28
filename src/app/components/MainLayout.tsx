@@ -4,7 +4,6 @@ import { ReactNode } from 'react'
 import { css } from '../../../styled-system/css'
 
 import { Navbar } from '@/components/Navbar'
-import { Button } from '@/components/Button'
 
 interface MainLayoutProps {
     children: ReactNode
@@ -22,8 +21,8 @@ export function MainLayout({ children }: MainLayoutProps) {
 const contentContainer = css({
     borderRadius: '8px',
     padding: '1rem',
-    paddingTop: '6rem', // Espaço para a navbar fixa
+    paddingTop: '5rem',
     backgroundColor: 'white',
     width: '100%',
-    minHeight: '100vh', // Garante que a página tenha altura suficiente para scroll
+    minHeight: '100vh',
 })

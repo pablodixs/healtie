@@ -18,6 +18,10 @@ export function ActionBar() {
 const actionBarContainer = css({
     width: '100%',
     display: 'flex',
+    flexDirection: {
+        md: 'row',
+        base: 'column',
+    },
     justifyContent: 'center ',
     gap: '1rem',
     padding: '1rem 0',
