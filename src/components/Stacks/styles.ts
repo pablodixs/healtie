@@ -2,6 +2,7 @@ import { cva } from '../../../styled-system/css'
 
 export const stackStyles = cva({
     base: {
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
@@ -23,6 +24,11 @@ export const stackStyles = cva({
         padding: {
             true: {
                 padding: '1rem',
+            },
+        },
+        between: {
+            true: {
+                justifyContent: 'space-between',
             },
         },
     },

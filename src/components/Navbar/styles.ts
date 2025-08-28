@@ -12,6 +12,7 @@ export const navbarContainer = css({
     maxWidth: '1280px',
     margin: '0 auto',
     backgroundColor: 'white',
+    zIndex: 1000,
     padding: {
         lg: '1rem 0',
         base: '.5rem',

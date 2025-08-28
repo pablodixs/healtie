@@ -6,6 +6,7 @@ interface StackProps {
     direction?: 'row' | 'column'
     center?: boolean
     padding?: boolean
+    between?: boolean
 }
 
 export function Stack({
@@ -13,9 +14,10 @@ export function Stack({
     direction = 'column',
     center = false,
     padding = false,
+    between = false,
 }: StackProps) {
     return (
-        <div className={stackStyles({ direction, center, padding })}>
+        <div className={stackStyles({ direction, center, padding, between })}>
             {children}
         </div>
     )
