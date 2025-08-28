@@ -16,7 +16,10 @@ export function Heading({ children, centered, ...props }: HeadingProps) {
 
 const headingStyles = cva({
     base: {
-        fontSize: '2.625rem',
+        fontSize: {
+            base: '2rem',
+            md: '2.625rem',
+        },
         color: '#151515',
         fontWeight: '550    ',
         lineHeight: 'tight',

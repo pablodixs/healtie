@@ -41,8 +41,7 @@ export function LandingInfo() {
 
 const landingInfoContainer = css({
     bgColor: 'background',
-    borderRadius: 'xl',
-    padding: '4rem',
+    padding: '1rem',
 
     '& h2': {
         fontSize: '1.875rem',
