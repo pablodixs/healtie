@@ -5,7 +5,6 @@ export const buttonStyles = cva({
         cursor: 'pointer',
         border: 'none',
         borderRadius: 'full',
-        padding: '0.5rem 1.25rem',
         fontWeight: '500',
         lineHeight: 'short',
         transition: 'background-color 0.2s ease',
@@ -51,7 +50,10 @@ export const buttonStyles = cva({
                 padding: '0.5rem 0.75rem',
             },
             medium: {
-                padding: '0.5rem 1rem',
+                padding: {
+                    lg: '0.5rem 1rem',
+                    base: '0.75rem 1rem',
+                },
             },
             large: {
                 padding: '1rem 1.5rem',
