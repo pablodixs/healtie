@@ -24,20 +24,14 @@ export function NavbarItems() {
                 <PathIcon /> Onde Ir
             </NavbarLink>
             <span className="vr" />
-            <NavbarLink href="/">Entrar</NavbarLink>
-            <Button variant="secondary">Criar conta</Button>
         </nav>
     )
 }
 
 const navbarItemsContainer = css({
-    width: '100%',
-    display: {
-        md: 'flex',
-        base: 'none',
-    },
-    flexDirection: { md: 'row', base: 'column' },
+    display: 'flex',
+    flexDirection: { base: 'row', md: 'column' },
+    gap: '2rem',
     justifyContent: 'flex-end',
-    alignItems: 'center',
     margin: '0 auto',
 })

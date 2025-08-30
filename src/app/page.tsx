@@ -1,25 +1,469 @@
-import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr'
-import { css } from '../../styled-system/css'
-
-import { SearchHero } from './components/SearchHero'
-import { LayoutStack, Stack } from '@/components/Stacks'
-
 export default function Home() {
     return (
-        <LayoutStack>
-            <header className={headerContainer}></header>
-            <SearchHero />
-            <Stack padding center direction="row">
-                <span>
-                    Role para ver mais <CaretDownIcon />
-                </span>
-            </Stack>
-        </LayoutStack>
+        <div>
+            <h1>Seu guia na saúde pública</h1>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos, iusto? Eveniet maxime ea tenetur corrupti. Cum illo
+                tenetur ratione adipisci necessitatibus quia, eveniet dolore hic
+                repellendus vel, ab architecto voluptatem!
+            </p>
+        </div>
     )
 }
-
-const headerContainer = css({
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '2rem',
-})
