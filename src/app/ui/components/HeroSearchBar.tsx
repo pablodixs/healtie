@@ -1,5 +1,6 @@
 import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
+import { Button } from '@/components/Button'
 
 export function HeroSearchBar() {
     return (
@@ -9,9 +10,9 @@ export function HeroSearchBar() {
                     type="text"
                     placeholder="Busque por unidades de saúde, cidade ou serviços..."
                 />
-                <button>
+                <Button variant="secondary">
                     <MagnifyingGlassIcon size={24} weight="bold" />
-                </button>
+                </Button>
             </div>
         </div>
     )
