@@ -8,6 +8,7 @@ interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
     centered?: boolean
     size?: 'subheadline' | 'body' | 'caption'
     bolder?: boolean
+    compact?: boolean
 }
 
 export function Paragraph({
@@ -16,11 +17,18 @@ export function Paragraph({
     centered,
     size = 'body',
     bolder,
+    compact,
     ...props
 }: ParagraphProps) {
     return (
         <p
-            className={paragraphStyles({ subtle, centered, size, bolder })}
+            className={paragraphStyles({
+                subtle,
+                centered,
+                size,
+                bolder,
+                compact,
+            })}
             {...props}
         >
             {children}
@@ -63,6 +71,11 @@ const paragraphStyles = cva({
             caption: {
                 fontSize: '0.875rem',
                 lineHeight: 'normal',
+            },
+        },
+        compact: {
+            true: {
+                maxWidth: '70ch',
             },
         },
     },
