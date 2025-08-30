@@ -4,6 +4,7 @@ import { Navbar } from '../Navbar'
 import { Header } from '../Header'
 
 import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
+import { Footer } from '../Footer'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     return (
@@ -11,7 +12,10 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <Header />
             <section className={mainLayoutContentContainer()}>
                 <Navbar />
-                <div>{children}</div>
+                <div>
+                    {children}
+                    <Footer />
+                </div>
             </section>
         </div>
     )

@@ -42,6 +42,11 @@ export const buttonStyles = cva({
                 backgroundColor: 'transparent',
                 color: 'primary',
                 padding: 0,
+                transition: 'all ease 150ms',
+
+                _hover: {
+                    color: '#202020',
+                },
             },
         },
         size: {

@@ -51,12 +51,10 @@ export function FeatureHighlight() {
                     </Paragraph>
                 </div>
                 <Stack direction="row">
-                    <Button variant="secondary" size="large">
+                    <Button variant="secondary">
                         Descobrir agora <ArrowRightIcon />
                     </Button>
-                    <Button variant="text" size="large">
-                        Saiba mais
-                    </Button>
+                    <Button variant="text">Saiba mais</Button>
                 </Stack>
             </div>
         </section>

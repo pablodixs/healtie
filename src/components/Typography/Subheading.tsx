@@ -17,11 +17,11 @@ export function Subheading({ children, centered, ...props }: SubheadingProps) {
 const subHeadingStyles = cva({
     base: {
         fontSize: {
-            md: '1.75rem',
+            md: '1.875rem',
             base: '1.5rem',
         },
         color: '#151515',
-        fontWeight: '550',
+        fontWeight: '500',
         lineHeight: 'tight',
         letterSpacing: 'tight',
         textWrap: 'balance',
