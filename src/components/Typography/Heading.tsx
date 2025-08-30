@@ -21,7 +21,7 @@ const headingStyles = cva({
             md: '2.625rem',
         },
         color: '#151515',
-        fontWeight: '550    ',
+        fontWeight: '570',
         lineHeight: 'tight',
         letterSpacing: 'tight',
         textWrap: 'balance',

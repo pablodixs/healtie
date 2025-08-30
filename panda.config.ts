@@ -1,5 +1,7 @@
 import { defineConfig } from '@pandacss/dev'
 
+const HEADER_SIZE = '4.625rem'
+
 export default defineConfig({
     // Whether to use css reset
     preflight: true,
@@ -36,6 +38,12 @@ export default defineConfig({
                     primary: { value: '#343433' },
                     cream: { value: '#f6f4ef' },
                     tint: { value: '#018DFF' },
+                },
+                sizes: {
+                    header: { value: HEADER_SIZE },
+                },
+                spacing: {
+                    header: { value: HEADER_SIZE },
                 },
             },
         },

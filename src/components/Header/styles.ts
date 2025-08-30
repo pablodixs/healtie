@@ -11,7 +11,7 @@ export const headerContainer = css({
     alignItems: 'center',
     backgroundColor: 'white',
     padding: '1rem',
-    height: '4.625rem',
+    height: 'header',
 
     '& div': {
         display: 'flex',

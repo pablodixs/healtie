@@ -15,9 +15,9 @@ export function Header() {
 
     return (
         <header className={headerContainer}>
-            <div>
-                <div className="logo">
-                    <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
+                <div>
+                    <div className="logo">
                         {scrollY > 100 ? (
                             <motion.div
                                 key="svg-logo"
@@ -90,10 +90,32 @@ export function Header() {
                                 <Logo />
                             </motion.div>
                         )}
-                    </AnimatePresence>
+                    </div>
+                    {scrollY > 500 ? (
+                        <motion.div
+                            initial={{
+                                opacity: 0,
+                                scale: 0.8,
+                                filter: 'blur(10px)',
+                            }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                                filter: 'blur(0px)',
+                            }}
+                            exit={{
+                                opacity: 0,
+                                scale: 0.8,
+                                filter: 'blur(10px)',
+                            }}
+                        >
+                            <SearchBar placeholder="Buscar..." />
+                        </motion.div>
+                    ) : (
+                        <></>
+                    )}
                 </div>
-                <SearchBar placeholder="Buscar..." />
-            </div>
+            </AnimatePresence>
             <div>
                 <NavbarLink href="/">Entrar</NavbarLink>
                 <Button variant="secondary">Criar conta</Button>

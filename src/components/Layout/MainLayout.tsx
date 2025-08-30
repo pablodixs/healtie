@@ -11,7 +11,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <Header />
             <section className={mainLayoutContentContainer()}>
                 <Navbar />
-                {children}
+                <div>{children}</div>
             </section>
         </div>
     )
