@@ -19,6 +19,7 @@ export function HeroSearchBar() {
 }
 
 const heroSearchBarContainer = css({
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -32,7 +33,7 @@ const searchBarContainer = css({
     backgroundColor: 'background',
     padding: '.5rem',
     borderRadius: 'full',
-    width: '700px',
+    minWidth: { base: '100%', md: '700px' },
     paddingLeft: '1.5rem',
 
     '& input': {

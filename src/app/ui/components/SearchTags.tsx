@@ -64,6 +64,8 @@ export function SearchTags() {
 const searchTagsContainer = css({
     display: 'flex',
     gap: '.5rem',
+    flexWrap: 'wrap',
+    justifyContent: { base: 'center', md: 'flex-start' },
 
     '& a': {
         display: 'inline-flex',

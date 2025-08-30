@@ -16,7 +16,7 @@ export function HeroSearchContainer() {
                 draggable={false}
             />
             <Heading centered>
-                Seu guia na saúde pública do Distrito Federal
+                Seu guia na saúde pública <br /> do Distrito Federal
             </Heading>
             <HeroSearchBar />
             <SearchTags />
@@ -33,5 +33,11 @@ const heroContainer = css({
     flexDirection: 'column',
     gap: '1.5rem',
     padding: '1rem',
-    paddingBottom: '10%',
+
+    '& img': {
+        md: {
+            width: '100%',
+            height: 'auto',
+        },
+    },
 })

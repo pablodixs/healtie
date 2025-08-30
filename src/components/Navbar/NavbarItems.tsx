@@ -29,7 +29,7 @@ export function NavbarItems() {
 
 const navbarItemsContainer = css({
     display: 'flex',
-    flexDirection: { base: 'row', md: 'column' },
+    flexDirection: 'column',
     gap: '1rem',
     margin: '0 auto',
 })

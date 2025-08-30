@@ -2,6 +2,7 @@ import { css } from '../../../styled-system/css'
 
 export const navbarContainer = css({
     position: 'relative',
+    display: { base: 'none', lg: 'block' },
 
     '& .sidebar': {
         marginTop: 'calc(2rem + 3.375rem)',
