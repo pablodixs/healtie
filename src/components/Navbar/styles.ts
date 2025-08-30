@@ -10,6 +10,10 @@ export const navbarContainer = css({
         left: 0,
         right: 0,
         width: '12.5rem',
-        padding: '1rem',
+        paddingLeft: '.25rem',
+        height: 'calc(100dvh - 4.625rem)',
+        display: 'flex',
+        flexDir: 'column',
+        justifyContent: 'center',
     },
 })

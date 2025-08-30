@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
-import { motion } from 'motion/react'
 import { cva } from '../../../styled-system/css'
 
 interface NavbarLinkProps {
@@ -23,20 +22,21 @@ const navbarLink = cva({
         display: 'flex',
         alignItems: 'center',
         gap: '.5rem',
-        borderRadius: 'full',
+        borderRadius: 'md',
         lineHeight: 1,
-        fontWeight: 480,
+        fontWeight: 500,
         fontSize: '0.875rem',
-        color: 'primary',
+        color: '#202020',
         width: '100%',
         transition: 'all ease-in-out 0.2s',
+        padding: '.5rem .75rem',
 
         '& svg': {
             fontSize: '1.25rem',
         },
 
         _hover: {
-            color: 'tint',
+            backgroundColor: 'background',
         },
     },
 })

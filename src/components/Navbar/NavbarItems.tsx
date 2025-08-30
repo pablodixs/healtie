@@ -5,7 +5,6 @@ import {
     PathIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { NavbarLink } from './NavbarLink'
-import { Button } from '../Button'
 import { css } from '../../../styled-system/css'
 
 export function NavbarItems() {
@@ -31,7 +30,6 @@ export function NavbarItems() {
 const navbarItemsContainer = css({
     display: 'flex',
     flexDirection: { base: 'row', md: 'column' },
-    gap: '2rem',
-    justifyContent: 'flex-end',
+    gap: '1rem',
     margin: '0 auto',
 })

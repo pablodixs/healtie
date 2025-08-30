@@ -1,28 +1,63 @@
+'use client'
+
 import Link from 'next/link'
-import { css } from '../../../../styled-system/css'
+import { motion, stagger } from 'motion/react'
 import {
     BandaidsIcon,
     FirstAidIcon,
     HospitalIcon,
     SyringeIcon,
 } from '@phosphor-icons/react/dist/ssr'
+import { css } from '../../../../styled-system/css'
+
+const list = {
+    visible: {
+        transition: {
+            when: 'beforeChildren',
+            delayChildren: stagger(0.15),
+        },
+    },
+    hidden: {
+        transition: {
+            when: 'afterChildren',
+        },
+    },
+}
+
+const variants = {
+    visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+    hidden: { opacity: 0, scale: 0.8, filter: 'blur(5px)' },
+}
 
 export function SearchTags() {
     return (
-        <div className={searchTagsContainer}>
-            <Link href="#">
-                <HospitalIcon /> Hospitais
-            </Link>
-            <Link href="#">
-                <BandaidsIcon /> Pronto-socorro
-            </Link>
-            <Link href="#">
-                <SyringeIcon /> Vacinação
-            </Link>
-            <Link href="#">
-                <FirstAidIcon /> UBS
-            </Link>
-        </div>
+        <motion.div
+            className={searchTagsContainer}
+            initial="hidden"
+            animate="visible"
+            variants={list}
+        >
+            <motion.div variants={variants}>
+                <Link href="#">
+                    <HospitalIcon /> Hospitais
+                </Link>
+            </motion.div>
+            <motion.div variants={variants}>
+                <Link href="#">
+                    <BandaidsIcon /> Pronto-socorro
+                </Link>
+            </motion.div>
+            <motion.div variants={variants}>
+                <Link href="#">
+                    <SyringeIcon /> Vacinação
+                </Link>
+            </motion.div>
+            <motion.div variants={variants}>
+                <Link href="#">
+                    <FirstAidIcon /> UBS
+                </Link>
+            </motion.div>
+        </motion.div>
     )
 }
 
