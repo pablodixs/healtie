@@ -69,7 +69,7 @@ export const buttonStyles = cva({
         },
         iconButton: {
             true: {
-                padding: '.75rem',
+                padding: '.5rem',
                 aspectRatio: '1/1',
             },
         },

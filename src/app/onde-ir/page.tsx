@@ -1,22 +1,24 @@
 'use client'
+import Image from 'next/image'
+import { useRef, useState } from 'react'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-
-import animation from '@/assets/lotties/onde_ir_hero_animation.json'
-import { Heading } from '@/components/Typography/Heading'
-import { Paragraph } from '@/components/Typography/Paragraph'
-import { stack } from '../../../styled-system/patterns'
-import { Button } from '@/components/Button'
 import {
     ArrowRightIcon,
     CaretDownIcon,
-    HourglassIcon,
     PauseIcon,
     PlayIcon,
 } from '@phosphor-icons/react/dist/ssr'
+
+import { stack } from '../../../styled-system/patterns'
+
+import { Heading } from '@/components/Typography/Heading'
+import { Paragraph } from '@/components/Typography/Paragraph'
+import { Button } from '@/components/Button'
 import { Subheading } from '@/components/Typography/Subheading'
-import { useRef, useState } from 'react'
-import { FeatureCard } from '../ui/components/FeatureCard'
 import { Divider } from '@/components/Divider'
+import { AnimatedCollapsibleGroup } from '@/components/Collapsible/AnimatedCollapsibleGroup'
+
+import animation from '@/assets/lotties/onde_ir_hero_animation.json'
 
 export default function Page() {
     const animationRef = useRef<LottieRefCurrentProps | null>(null)
@@ -51,7 +53,12 @@ export default function Page() {
                     é o local mais indicado para o seu caso: Hospital, UPA ou
                     UBS.
                 </Paragraph>
-                <div style={{ marginBottom: '1rem' }}>
+                <div
+                    className={stack({
+                        marginBottom: '1rem',
+                        direction: { base: 'column', md: 'row' },
+                    })}
+                >
                     <Button variant="secondary">
                         Iniciar <ArrowRightIcon />
                     </Button>
@@ -79,11 +86,7 @@ export default function Page() {
                         }}
                     >
                         {isAnimationPlaying ? (
-                            <Button
-                                iconButton
-                                variant="ghost"
-                                onClick={handlePauseAnimation}
-                            >
+                            <Button iconButton onClick={handlePauseAnimation}>
                                 <PauseIcon weight="fill" color={'white'} />
                             </Button>
                         ) : (
@@ -101,51 +104,77 @@ export default function Page() {
             <Divider />
             <section
                 className={stack({
+                    direction: { base: 'column-reverse', md: 'row' },
+                    justify: 'space-between',
                     margin: '4rem 0',
                     padding: { base: '0 1rem', md: '0' },
+                    paddingRight: { md: '1rem' },
+                    gap: { base: '1rem' },
                 })}
             >
-                <Subheading>
-                    Uma triagem simples. <br /> Um atendimento mais inteligente.
-                </Subheading>
-                <Paragraph compact>
-                    Com algumas respostas rápidas, você encontra o atendimento
-                    mais adequado para o seu caso, sem filas desnecessárias, sem
-                    complicações. Uma experiência pensada para ser clara,
-                    acessível e humana.
-                </Paragraph>
-                <div
-                    className={stack({
-                        direction: { base: 'column', md: 'row' },
-                        align: 'stretch',
-                        gap: '2rem',
-                    })}
-                >
-                    <FeatureCard icon={HourglassIcon} title="Economia de tempo">
-                        Descubra o local certo para o seu atendimento em menos
-                        de um minuto.
-                    </FeatureCard>
-                    <FeatureCard
-                        icon={HourglassIcon}
-                        title="Menos superlotação"
-                    >
-                        Descubra o local certo para o seu atendimento em menos
-                        de um minuto.
-                    </FeatureCard>
-                    <FeatureCard
-                        icon={HourglassIcon}
-                        title="Atendimento mais rápido"
-                    >
-                        Descubra o local certo para o seu atendimento em menos
-                        de um minuto.
-                    </FeatureCard>
-                    <FeatureCard
-                        icon={HourglassIcon}
-                        title="Gratuito e acessível"
-                    >
-                        Descubra o local certo para o seu atendimento em menos
-                        de um minuto.
-                    </FeatureCard>
+                <div>
+                    <Subheading>
+                        Uma triagem simples. <br /> Um atendimento mais
+                        inteligente.
+                    </Subheading>
+                    <Paragraph compact>
+                        Com algumas respostas rápidas, você encontra o
+                        atendimento mais adequado para o seu caso, sem filas
+                        desnecessárias, sem complicações. Uma experiência
+                        pensada para ser clara, acessível e humana.
+                    </Paragraph>
+                    <div>
+                        <AnimatedCollapsibleGroup
+                            items={[
+                                {
+                                    title: 'Economia de tempo',
+                                    content: (
+                                        <Paragraph>
+                                            Descubra o local certo para o seu
+                                            atendimento em menos de um minuto.
+                                        </Paragraph>
+                                    ),
+                                },
+                                {
+                                    title: 'Menos superlotação',
+                                    content: (
+                                        <Paragraph>
+                                            Cada pessoa no lugar certo. Mais
+                                            organização e menos espera para
+                                            todos.
+                                        </Paragraph>
+                                    ),
+                                },
+                                {
+                                    title: 'Atendimento mais rápido',
+                                    content: (
+                                        <Paragraph>
+                                            Chegue ao local indicado já
+                                            preparado para receber o cuidado que
+                                            você precisa.
+                                        </Paragraph>
+                                    ),
+                                },
+                            ]}
+                            autoPlayInterval={7}
+                            showIndicators={true}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <Image
+                        style={{
+                            borderRadius: '12px',
+                            width: '100%',
+                            height: 'auto',
+                            flex: 1,
+                        }}
+                        src={'/pictures/onde_ir_illustration.png'}
+                        alt="Ilustração de onde ir"
+                        width={300}
+                        height={300}
+                        quality={100}
+                    />
                 </div>
             </section>
         </main>
