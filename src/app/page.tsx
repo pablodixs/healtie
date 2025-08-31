@@ -19,7 +19,6 @@ import Lottie from 'lottie-react'
 
 import locationAnimation from '@/assets/lotties/near_establishments_animation.json'
 import { css } from '../../styled-system/css'
-import { Heading } from '@/components/Typography/Heading'
 
 export default function Home() {
     return (
