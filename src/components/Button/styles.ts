@@ -48,6 +48,9 @@ export const buttonStyles = cva({
                     color: '#202020',
                 },
             },
+            ghost: {
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            },
         },
         size: {
             small: {
@@ -62,6 +65,12 @@ export const buttonStyles = cva({
             },
             large: {
                 padding: '1rem 1.5rem',
+            },
+        },
+        iconButton: {
+            true: {
+                padding: '.75rem',
+                aspectRatio: '1/1',
             },
         },
     },
