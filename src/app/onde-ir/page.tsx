@@ -37,7 +37,8 @@ export default function Page() {
             <section
                 className={stack({
                     align: 'center',
-                    marginTop: '2rem',
+                    marginTop: '4rem',
+                    paddingTop: { base: '5rem' },
                     padding: { base: '0 1rem', md: '0 2rem' },
                 })}
             >
