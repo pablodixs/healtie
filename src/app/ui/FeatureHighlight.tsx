@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Lottie from 'lottie-react'
 import { css } from '../../../styled-system/css'
 
@@ -15,14 +14,6 @@ import ondeIrAnimation from '@/assets/lotties/onde_ir_animation.json'
 export function FeatureHighlight() {
     return (
         <section className={featureContainer}>
-            {/* <Image
-                src={'/pictures/onde_ir_illustration.png'}
-                alt="Ilustração de onde ir"
-                width={500}
-                height={321}
-                quality={100}
-                style={{ borderRadius: 12 }}
-            /> */}
             <Lottie animationData={ondeIrAnimation} loop={false} />
             <div
                 className={css({
@@ -68,7 +59,6 @@ export function FeatureHighlight() {
 }
 
 const featureContainer = css({
-    margin: '2rem auto',
     width: 'fit-content',
     display: 'flex',
     flexDirection: { base: 'column', md: 'row' },
