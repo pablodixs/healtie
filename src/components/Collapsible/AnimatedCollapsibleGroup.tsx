@@ -156,7 +156,7 @@ const itemContainer = css({
 
 const itemButton = css({
     width: '100%',
-    padding: '.5rem 0',
+    padding: '.75rem 0',
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
