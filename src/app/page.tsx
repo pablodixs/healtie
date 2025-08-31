@@ -27,7 +27,7 @@ export default function Home() {
             <FeatureHighlight />
             <section
                 className={stack({
-                    direction: { base: 'column', md: 'row' },
+                    direction: { base: 'column-reverse', md: 'row' },
                     justify: 'space-between',
                     align: 'center',
                 })}
@@ -83,8 +83,8 @@ export default function Home() {
                 >
                     <Card icon={CompassIcon} title="Você sabe onde ir">
                         Com o Onde Ir? você encontra a unidade de saúde mais
-                        indicada no seu caso, otimizando seu tempo e evitando a
-                        lotação desnecessárias dos estabelecimentos de saúde.
+                        indicada pro seu caso, otimizando seu tempo e evitando a
+                        lotação desnecessária dos estabelecimentos de saúde.
                     </Card>
                     <Card
                         icon={MapTrifoldIcon}
