@@ -3,7 +3,7 @@
 import { ReactNode, useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { css } from '../../../styled-system/css'
-import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRightIcon, CaretRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 interface CollapsibleItem {
     title: string
@@ -100,24 +100,8 @@ function CollapsibleAnimatedItem({
                 onClick={onClick}
                 transition={{ duration: 0.3 }}
             >
-                <ArrowRightIcon size={18} /> <span>{title}</span>
+                <CaretRightIcon size={18} /> <span>{title}</span>
             </motion.button>
-
-            {showIndicator && (
-                <div className={indicatorBelowButton}>
-                    <motion.div
-                        className={indicatorProgressBelow}
-                        initial={{ width: 0 }}
-                        animate={{
-                            width: isActive ? '100%' : '0%',
-                        }}
-                        transition={{
-                            duration: isActive ? autoPlayInterval : 0.3,
-                            ease: 'linear',
-                        }}
-                    />
-                </div>
-            )}
 
             <AnimatePresence initial={false}>
                 {isExpanded && (
@@ -135,13 +119,32 @@ function CollapsibleAnimatedItem({
                     </motion.div>
                 )}
             </AnimatePresence>
+            {showIndicator && (
+                <div className={indicatorBelowButton}>
+                    <motion.div
+                        className={indicatorProgressBelow}
+                        initial={{ width: 0 }}
+                        animate={{
+                            width: isActive ? '100%' : '0%',
+                        }}
+                        transition={{
+                            duration: isActive ? autoPlayInterval : 0.3,
+                            ease: 'linear',
+                        }}
+                    />
+                </div>
+            )}
         </div>
     )
 }
 
 const containerStyles = css({
     width: '100%',
-    maxWidth: '600px',
+    // maxWidth: '600px',
+    bgColor: 'background',
+    padding: '1rem 1.5rem',
+    borderRadius: '12px',
+    overflow: 'hidden',
 })
 
 const itemsContainer = css({
@@ -163,7 +166,6 @@ const itemButton = css({
     border: 'none',
     backgroundColor: 'transparent',
     cursor: 'pointer',
-    // fontSize: '1.125rem',
     fontWeight: '500',
     textAlign: 'left',
 })
@@ -177,7 +179,7 @@ const indicatorBelowButton = css({
 
 const indicatorProgressBelow = css({
     height: '1px',
-    backgroundColor: 'primary',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
 })
 
 const contentContainer = css({})

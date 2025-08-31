@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import { useRef, useState } from 'react'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import {
@@ -15,10 +14,11 @@ import { Heading } from '@/components/Typography/Heading'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Button } from '@/components/Button'
 import { Subheading } from '@/components/Typography/Subheading'
-import { Divider } from '@/components/Divider'
 import { AnimatedCollapsibleGroup } from '@/components/Collapsible/AnimatedCollapsibleGroup'
 
 import animation from '@/assets/lotties/onde_ir_hero_animation.json'
+import { Divider } from '@/components/Divider'
+import Image from 'next/image'
 
 export default function Page() {
     const animationRef = useRef<LottieRefCurrentProps | null>(null)
@@ -86,7 +86,11 @@ export default function Page() {
                         }}
                     >
                         {isAnimationPlaying ? (
-                            <Button iconButton onClick={handlePauseAnimation}>
+                            <Button
+                                variant="ghost"
+                                iconButton
+                                onClick={handlePauseAnimation}
+                            >
                                 <PauseIcon weight="fill" color={'white'} />
                             </Button>
                         ) : (
@@ -101,81 +105,101 @@ export default function Page() {
                     </div>
                 </div>
             </section>
-            <Divider />
             <section
                 className={stack({
-                    direction: { base: 'column-reverse', md: 'row' },
-                    justify: 'space-between',
-                    margin: '4rem 0',
+                    maxWidth: '1000px',
+                    direction: 'row',
+                    margin: '4rem auto',
                     padding: { base: '0 1rem', md: '0' },
-                    paddingRight: { md: '1rem' },
                     gap: { base: '1rem' },
                 })}
             >
                 <div>
+                    <Divider />
                     <Subheading>
                         Uma triagem simples. <br /> Um atendimento mais
                         inteligente.
                     </Subheading>
-                    <Paragraph compact>
+                    <Paragraph>
                         Com algumas respostas rápidas, você encontra o
                         atendimento mais adequado para o seu caso, sem filas
                         desnecessárias, sem complicações. Uma experiência
                         pensada para ser clara, acessível e humana.
                     </Paragraph>
-                    <div>
-                        <AnimatedCollapsibleGroup
-                            items={[
-                                {
-                                    title: 'Economia de tempo',
-                                    content: (
-                                        <Paragraph>
-                                            Descubra o local certo para o seu
-                                            atendimento em menos de um minuto.
-                                        </Paragraph>
-                                    ),
-                                },
-                                {
-                                    title: 'Menos superlotação',
-                                    content: (
-                                        <Paragraph>
-                                            Cada pessoa no lugar certo. Mais
-                                            organização e menos espera para
-                                            todos.
-                                        </Paragraph>
-                                    ),
-                                },
-                                {
-                                    title: 'Atendimento mais rápido',
-                                    content: (
-                                        <Paragraph>
-                                            Chegue ao local indicado já
-                                            preparado para receber o cuidado que
-                                            você precisa.
-                                        </Paragraph>
-                                    ),
-                                },
-                            ]}
-                            autoPlayInterval={7}
-                            showIndicators={true}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <Image
-                        style={{
-                            borderRadius: '12px',
-                            width: '100%',
-                            height: 'auto',
-                            flex: 1,
-                        }}
-                        src={'/pictures/onde_ir_illustration.png'}
-                        alt="Ilustração de onde ir"
-                        width={300}
-                        height={300}
-                        quality={100}
+                    <AnimatedCollapsibleGroup
+                        items={[
+                            {
+                                title: 'Economia de tempo',
+                                content: (
+                                    <Paragraph>
+                                        Descubra o local certo para o seu
+                                        atendimento em menos de um minuto.
+                                    </Paragraph>
+                                ),
+                            },
+                            {
+                                title: 'Menos superlotação',
+                                content: (
+                                    <Paragraph>
+                                        Cada pessoa no lugar certo. Mais
+                                        organização e menos espera para todos.
+                                    </Paragraph>
+                                ),
+                            },
+                            {
+                                title: 'Atendimento mais rápido',
+                                content: (
+                                    <Paragraph>
+                                        Chegue ao local indicado já preparado
+                                        para receber o cuidado que você precisa.
+                                    </Paragraph>
+                                ),
+                            },
+                        ]}
+                        autoPlayInterval={7}
+                        showIndicators={true}
                     />
                 </div>
+            </section>
+            <section
+                className={stack({
+                    maxWidth: '1000px',
+                    direction: { base: 'column', md: 'row' },
+                    margin: '4rem auto',
+                    padding: { base: '0 1rem', md: '0' },
+                    gap: { base: '1rem' },
+                })}
+            >
+                <div>
+                    <Subheading>Atendimento mais rápido</Subheading>
+                    <Paragraph>
+                        Chegue ao local indicado já sabendo o que esperar.
+                        Assim, você explica melhor seus sintomas, recebe a
+                        orientação certa e é atendido com mais agilidade.
+                    </Paragraph>
+                </div>
+                <Image
+                    style={{ flex: 1, minWidth: '50%', borderRadius: 12 }}
+                    src={'/pictures/onde_ir_illustration.png'}
+                    alt=""
+                    width={500}
+                    height={400}
+                    quality={100}
+                    objectFit="cover"
+                />
+            </section>
+            <section
+                className={stack({
+                    maxWidth: '1000px',
+                    direction: 'column',
+                    align: 'center',
+                    margin: '4rem auto',
+                    padding: { base: '0 1rem', md: '0' },
+                    gap: { base: '1rem' },
+                })}
+            >
+                <Subheading centered>Vamos começar?</Subheading>
+                <Button variant="secondary">Abrir questionário</Button>
             </section>
         </main>
     )
