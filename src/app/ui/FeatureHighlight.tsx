@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import Lottie from 'lottie-react'
 import { css } from '../../../styled-system/css'
 
 import { Button } from '@/components/Button'
@@ -7,17 +10,20 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 import { Subheading } from '@/components/Typography/Subheading'
 import { ArrowRightIcon, CompassIcon } from '@phosphor-icons/react/dist/ssr'
 
+import ondeIrAnimation from '@/assets/lotties/onde_ir_animation.json'
+
 export function FeatureHighlight() {
     return (
         <section className={featureContainer}>
-            <Image
+            {/* <Image
                 src={'/pictures/onde_ir_illustration.png'}
                 alt="Ilustração de onde ir"
                 width={500}
                 height={321}
                 quality={100}
                 style={{ borderRadius: 12 }}
-            />
+            /> */}
+            <Lottie animationData={ondeIrAnimation} loop={false} />
             <div
                 className={css({
                     display: 'flex',
