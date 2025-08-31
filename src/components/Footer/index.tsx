@@ -89,8 +89,9 @@ export function Footer() {
             </section>
             <section
                 className={css({
+                    flexDirection: { base: 'column', md: 'row' },
                     padding: { base: '2rem', md: '0' },
-                    paddingRight: { base: '2rem', md: '1rem' },
+                    paddingRight: { base: '0', md: '1rem' },
                 })}
             >
                 <p>&copy; 2025 Scriptles</p>
