@@ -1,8 +1,8 @@
 import { css } from '../../../../../styled-system/css'
 import { stack } from '../../../../../styled-system/patterns'
-import { Subheading } from '@/components/Typography/Subheading'
 import { Question } from '@/utils/whereToGoQuestions'
 import { QuizOption } from './QuizOption'
+import { Heading } from '@/components/Typography/Heading'
 
 interface QuizQuestionProps {
     question: Question
@@ -12,7 +12,7 @@ interface QuizQuestionProps {
 export function QuizQuestion({ question, onAnswer }: QuizQuestionProps) {
     return (
         <div className={stack({ gap: '1rem' })}>
-            <Subheading>{question.question}</Subheading>
+            <Heading>{question.question}</Heading>
             <div
                 className={css({
                     display: 'grid',
