@@ -1,7 +1,6 @@
 import { BackButton } from '@/components/Button/BackButton'
 import { Quiz } from './components/Quiz'
 
-import { stack } from '../../../../styled-system/patterns'
 import { css } from '../../../../styled-system/css'
 import { Paragraph } from '@/components/Typography/Paragraph'
 
@@ -26,8 +25,7 @@ export default function Page() {
                     flexDirection: 'column',
                     gridTemplateColumns: '1fr 300px',
                     gap: '1rem',
-                    paddingRight: { base: 'inherit', md: '1rem' },
-                    padding: { base: '1rem', md: '0' },
+                    padding: { base: '1rem', md: '0 0 1rem 0' },
                 })}
             >
                 <Quiz />
