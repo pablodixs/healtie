@@ -1,7 +1,14 @@
+export interface OptionQuestion {
+    label: string
+    description: string
+    imageUrl?: string
+    value: string
+}
+
 export interface Question {
     id: number
     question: string
-    options: { label: string; description: string; value: string }[]
+    options: OptionQuestion[]
 }
 
 export const whereToGoQuestions: Question[] = [
@@ -13,16 +20,19 @@ export const whereToGoQuestions: Question[] = [
                 label: 'Falta de ar forte',
                 description: 'Teste',
                 value: 'hospital',
+                imageUrl: '/pictures/questions/falta_de_ar.png',
             },
             {
                 label: 'Dor no peito ou desmaio',
                 description: '',
                 value: 'hospital',
+                imageUrl: '/pictures/questions/dor_no_peito.png',
             },
             {
                 label: 'Sangramento que não para',
                 description: '',
                 value: 'hospital',
+                imageUrl: '/pictures/questions/sangramento.png',
             },
             { label: 'Nenhum destes', description: '', value: 'next' },
         ],
