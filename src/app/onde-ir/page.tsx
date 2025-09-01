@@ -179,11 +179,14 @@ export default function Page() {
                     </Paragraph>
                 </div>
                 <Image
-                    style={{ flex: 1, minWidth: '50%', borderRadius: 12 }}
-                    src={'/pictures/onde_ir_illustration.png'}
+                    style={{
+                        flex: 1,
+                        borderRadius: 12,
+                    }}
+                    src={'/pictures/signs_illustration.svg'}
                     alt=""
-                    width={500}
-                    height={400}
+                    width={300}
+                    height={200}
                     quality={100}
                     objectFit="cover"
                 />
