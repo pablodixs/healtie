@@ -1,6 +1,7 @@
 'use client'
-import { useRef, useState } from 'react'
+import Image from 'next/image'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import { useRef, useState } from 'react'
 import {
     ArrowRightIcon,
     CaretDownIcon,
@@ -18,7 +19,7 @@ import { AnimatedCollapsibleGroup } from '@/components/Collapsible/AnimatedColla
 
 import animation from '@/assets/lotties/onde_ir_hero_animation.json'
 import { Divider } from '@/components/Divider'
-import Image from 'next/image'
+import { Link } from '@/components/Link'
 
 export default function Page() {
     const animationRef = useRef<LottieRefCurrentProps | null>(null)
@@ -59,9 +60,9 @@ export default function Page() {
                         direction: { base: 'column', md: 'row' },
                     })}
                 >
-                    <Button variant="secondary">
+                    <Link href={'/onde-ir/questionario'}>
                         Iniciar <ArrowRightIcon />
-                    </Button>
+                    </Link>
                     <Button variant="text">
                         Saiba mais <CaretDownIcon />
                     </Button>

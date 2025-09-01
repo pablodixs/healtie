@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence, motion } from 'motion/react'
 import { stack } from '../../../../../styled-system/patterns'
 import { Divider } from '@/components/Divider'
 import { QuizQuestion } from './QuizQuestion'
@@ -9,6 +10,7 @@ import { useQuiz } from '../hooks/useQuiz'
 
 export function Quiz() {
     const {
+        current,
         result,
         currentQuestion,
         canGoBack,
@@ -18,13 +20,36 @@ export function Quiz() {
     } = useQuiz()
 
     if (result) {
-        return <QuizResult result={result} onRestart={handleRestart} />
+        return (
+            <motion.div
+                initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                transition={{ duration: 0.4 }}
+            >
+                <QuizResult result={result} onRestart={handleRestart} />
+            </motion.div>
+        )
     }
 
     return (
         <div className={stack({ gap: '1rem' })}>
-            <QuizQuestion question={currentQuestion} onAnswer={handleAnswer} />
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={current}
+                    initial={{ opacity: 0, filter: 'blur(10px)', x: 30 }}
+                    animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }}
+                    exit={{ opacity: 0, filter: 'blur(10px)', x: -30 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <QuizQuestion
+                        question={currentQuestion}
+                        onAnswer={handleAnswer}
+                    />
+                </motion.div>
+            </AnimatePresence>
+
             <Divider />
+
             <QuizNavigation
                 onPrevious={handlePrevious}
                 onRestart={handleRestart}

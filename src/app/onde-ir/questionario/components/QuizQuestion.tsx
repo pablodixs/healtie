@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { css } from '../../../../../styled-system/css'
 import { stack } from '../../../../../styled-system/patterns'
 import { Question } from '@/utils/whereToGoQuestions'
@@ -12,7 +13,13 @@ interface QuizQuestionProps {
 export function QuizQuestion({ question, onAnswer }: QuizQuestionProps) {
     return (
         <div className={stack({ gap: '1rem' })}>
-            <Heading>{question.question}</Heading>
+            <motion.div
+                initial={{ opacity: 0, filter: 'blur(10px)', y: -10 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <Heading>{question.question}</Heading>
+            </motion.div>
             <div
                 className={css({
                     display: 'grid',
@@ -22,7 +29,12 @@ export function QuizQuestion({ question, onAnswer }: QuizQuestionProps) {
                 })}
             >
                 {question.options.map((option, idx) => (
-                    <QuizOption key={idx} option={option} onSelect={onAnswer} />
+                    <QuizOption
+                        key={idx}
+                        option={option}
+                        onSelect={onAnswer}
+                        index={idx}
+                    />
                 ))}
             </div>
         </div>
