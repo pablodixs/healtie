@@ -1,0 +1,123 @@
+{
+    "establishments": [
+        {
+            "cnes": 7771479,
+            "name": "UBS 11 de Samambaia",
+            "full_name": "Unidade Básica de Saúde 11 de Samambaia",
+            "address": "QR 831 CONJUNTO 02 LOTE 01",
+            "district": "Samambaia Norte",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72338712",
+            "abb": "UBS",
+            "type": "Unidade Básica de Saúde",
+            "phone": "61 3359-5500",
+            "location": {
+                "longitude": -48.147119,
+                "latitude": -15.88776
+            }
+        },
+        {
+            "cnes": 9543945,
+            "name": "UBS 11 de Água Quente",
+            "full_name": "Unidade Básica de Saúde 11 de Água Quente",
+            "address": "QUADRA 01 LOTE 23 SALOMAO ELIAS",
+            "district": "Água Quente",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72650030",
+            "abb": "UBS",
+            "type": "Unidade Básica de Saúde",
+            "phone": "61 -",
+            "location": {
+                "longitude": -48.240798607776576,
+                "latitude": -15.942174502828578
+            }
+        },
+        {
+            "cnes": 7114397,
+            "name": "UBS 08 de Samambaia",
+            "full_name": "Unidade Básica de Saúde 08 de Samambaia",
+            "address": "QS 314 CONJUNTO 05 LOTE 01",
+            "district": "Samambaia Sul",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72308515",
+            "abb": "UBS",
+            "type": "Unidade Básica de Saúde",
+            "phone": "61 3357-5793",
+            "location": {
+                "longitude": -48.06779204215701,
+                "latitude": -15.876801914251567
+            }
+        },
+        {
+            "cnes": 10472,
+            "name": "Hospital Regional do Gama",
+            "full_name": "Hospital Regional do Gama",
+            "address": "AREA ESPECIAL",
+            "district": "Gama",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72405901",
+            "abb": "HOSPITAL",
+            "type": "Hospital",
+            "phone": "-",
+            "location": {
+                "longitude": -48.06949515308947,
+                "latitude": -16.023404587598662
+            }
+        },
+        {
+            "cnes": 6708714,
+            "name": "UPA de Samambaia",
+            "full_name": "Unidade de Pronto Atendimento de Samambaia",
+            "address": "QS 314 CONJUNTO 05 LOTE 01",
+            "district": "Samambaia Sul",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72301524",
+            "abb": "UPA",
+            "type": "Unidade de Pronto Atendimento",
+            "phone": "61 3550-8739",
+            "location": {
+                "longitude": -48.100111,
+                "latitude": -15.883217
+            }
+        },
+        {
+            "cnes": 939145,
+            "name": "UPA do Gama",
+            "full_name": "Unidade de Pronto Atendimento do Gama",
+            "address": "SETOR DE INDUSTRIA QI 7 AREA RESERVADA 2",
+            "district": "Gama",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72445070",
+            "abb": "UPA",
+            "type": "Unidade de Pronto Atendimento",
+            "phone": "61 2017-1145",
+            "location": {
+                "longitude": -48.05428,
+                "latitude": -16.015009624830014
+            }
+        },
+        {
+            "cnes": 2672197,
+            "name": "Hospital Regional de Samambaia",
+            "full_name": "Hospital Regional de Samambaia",
+            "address": "QS 614 CONJUNTO C",
+            "district": "Samambaia Norte",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72322583",
+            "abb": "HOSPITAL",
+            "type": "Hospital",
+            "phone": "61 2017-2200",
+            "location": {
+                "longitude": -48.07313,
+                "latitude": -15.85333
+            }
+        }
+    ]
+}
