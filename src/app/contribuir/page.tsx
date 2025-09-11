@@ -1,20 +1,55 @@
+'use client'
+
 import Link from 'next/link'
+import Image from 'next/image'
+import Lottie from 'lottie-react'
+
+import { css } from '../../../styled-system/css'
+import { stack } from '../../../styled-system/patterns'
 
 import { Heading } from '@/components/Typography/Heading'
 import { Paragraph } from '@/components/Typography/Paragraph'
-import { css } from '../../../styled-system/css'
+import { Divider } from '@/components/Divider'
+import { Subheading } from '@/components/Typography/Subheading'
+
+import animation from '@/assets/lotties/contribuir.json'
 
 export default function Page() {
     return (
         <main>
-            <Heading centered>Contribua com o Healtie</Heading>
+            <header
+                className={stack({
+                    align: 'center',
+                    marginTop: '4rem',
+                    paddingTop: { base: '5rem' },
+                    padding: { base: '0 1rem', md: '0 2rem' },
+                })}
+            >
+                <Heading centered>Contribua com o Healtie</Heading>
+                <Paragraph centered subtle compact>
+                    Ajude a manter o Healtie sempre atualizado. Aqui você pode
+                    indicar novos estabelecimentos de saúde, corrigir
+                    informações incorretas e contribuir para que mais pessoas
+                    tenham acesso a dados confiáveis e acessíveis.
+                </Paragraph>
+                <Lottie
+                    style={{
+                        borderRadius: 12,
+                        overflow: 'hidden',
+                        maxWidth: 1000,
+                    }}
+                    animationData={animation}
+                />
+            </header>
+            <Divider />
+            <Subheading>Como você pode contribuir</Subheading>
             <section
                 className={css({
                     mt: '1.5rem',
                     display: 'grid',
                     gap: '1rem',
                     gridTemplateColumns:
-                        'repeat(auto-fill, minmax(200px, 1fr))',
+                        'repeat(auto-fill, minmax(300px, 1fr))',
                 })}
             >
                 <Link
@@ -41,22 +76,20 @@ export default function Page() {
                         },
                     })}
                 >
-                    {/* {imageUrl && (
-                        <Image
-                            src={option.imageUrl}
-                            alt={option.label}
-                            width={320}
-                            height={200}
-                            className={css({
-                                width: '100%',
-                                height: '120px',
-                                objectFit: 'cover',
-                                aspectRatio: '1/1',
-                                borderRadius: 'calc(1rem - 0.5rem)',
-                            })}
-                            quality={100}
-                        />
-                    )} */}
+                    <Image
+                        src={'/pictures/establishment_ubs.png'}
+                        alt={''}
+                        width={320}
+                        height={200}
+                        className={css({
+                            width: '100%',
+                            height: '160px',
+                            objectFit: 'cover',
+                            aspectRatio: '1/1',
+                            borderRadius: 'calc(1rem - 0.5rem)',
+                        })}
+                        quality={100}
+                    />
                     <span
                         className={css({
                             mt: '.75rem',
