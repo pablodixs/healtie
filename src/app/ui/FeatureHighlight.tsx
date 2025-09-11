@@ -10,6 +10,7 @@ import { Subheading } from '@/components/Typography/Subheading'
 import { ArrowRightIcon, CompassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import ondeIrAnimation from '@/assets/lotties/onde_ir_animation.json'
+import { Link } from '@/components/Link'
 
 export function FeatureHighlight() {
     return (
@@ -48,10 +49,12 @@ export function FeatureHighlight() {
                     </Paragraph>
                 </div>
                 <Stack direction="row">
-                    <Button variant="secondary">
+                    <Link href={'/onde-ir'}>
                         Descobrir agora <ArrowRightIcon />
-                    </Button>
-                    <Button variant="text">Saiba mais</Button>
+                    </Link>
+                    <Link variant="text" href={'/onde-ir/sobre'}>
+                        Saiba mais
+                    </Link>
                 </Stack>
             </div>
         </section>

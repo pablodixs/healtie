@@ -1,10 +1,10 @@
 import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr'
 
-import { Button } from '@/components/Button'
 import { Stack } from '@/components/Stacks'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Subheading } from '@/components/Typography/Subheading'
 import { stack } from '../../../styled-system/patterns'
+import { Link } from '@/components/Link'
 
 export function ContributeSection() {
     return (
@@ -62,9 +62,9 @@ export function ContributeSection() {
                 Contribua com informações sobre unidades de saúde e ajude a
                 melhorar a nossa base de dados.
                 <Stack direction="row" center padding>
-                    <Button variant="secondary">
+                    <Link href="/contribuir">
                         Contribuir <ArrowUpRightIcon />
-                    </Button>
+                    </Link>
                 </Stack>
             </Paragraph>
         </section>

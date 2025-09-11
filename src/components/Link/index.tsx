@@ -2,11 +2,13 @@ import { ComponentProps } from 'react'
 import NextLink from 'next/link'
 import { cva } from '../../../styled-system/css'
 
-type LinkProps = ComponentProps<typeof NextLink>
+type LinkProps = ComponentProps<typeof NextLink> & {
+    variant?: 'text' | 'primary'
+}
 
 export function Link(props: LinkProps) {
     return (
-        <NextLink className={linkStyle()} {...props}>
+        <NextLink className={linkStyle({ variant: props.variant })} {...props}>
             {props.children}
         </NextLink>
     )
@@ -27,7 +29,7 @@ const linkStyle = cva({
         backgroundColor: 'primary',
         color: 'white',
         gap: '.75rem',
-        padding: '0 1rem',
+        padding: '.5rem 1rem',
 
         '& svg': {
             fontSize: '1.125rem',
@@ -36,6 +38,22 @@ const linkStyle = cva({
         _hover: {
             scale: 1.05,
             backgroundColor: '#202020',
+        },
+    },
+    variants: {
+        variant: {
+            primary: {},
+            text: {
+                backgroundColor: 'transparent',
+                color: 'primary',
+
+                _hover: {
+                    scale: 1,
+                    backgroundColor: 'transparent',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '4px',
+                },
+            },
         },
     },
 })
