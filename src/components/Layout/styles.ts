@@ -4,7 +4,7 @@ export const mainLayoutContainer = css({})
 
 export const mainLayoutContentContainer = cva({
     base: {
-        marginTop: 'header',
+        marginTop: 'expandedHeader',
         margin: '0 auto',
         maxWidth: '1280px',
     },

@@ -6,12 +6,12 @@ import { ContributeSection } from './ui/ContributeSection'
 
 export default function Home() {
     return (
-        <div>
+        <>
             <HeroSearchContainer />
             <FeatureHighlight />
             <NearEstablishmentsHighlight />
             <HowHelpsHighlight />
             <ContributeSection />
-        </div>
+        </>
     )
 }
