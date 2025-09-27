@@ -41,6 +41,7 @@ export function Header() {
                 transition={{
                     duration: 0.5,
                     type: 'spring',
+                    stiffness: 110,
                 }}
                 className={headerContainer({
                     isCompacted,
@@ -161,7 +162,7 @@ export function Header() {
                                     transition={{
                                         duration: 0.7,
                                         type: 'spring',
-                                        bounce: 0.4,
+                                        stiffness: 110,
                                     }}
                                 >
                                     Início
@@ -198,7 +199,7 @@ export function Header() {
                                     transition={{
                                         duration: 0.7,
                                         type: 'spring',
-                                        bounce: 0.4,
+                                        stiffness: 110,
                                     }}
                                 >
                                     Mapa
@@ -237,7 +238,7 @@ export function Header() {
                                     transition={{
                                         duration: 0.7,
                                         type: 'spring',
-                                        bounce: 0.4,
+                                        stiffness: 110,
                                     }}
                                 >
                                     Onde ir
@@ -274,7 +275,7 @@ export function Header() {
                                     transition={{
                                         duration: 0.7,
                                         type: 'spring',
-                                        bounce: 0.4,
+                                        stiffness: 110,
                                     }}
                                 >
                                     Buscar
