@@ -1,6 +1,7 @@
 import { defineConfig } from '@pandacss/dev'
 
 const HEADER_SIZE = '4.625rem'
+const EXPANDED_HEADER_SIZE = '6.25rem'
 
 export default defineConfig({
     // Whether to use css reset
@@ -44,6 +45,7 @@ export default defineConfig({
                 },
                 spacing: {
                     header: { value: HEADER_SIZE },
+                    expandedHeader: { value: EXPANDED_HEADER_SIZE },
                 },
             },
         },

@@ -1,16 +1,16 @@
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { HTMLAttributes, ReactNode } from 'react'
 import { cva } from '../../../styled-system/css'
 
-interface NavbarLinkProps {
+interface NavbarLinkProps extends HTMLAttributes<HTMLAnchorElement> {
     children: ReactNode
     href: string
 }
 
-export function NavbarLink({ children, href }: NavbarLinkProps) {
+export function NavbarLink({ children, href, ...props }: NavbarLinkProps) {
     return (
         <div>
-            <Link className={navbarLink()} href={href}>
+            <Link className={navbarLink()} href={href} {...props}>
                 {children}
             </Link>
         </div>
@@ -21,7 +21,6 @@ const navbarLink = cva({
     base: {
         display: 'flex',
         alignItems: 'center',
-        gap: '.5rem',
         borderRadius: 'md',
         lineHeight: 1,
         fontWeight: 500,
@@ -32,11 +31,11 @@ const navbarLink = cva({
         padding: '.5rem .75rem',
 
         '& svg': {
-            fontSize: '1.25rem',
+            fontSize: '1.375rem',
         },
 
         _hover: {
-            backgroundColor: 'background',
+            color: 'tint',
         },
     },
 })

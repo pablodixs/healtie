@@ -61,12 +61,12 @@ export function ContributeSection() {
             <Paragraph centered>
                 Contribua com informações sobre unidades de saúde e ajude a
                 melhorar a nossa base de dados.
-                <Stack direction="row" center padding>
-                    <Link href="/contribuir">
-                        Contribuir <ArrowUpRightIcon />
-                    </Link>
-                </Stack>
             </Paragraph>
+            <Stack direction="row" center padding>
+                <Link href="/contribuir">
+                    Contribuir <ArrowUpRightIcon />
+                </Link>
+            </Stack>
         </section>
     )
 }

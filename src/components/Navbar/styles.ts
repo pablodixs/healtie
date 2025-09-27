@@ -5,14 +5,14 @@ export const navbarContainer = css({
     display: { base: 'none', lg: 'block' },
 
     '& .sidebar': {
-        marginTop: 'calc(2rem + 3.375rem)',
+        // marginTop: 'calc(2rem + 3.375rem)',
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         width: '12.5rem',
         paddingLeft: '.25rem',
-        height: 'calc(100dvh - 4.625rem)',
+        // height: 'calc(100dvh - 4.625rem)',
         display: 'flex',
         flexDir: 'column',
         justifyContent: 'center',

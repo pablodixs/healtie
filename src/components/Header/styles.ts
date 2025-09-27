@@ -1,25 +1,43 @@
-import { css } from '../../../styled-system/css'
+import { cva } from '../../../styled-system/css'
 
-export const headerContainer = css({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: '1rem',
-    height: 'header',
-
-    '& div': {
+export const headerContainer = cva({
+    base: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
         display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        gap: '1rem',
-    },
+        backgroundColor: 'white',
+        backdropFilter: 'blur(20px)',
 
-    '& .logo': {
-        width: '10.5rem',
+        '& div': {
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+        },
+
+        '& .logo, .auth': {
+            width: '33.33%',
+        },
+
+        '& .auth': {
+            display: 'flex',
+            justifyContent: 'flex-end',
+        },
+    },
+    variants: {
+        isCompacted: {
+            true: {
+                // height: 'headerExpanded',
+                // padding: '.5rem 1rem',
+            },
+            false: {
+                // padding: '1rem',
+                // height: 'header',
+            },
+        },
     },
 })

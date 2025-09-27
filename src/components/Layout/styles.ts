@@ -5,7 +5,7 @@ export const mainLayoutContainer = css({})
 export const mainLayoutContentContainer = cva({
     base: {
         marginTop: 'header',
-        display: { base: 'block', lg: 'grid' },
-        gridTemplateColumns: '12.5rem 1fr',
+        margin: '0 auto',
+        maxWidth: '1280px',
     },
 })

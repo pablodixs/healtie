@@ -1,22 +1,54 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import {
+    CompassIcon,
+    HouseIcon,
+    MagnifyingGlassIcon,
+    MapTrifoldIcon,
+    UserCircleIcon,
+} from '@phosphor-icons/react/dist/ssr'
 
 import { useScroll } from '@/hooks/useScroll'
 
 import { Logo } from '../Logo'
 import { headerContainer } from './styles'
 import { NavbarLink } from '../Navbar/NavbarLink'
-import { Button } from '../Button'
-import { SearchBar } from '../Navbar/SearchBar'
+import { css } from '../../../styled-system/css'
+import { usePathname } from 'next/navigation'
+
+const HEADER_SIZE = '3rem'
+const EXPANDED_HEADER_SIZE = '4rem'
 
 export function Header() {
-    const { scrollY } = useScroll()
+    const { scrollY, direction } = useScroll()
+    const [isHovered, setIsHovered] = useState(false)
+    const [isCompacted, setIsCompacted] = useState(false)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        setIsCompacted(direction === 'down' && !isHovered)
+    }, [isHovered, direction])
 
     return (
-        <header className={headerContainer}>
-            <AnimatePresence mode="wait">
-                <div>
+        <AnimatePresence mode="wait">
+            <motion.header
+                animate={{
+                    height: isCompacted ? HEADER_SIZE : EXPANDED_HEADER_SIZE,
+                    padding: '0 1rem',
+                }}
+                transition={{
+                    duration: 0.5,
+                    type: 'spring',
+                }}
+                className={headerContainer({
+                    isCompacted,
+                })}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <AnimatePresence mode="popLayout">
                     <div className="logo">
                         {scrollY > 100 ? (
                             <motion.div
@@ -47,8 +79,8 @@ export function Header() {
                                 }}
                             >
                                 <svg
-                                    width="41"
-                                    height="42"
+                                    width="31"
+                                    height="32"
                                     viewBox="0 0 41 42"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -91,35 +123,176 @@ export function Header() {
                             </motion.div>
                         )}
                     </div>
-                    {scrollY > 500 ? (
-                        <motion.div
-                            initial={{
-                                opacity: 0,
-                                scale: 0.8,
-                                filter: 'blur(10px)',
-                            }}
-                            animate={{
-                                opacity: 1,
-                                scale: 1,
-                                filter: 'blur(0px)',
-                            }}
-                            exit={{
-                                opacity: 0,
-                                scale: 0.8,
-                                filter: 'blur(10px)',
-                            }}
-                        >
-                            <SearchBar placeholder="Buscar..." />
-                        </motion.div>
-                    ) : (
-                        <></>
-                    )}
+                </AnimatePresence>
+                <nav
+                    className={css({
+                        display: 'flex',
+                        gap: '1.125rem',
+                        flex: 1,
+                        justifyContent: 'center',
+                    })}
+                >
+                    <NavbarLink href="/">
+                        <HouseIcon
+                            weight={pathname === '/' ? 'fill' : 'regular'}
+                        />{' '}
+                        <AnimatePresence mode="wait">
+                            {!isCompacted && (
+                                <motion.span
+                                    className={css({ textWrap: 'nowrap' })}
+                                    key="home-span"
+                                    initial={{
+                                        width: 0,
+                                        marginLeft: '.5rem',
+                                        opacity: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    animate={{
+                                        width: '5ch',
+                                        opacity: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        width: 0,
+                                        opacity: 0,
+                                        marginLeft: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    transition={{
+                                        duration: 0.7,
+                                        type: 'spring',
+                                        bounce: 0.4,
+                                    }}
+                                >
+                                    Início
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </NavbarLink>
+                    <NavbarLink href="/mapa">
+                        <MapTrifoldIcon
+                            weight={pathname === '/mapa' ? 'fill' : 'regular'}
+                        />{' '}
+                        <AnimatePresence mode="wait">
+                            {!isCompacted && (
+                                <motion.span
+                                    className={css({ textWrap: 'nowrap' })}
+                                    key="map-span"
+                                    initial={{
+                                        width: 0,
+                                        marginLeft: '.5rem',
+                                        opacity: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    animate={{
+                                        width: '5ch',
+                                        opacity: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        width: 0,
+                                        opacity: 0,
+                                        marginLeft: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    transition={{
+                                        duration: 0.7,
+                                        type: 'spring',
+                                        bounce: 0.4,
+                                    }}
+                                >
+                                    Mapa
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </NavbarLink>
+                    <NavbarLink href="/onde-ir">
+                        <CompassIcon
+                            weight={
+                                pathname === '/onde-ir' ? 'fill' : 'regular'
+                            }
+                        />{' '}
+                        <AnimatePresence mode="wait">
+                            {!isCompacted && (
+                                <motion.span
+                                    className={css({ textWrap: 'nowrap' })}
+                                    key="where-span"
+                                    initial={{
+                                        width: 0,
+                                        marginLeft: '.5rem',
+                                        opacity: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    animate={{
+                                        width: '5ch',
+                                        opacity: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        width: 0,
+                                        opacity: 0,
+                                        marginLeft: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    transition={{
+                                        duration: 0.7,
+                                        type: 'spring',
+                                        bounce: 0.4,
+                                    }}
+                                >
+                                    Onde ir
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </NavbarLink>
+                    <NavbarLink href="/search">
+                        <MagnifyingGlassIcon
+                            weight={pathname === '/search' ? 'fill' : 'regular'}
+                        />{' '}
+                        <AnimatePresence mode="wait">
+                            {!isCompacted && (
+                                <motion.span
+                                    className={css({ textWrap: 'nowrap' })}
+                                    key="search-span"
+                                    initial={{
+                                        width: 0,
+                                        marginLeft: '.5rem',
+                                        opacity: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    animate={{
+                                        width: '5ch',
+                                        opacity: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        width: 0,
+                                        opacity: 0,
+                                        marginLeft: 0,
+                                        filter: 'blur(2px)',
+                                    }}
+                                    transition={{
+                                        duration: 0.7,
+                                        type: 'spring',
+                                        bounce: 0.4,
+                                    }}
+                                >
+                                    Buscar
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </NavbarLink>
+                </nav>
+                <div className="auth">
+                    <NavbarLink href="/">
+                        Entrar{' '}
+                        <UserCircleIcon
+                            className={css({ marginLeft: '.5rem' })}
+                            size={24}
+                        />
+                    </NavbarLink>
                 </div>
-            </AnimatePresence>
-            <div>
-                <NavbarLink href="/">Entrar</NavbarLink>
-                <Button variant="secondary">Criar conta</Button>
-            </div>
-        </header>
+            </motion.header>
+        </AnimatePresence>
     )
 }

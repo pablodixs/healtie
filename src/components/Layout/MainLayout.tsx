@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 
-import { Navbar } from '../Navbar'
 import { Header } from '../Header'
 
 import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
@@ -11,11 +10,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
         <div className={mainLayoutContainer}>
             <Header />
             <section className={mainLayoutContentContainer()}>
-                <Navbar />
-                <div>
-                    {children}
-                    <Footer />
-                </div>
+                {children}
+                <Footer />
             </section>
         </div>
     )
