@@ -1,6 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import {
+    Dispatch,
+    InputHTMLAttributes,
+    SetStateAction,
+    useState,
+    useEffect,
+} from 'react'
 import { motion, stagger, AnimatePresence } from 'motion/react'
 import {
     AmbulanceIcon,
@@ -10,6 +16,11 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@/components/Button'
 import { css, cva } from '../../../../styled-system/css'
+
+interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
+    filterValue?: string | null
+    onFilterChange?: Dispatch<SetStateAction<string | null>>
+}
 
 const optionsContainer = {
     visible: {
@@ -35,36 +46,42 @@ const options = {
     hidden: { opacity: 0, filter: 'blur(4px)', x: -100 },
 }
 
-interface establishmentTypes {
-    type: 'default' | 'hospital' | 'upa' | 'ubs' | undefined
-}
-
-export function HeroSearchBar() {
+export function HeroSearchBar({
+    filterValue,
+    onFilterChange,
+    ...props
+}: HeroSearchBarProps) {
     const [placeholder, setPlaceholder] = useState(
         'Busque por unidades de saúde, cidade ou serviços...'
     )
-    const [
-        selectedEstablishmentTypeFilter,
-        setSelectedEstablishmentTypeFilter,
-    ] = useState<establishmentTypes>({ type: 'default' })
 
-    function handleFilterSelect(filterType: 'hospital' | 'upa' | 'ubs') {
-        const isCurrentlySelected =
-            selectedEstablishmentTypeFilter.type === filterType
+    // Determinar o tipo atual baseado no filterValue ou estado padrão
+    const currentFilterType = filterValue || 'default'
+
+    // Sincronizar placeholder quando filterValue mudar externamente
+    useEffect(() => {
+        const placeholders = {
+            hospital: 'Buscar por hospitais...',
+            UPA: 'Buscar por Unidades de Pronto Atendimento...',
+            UBS: 'Buscar por Unidades Básicas de Saúde...',
+            default: 'Busque por unidades de saúde, cidade ou serviços...',
+        }
+
+        const newPlaceholder =
+            placeholders[currentFilterType as keyof typeof placeholders] ||
+            placeholders.default
+        setPlaceholder(newPlaceholder)
+    }, [currentFilterType])
+
+    function handleFilterSelect(filterType: 'hospital' | 'UPA' | 'UBS') {
+        const isCurrentlySelected = currentFilterType === filterType
 
         if (isCurrentlySelected) {
-            setSelectedEstablishmentTypeFilter({ type: 'default' })
-            setPlaceholder(
-                'Busque por unidades de saúde, cidade ou serviços...'
-            )
+            // Desselecionar o filtro atual
+            onFilterChange?.(null)
         } else {
-            setSelectedEstablishmentTypeFilter({ type: filterType })
-            const placeholders = {
-                hospital: 'Buscar por hospitais...',
-                upa: 'Buscar por Unidades de Pronto Atendimento...',
-                ubs: 'Buscar por Unidades Básicas de Saúde...',
-            }
-            setPlaceholder(placeholders[filterType])
+            // Selecionar novo filtro
+            onFilterChange?.(filterType)
         }
     }
 
@@ -77,7 +94,7 @@ export function HeroSearchBar() {
                     animate={{ width: '634px' }}
                     transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
                 >
-                    <input type="text" placeholder={placeholder} />
+                    <input {...props} type="text" placeholder={placeholder} />
                     <Button variant="secondary">
                         <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
@@ -92,8 +109,7 @@ export function HeroSearchBar() {
                         <button
                             className={filterButtonSelect({
                                 type:
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'hospital'
+                                    currentFilterType === 'hospital'
                                         ? 'hospital'
                                         : 'default',
                             })}
@@ -102,8 +118,7 @@ export function HeroSearchBar() {
                             <HospitalIcon
                                 size={26}
                                 weight={
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'hospital'
+                                    currentFilterType === 'hospital'
                                         ? 'fill'
                                         : 'regular'
                                 }
@@ -114,18 +129,16 @@ export function HeroSearchBar() {
                         <button
                             className={filterButtonSelect({
                                 type:
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'upa'
-                                        ? 'upa'
+                                    currentFilterType === 'UPA'
+                                        ? 'UPA'
                                         : 'default',
                             })}
-                            onClick={() => handleFilterSelect('upa')}
+                            onClick={() => handleFilterSelect('UPA')}
                         >
                             <AmbulanceIcon
                                 size={26}
                                 weight={
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'upa'
+                                    currentFilterType === 'UPA'
                                         ? 'fill'
                                         : 'regular'
                                 }
@@ -136,18 +149,16 @@ export function HeroSearchBar() {
                         <button
                             className={filterButtonSelect({
                                 type:
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'ubs'
-                                        ? 'ubs'
+                                    currentFilterType === 'UBS'
+                                        ? 'UBS'
                                         : 'default',
                             })}
-                            onClick={() => handleFilterSelect('ubs')}
+                            onClick={() => handleFilterSelect('UBS')}
                         >
                             <FirstAidIcon
                                 size={26}
                                 weight={
-                                    selectedEstablishmentTypeFilter.type ===
-                                    'ubs'
+                                    currentFilterType === 'UBS'
                                         ? 'fill'
                                         : 'regular'
                                 }
@@ -184,7 +195,7 @@ const filterButtonSelect = cva({
     variants: {
         type: {
             default: {},
-            ubs: {
+            UBS: {
                 backgroundColor: 'tint',
                 color: 'white',
             },
@@ -192,7 +203,7 @@ const filterButtonSelect = cva({
                 backgroundColor: '#9553F9',
                 color: 'white',
             },
-            upa: {
+            UPA: {
                 backgroundColor: '#FF5310',
                 color: 'white',
             },
@@ -218,6 +229,7 @@ const searchBarContainer = css({
     paddingLeft: '1.5rem',
     flex: 1,
     maxHeight: '3.375rem',
+    zIndex: 10,
 
     '& input': {
         flex: 1,

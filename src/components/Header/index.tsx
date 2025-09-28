@@ -37,13 +37,19 @@ export function Header() {
             <motion.header
                 animate={{
                     height: isCompacted ? HEADER_SIZE : EXPANDED_HEADER_SIZE,
-                    padding: '0 1rem',
+                    padding: '1rem',
+                    background:
+                        'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%)',
                 }}
                 transition={{
                     duration: 0.5,
                     type: 'spring',
                     stiffness: 110,
                     damping: 12,
+                }}
+                whileHover={{
+                    background:
+                        'linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)',
                 }}
                 className={headerContainer({
                     isCompacted,
@@ -54,7 +60,8 @@ export function Header() {
                 <AnimatePresence mode="popLayout">
                     <div className="logo">
                         {scrollY > 100 ? (
-                            <motion.div
+                            <motion.a
+                                href="/"
                                 key="svg-logo"
                                 initial={{
                                     opacity: 0,
@@ -93,10 +100,11 @@ export function Header() {
                                         fill="#202020"
                                     />
                                 </svg>
-                            </motion.div>
+                            </motion.a>
                         ) : (
-                            <motion.div
+                            <motion.a
                                 key="full-logo"
+                                href="/"
                                 initial={{
                                     opacity: 0,
                                     scale: 0.8,
@@ -123,7 +131,7 @@ export function Header() {
                                 }}
                             >
                                 <Logo />
-                            </motion.div>
+                            </motion.a>
                         )}
                     </div>
                 </AnimatePresence>
@@ -251,9 +259,9 @@ export function Header() {
                             )}
                         </AnimatePresence>
                     </NavbarLink>
-                    <NavbarLink href="/search">
+                    <NavbarLink href="/buscar">
                         <MagnifyingGlassIcon
-                            weight={pathname === '/search' ? 'fill' : 'regular'}
+                            weight={pathname === '/buscar' ? 'fill' : 'regular'}
                         />{' '}
                         <AnimatePresence mode="wait">
                             {!isCompacted && (
