@@ -43,6 +43,7 @@ export function Header() {
                     duration: 0.5,
                     type: 'spring',
                     stiffness: 110,
+                    damping: 12,
                 }}
                 className={headerContainer({
                     isCompacted,
@@ -164,6 +165,7 @@ export function Header() {
                                         duration: 0.7,
                                         type: 'spring',
                                         stiffness: 110,
+                                        damping: 12,
                                     }}
                                 >
                                     Início
@@ -201,6 +203,7 @@ export function Header() {
                                         duration: 0.7,
                                         type: 'spring',
                                         stiffness: 110,
+                                        damping: 12,
                                     }}
                                 >
                                     Mapa
@@ -240,6 +243,7 @@ export function Header() {
                                         duration: 0.7,
                                         type: 'spring',
                                         stiffness: 110,
+                                        damping: 12,
                                     }}
                                 >
                                     Onde ir
@@ -277,6 +281,7 @@ export function Header() {
                                         duration: 0.7,
                                         type: 'spring',
                                         stiffness: 110,
+                                        damping: 12,
                                     }}
                                 >
                                     Buscar
