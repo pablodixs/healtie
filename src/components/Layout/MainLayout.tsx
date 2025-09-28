@@ -1,9 +1,7 @@
 import { ReactNode } from 'react'
-
 import { Header } from '../Header'
-
-import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
 import { Footer } from '../Footer'
+import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     return (

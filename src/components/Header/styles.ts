@@ -10,8 +10,8 @@ export const headerContainer = cva({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'white',
-        backdropFilter: 'blur(20px)',
+        background:
+            'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%)',
 
         '& div': {
             display: 'flex',

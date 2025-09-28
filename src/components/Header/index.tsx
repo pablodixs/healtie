@@ -17,6 +17,7 @@ import { headerContainer } from './styles'
 import { NavbarLink } from '../Navbar/NavbarLink'
 import { css } from '../../../styled-system/css'
 import { usePathname } from 'next/navigation'
+import { ProgressiveBlur } from '../ProgressiveBlur'
 
 const HEADER_SIZE = '3rem'
 const EXPANDED_HEADER_SIZE = '4rem'
@@ -293,6 +294,7 @@ export function Header() {
                         />
                     </NavbarLink>
                 </div>
+                <ProgressiveBlur />
             </motion.header>
         </AnimatePresence>
     )
