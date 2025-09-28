@@ -7,7 +7,7 @@ import {
     useState,
     useEffect,
 } from 'react'
-import { motion, stagger, AnimatePresence } from 'motion/react'
+import { motion, stagger } from 'motion/react'
 import {
     AmbulanceIcon,
     FirstAidIcon,
@@ -87,86 +87,76 @@ export function HeroSearchBar({
 
     return (
         <div className={heroSearchBarContainer}>
-            <AnimatePresence>
-                <motion.div
-                    className={searchBarContainer}
-                    initial={{ width: '800px' }}
-                    animate={{ width: '634px' }}
-                    transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
-                >
-                    <input {...props} type="text" placeholder={placeholder} />
-                    <Button variant="secondary">
-                        <MagnifyingGlassIcon size={22} weight="bold" />
-                    </Button>
+            <motion.div
+                className={searchBarContainer}
+                initial={{ width: '800px' }}
+                animate={{ width: '634px' }}
+                transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
+            >
+                <input {...props} type="text" placeholder={placeholder} />
+                <Button variant="secondary">
+                    <MagnifyingGlassIcon size={22} weight="bold" />
+                </Button>
+            </motion.div>
+            <motion.div
+                className={optionCont}
+                variants={optionsContainer}
+                initial="hidden"
+                animate="visible"
+            >
+                <motion.div variants={options} key="hospital">
+                    <button
+                        className={filterButtonSelect({
+                            type:
+                                currentFilterType === 'hospital'
+                                    ? 'hospital'
+                                    : 'default',
+                        })}
+                        onClick={() => handleFilterSelect('hospital')}
+                    >
+                        <HospitalIcon
+                            size={26}
+                            weight={
+                                currentFilterType === 'hospital'
+                                    ? 'fill'
+                                    : 'regular'
+                            }
+                        />
+                    </button>
                 </motion.div>
-                <motion.div
-                    className={optionCont}
-                    variants={optionsContainer}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    <motion.div variants={options} key="hospital">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'hospital'
-                                        ? 'hospital'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('hospital')}
-                        >
-                            <HospitalIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'hospital'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
-                    </motion.div>
-                    <motion.div variants={options} key="ambulance">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'UPA'
-                                        ? 'UPA'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('UPA')}
-                        >
-                            <AmbulanceIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'UPA'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
-                    </motion.div>
-                    <motion.div variants={options} key="first-aid">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'UBS'
-                                        ? 'UBS'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('UBS')}
-                        >
-                            <FirstAidIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'UBS'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
-                    </motion.div>
+                <motion.div variants={options} key="ambulance">
+                    <button
+                        className={filterButtonSelect({
+                            type:
+                                currentFilterType === 'UPA' ? 'UPA' : 'default',
+                        })}
+                        onClick={() => handleFilterSelect('UPA')}
+                    >
+                        <AmbulanceIcon
+                            size={26}
+                            weight={
+                                currentFilterType === 'UPA' ? 'fill' : 'regular'
+                            }
+                        />
+                    </button>
                 </motion.div>
-            </AnimatePresence>
+                <motion.div variants={options} key="first-aid">
+                    <button
+                        className={filterButtonSelect({
+                            type:
+                                currentFilterType === 'UBS' ? 'UBS' : 'default',
+                        })}
+                        onClick={() => handleFilterSelect('UBS')}
+                    >
+                        <FirstAidIcon
+                            size={26}
+                            weight={
+                                currentFilterType === 'UBS' ? 'fill' : 'regular'
+                            }
+                        />
+                    </button>
+                </motion.div>
+            </motion.div>
         </div>
     )
 }

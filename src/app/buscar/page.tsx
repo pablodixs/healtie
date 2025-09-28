@@ -1,15 +1,19 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-import { Heading } from '@/components/Typography/Heading'
 import { css } from '../../../styled-system/css'
+
 import { HeroSearchBar } from '../ui/components/HeroSearchBar'
 
-import data from '@/utils/unidades.json'
+import { Heading } from '@/components/Typography/Heading'
 import { Link } from '@/components/Link'
-import { useState } from 'react'
+
+import data from '@/utils/unidades.json'
+import { SearchEmptyState } from './components/SearchEmptyState'
+import { NoResultsEmptyState } from './components/NoResultsEmpytState'
 
 export default function Page() {
     const [establishmentFilter, setEstablishmentFilter] = useState<
@@ -93,32 +97,60 @@ export default function Page() {
                 value={query}
                 onChange={handleChange}
             />
-            {filteredEstablishments.length > 0 && query && (
-                <>
-                    <span>{filteredEstablishments.length} resultados </span>
-                    <div
-                        className={css({
-                            alignItems: 'flex-start',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1rem',
-                            width: '100%',
-                            maxWidth: '800px',
-                        })}
+            <AnimatePresence mode="wait">
+                {filteredEstablishments.length > 0 && query.length >= 2 ? (
+                    <motion.div
+                        key="results"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.2 }}
                     >
-                        {filteredEstablishments.map((establishment) => (
-                            <Link
-                                className={css({ fontSize: '1.125rem' })}
-                                variant="text"
-                                href={`/unidades/${establishment.cnes}`}
-                                key={establishment.cnes}
-                            >
-                                {establishment.name} - {establishment.city}
-                            </Link>
-                        ))}
-                    </div>
-                </>
-            )}
+                        <span>{filteredEstablishments.length} resultados </span>
+                        <div
+                            className={css({
+                                alignItems: 'flex-start',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1rem',
+                                width: '100%',
+                                maxWidth: '800px',
+                            })}
+                        >
+                            {filteredEstablishments.map((establishment) => (
+                                <Link
+                                    className={css({ fontSize: '1.125rem' })}
+                                    variant="text"
+                                    href={`/unidades/${establishment.cnes}`}
+                                    key={establishment.cnes}
+                                >
+                                    {establishment.name} - {establishment.city}
+                                </Link>
+                            ))}
+                        </div>
+                    </motion.div>
+                ) : query.length >= 2 ? (
+                    <motion.div
+                        key="no-results"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <NoResultsEmptyState query={query} />
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="empty-state"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <SearchEmptyState />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.main>
     )
 }
