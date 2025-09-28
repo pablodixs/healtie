@@ -37,8 +37,7 @@ const heroContainer = css({
 
     '& img': {
         base: {
-            width: '80%',
-            height: 'auto',
+            minHeight: '200px',
         },
         md: {
             width: 'auto',

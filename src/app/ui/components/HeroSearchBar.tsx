@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion, stagger, AnimatePresence } from 'motion/react'
 import {
     AmbulanceIcon,
@@ -8,7 +9,7 @@ import {
     MagnifyingGlassIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@/components/Button'
-import { css } from '../../../../styled-system/css'
+import { css, cva } from '../../../../styled-system/css'
 
 const optionsContainer = {
     visible: {
@@ -34,7 +35,39 @@ const options = {
     hidden: { opacity: 0, filter: 'blur(4px)', x: -100 },
 }
 
+interface establishmentTypes {
+    type: 'default' | 'hospital' | 'upa' | 'ubs' | undefined
+}
+
 export function HeroSearchBar() {
+    const [placeholder, setPlaceholder] = useState(
+        'Busque por unidades de saúde, cidade ou serviços...'
+    )
+    const [
+        selectedEstablishmentTypeFilter,
+        setSelectedEstablishmentTypeFilter,
+    ] = useState<establishmentTypes>({ type: 'default' })
+
+    function handleFilterSelect(filterType: 'hospital' | 'upa' | 'ubs') {
+        const isCurrentlySelected =
+            selectedEstablishmentTypeFilter.type === filterType
+
+        if (isCurrentlySelected) {
+            setSelectedEstablishmentTypeFilter({ type: 'default' })
+            setPlaceholder(
+                'Busque por unidades de saúde, cidade ou serviços...'
+            )
+        } else {
+            setSelectedEstablishmentTypeFilter({ type: filterType })
+            const placeholders = {
+                hospital: 'Buscar por hospitais...',
+                upa: 'Buscar por Unidades de Pronto Atendimento...',
+                ubs: 'Buscar por Unidades Básicas de Saúde...',
+            }
+            setPlaceholder(placeholders[filterType])
+        }
+    }
+
     return (
         <div className={heroSearchBarContainer}>
             <AnimatePresence>
@@ -44,12 +77,9 @@ export function HeroSearchBar() {
                     animate={{ width: '634px' }}
                     transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
                 >
-                    <input
-                        type="text"
-                        placeholder="Busque por unidades de saúde, cidade ou serviços..."
-                    />
+                    <input type="text" placeholder={placeholder} />
                     <Button variant="secondary">
-                        <MagnifyingGlassIcon size={24} weight="bold" />
+                        <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
                 </motion.div>
                 <motion.div
@@ -59,19 +89,70 @@ export function HeroSearchBar() {
                     animate="visible"
                 >
                     <motion.div variants={options} key="hospital">
-                        <Button variant="subtle" iconButton>
-                            <HospitalIcon size={26} />
-                        </Button>
+                        <button
+                            className={filterButtonSelect({
+                                type:
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'hospital'
+                                        ? 'hospital'
+                                        : 'default',
+                            })}
+                            onClick={() => handleFilterSelect('hospital')}
+                        >
+                            <HospitalIcon
+                                size={26}
+                                weight={
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'hospital'
+                                        ? 'fill'
+                                        : 'regular'
+                                }
+                            />
+                        </button>
                     </motion.div>
                     <motion.div variants={options} key="ambulance">
-                        <Button variant="subtle" iconButton>
-                            <AmbulanceIcon size={26} />
-                        </Button>
+                        <button
+                            className={filterButtonSelect({
+                                type:
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'upa'
+                                        ? 'upa'
+                                        : 'default',
+                            })}
+                            onClick={() => handleFilterSelect('upa')}
+                        >
+                            <AmbulanceIcon
+                                size={26}
+                                weight={
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'upa'
+                                        ? 'fill'
+                                        : 'regular'
+                                }
+                            />
+                        </button>
                     </motion.div>
                     <motion.div variants={options} key="first-aid">
-                        <Button variant="subtle" size="large" iconButton>
-                            <FirstAidIcon size={26} />
-                        </Button>
+                        <button
+                            className={filterButtonSelect({
+                                type:
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'ubs'
+                                        ? 'ubs'
+                                        : 'default',
+                            })}
+                            onClick={() => handleFilterSelect('ubs')}
+                        >
+                            <FirstAidIcon
+                                size={26}
+                                weight={
+                                    selectedEstablishmentTypeFilter.type ===
+                                    'ubs'
+                                        ? 'fill'
+                                        : 'regular'
+                                }
+                            />
+                        </button>
                     </motion.div>
                 </motion.div>
             </AnimatePresence>
@@ -80,12 +161,13 @@ export function HeroSearchBar() {
 }
 
 const optionCont = css({
-    overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
+})
 
-    '& button': {
+const filterButtonSelect = cva({
+    base: {
         maxHeight: '3.375rem',
         backgroundColor: 'background',
         color: 'primary',
@@ -93,10 +175,27 @@ const optionCont = css({
         borderRadius: 'full',
         border: 'none',
         cursor: 'pointer',
-        transition: 'all 0.1s ease-in-out',
+        transition: 'scale 0.3s cubic-bezier(0.47,0,0.1,1.42)',
 
         _hover: {
-            scale: 1.05,
+            scale: 1.1,
+        },
+    },
+    variants: {
+        type: {
+            default: {},
+            ubs: {
+                backgroundColor: 'tint',
+                color: 'white',
+            },
+            hospital: {
+                backgroundColor: '#9553F9',
+                color: 'white',
+            },
+            upa: {
+                backgroundColor: '#FF5310',
+                color: 'white',
+            },
         },
     },
 })
@@ -126,6 +225,7 @@ const searchBarContainer = css({
         outline: 'none',
         backgroundColor: 'transparent',
         lineHeight: '1rem',
+        fontSize: '1.125rem',
     },
 
     '& button': {
