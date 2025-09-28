@@ -8,18 +8,29 @@ import { SearchTags } from './components/SearchTags'
 export function HeroSearchContainer() {
     return (
         <div className={heroContainer}>
-            <Image
-                src={'/pictures/doodle.png'}
-                alt=""
-                width={500}
-                height={200}
-                quality={100}
-                draggable={false}
-            />
-            <Heading centered>
-                Seu guia na saúde pública do Distrito Federal
-            </Heading>
-            <HeroSearchBar />
+            <div
+                className={css({
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    flex: 1,
+                    gap: '1.5rem',
+                    textAlign: 'center',
+                })}
+            >
+                <Image
+                    src={'/pictures/doodle.png'}
+                    alt=""
+                    width={800}
+                    height={320}
+                    quality={100}
+                    draggable={false}
+                />
+                <Heading centered>
+                    Seu guia na saúde pública <br /> do Distrito Federal
+                </Heading>
+                <HeroSearchBar />
+            </div>
             <SearchTags />
         </div>
     )
@@ -33,14 +44,13 @@ const heroContainer = css({
     flexDirection: 'column',
     gap: '1.5rem',
     padding: '1rem',
-    paddingBottom: '15%',
 
     '& img': {
         base: {
-            minHeight: '200px',
+            width: 'auto',
         },
         md: {
-            width: 'auto',
+            width: '800px',
             height: 'auto',
         },
     },

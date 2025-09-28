@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { motion, stagger } from 'motion/react'
 import {
-    BandaidsIcon,
-    FirstAidIcon,
-    HospitalIcon,
+    FaceMaskIcon,
     SyringeIcon,
+    TrendUpIcon,
+    VirusIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
 
@@ -38,23 +38,23 @@ export function SearchTags() {
             variants={list}
         >
             <motion.div variants={variants}>
+                <span className={label}>
+                    <TrendUpIcon /> Em alta
+                </span>
+            </motion.div>
+            <motion.div variants={variants}>
                 <Link href="#">
-                    <HospitalIcon /> Hospitais
+                    <VirusIcon /> Dengue
                 </Link>
             </motion.div>
             <motion.div variants={variants}>
                 <Link href="#">
-                    <BandaidsIcon /> Pronto-socorro
+                    <FaceMaskIcon /> COVID-19
                 </Link>
             </motion.div>
             <motion.div variants={variants}>
                 <Link href="#">
                     <SyringeIcon /> Vacinação
-                </Link>
-            </motion.div>
-            <motion.div variants={variants}>
-                <Link href="#">
-                    <FirstAidIcon /> UBS
                 </Link>
             </motion.div>
         </motion.div>
@@ -63,29 +63,41 @@ export function SearchTags() {
 
 const searchTagsContainer = css({
     display: 'flex',
-    gap: '.5rem',
+    gap: '3rem',
     flexWrap: 'wrap',
+    alignItems: 'end',
     justifyContent: { base: 'center', md: 'flex-start' },
 
     '& a': {
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '.25rem',
-        boxShadow: 'xs',
-        borderRadius: 'full',
-        backgroundColor: 'white',
-        padding: '.75rem 1rem',
-        border: '1px solid',
-        borderColor: 'rgba(0, 0, 0, 0.1)',
+        gap: '.5rem',
         fontSize: '0.875rem',
         fontWeight: 450,
-        color: 'primary',
+        color: 'tint',
         lineHeight: '0.875rem',
         transition: 'all cubic-bezier(0,1.5,1,1.5) 150ms',
 
-        _hover: {
-            backgroundColor: 'background',
-            scale: '1.05',
+        '& svg': {
+            fontSize: '1.25rem',
         },
+
+        _hover: {
+            textDecoration: 'underline',
+        },
+    },
+})
+
+const label = css({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '.5rem',
+    fontSize: '0.875rem',
+    fontWeight: 450,
+    color: 'gray.400',
+    lineHeight: '0.875rem',
+
+    '& svg': {
+        fontSize: '1.25rem',
     },
 })
