@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -19,15 +19,35 @@ export default function Page() {
     const [establishmentFilter, setEstablishmentFilter] = useState<
         string | null
     >(null)
+    const [localQuery, setLocalQuery] = useState('')
 
     const router = useRouter()
     const searchParams = useSearchParams()
     const query = searchParams.get('q') || ''
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        router.push(`?q=${value}`)
-    }
+    // Sincroniza o estado local com o query da URL na primeira renderização
+    useEffect(() => {
+        setLocalQuery(query)
+    }, [query])
+
+    // Debounce para atualizar a URL
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (localQuery !== query) {
+                router.push(`?q=${localQuery}`)
+            }
+        }, 300) // 300ms de delay
+
+        return () => clearTimeout(timer)
+    }, [localQuery, query, router])
+
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value
+            setLocalQuery(value)
+        },
+        []
+    )
 
     const filteredEstablishments = data.establishments.filter(
         (establishment) => {
@@ -94,7 +114,7 @@ export default function Page() {
                 filterValue={establishmentFilter}
                 onFilterChange={setEstablishmentFilter}
                 autoFocus
-                value={query}
+                value={localQuery}
                 onChange={handleChange}
             />
             <AnimatePresence mode="wait">
