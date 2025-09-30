@@ -63,7 +63,7 @@ function Navbar({ isCompacted }: NavbarProps) {
             {NAV_LINKS.map(({ href, label, Icon }) => {
                 const isActive = pathname === href
                 return (
-                    <NavbarLink key={href} href={href}>
+                    <NavbarLink key={href} href={href} aria-label={label}>
                         <Icon weight={isActive ? 'fill' : 'regular'} />{' '}
                         <AnimatePresence mode="wait">
                             {!isCompacted && (
