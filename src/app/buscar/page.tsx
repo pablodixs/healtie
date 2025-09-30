@@ -24,6 +24,7 @@ export default function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const query = searchParams.get('q') || ''
+    const filterParam = searchParams.get('filter')
 
     // Sincroniza o estado local com o query da URL na primeira renderização
     useEffect(() => {
@@ -80,38 +81,11 @@ export default function Page() {
                     gap: '1ch',
                 })}
             >
-                <Heading>Busca </Heading>
-                <AnimatePresence mode="wait">
-                    {establishmentFilter && (
-                        <motion.div
-                            initial={{
-                                width: '0ch',
-                                opacity: 0,
-                                filter: 'blur(8px)',
-                                scale: 0.75,
-                            }}
-                            animate={{
-                                width: 'auto',
-                                opacity: 1,
-                                scale: 1,
-                                filter: 'blur(0px)',
-                            }}
-                            exit={{
-                                width: '0ch',
-                                opacity: 0,
-                                scale: 0.75,
-                                filter: 'blur(8px)',
-                            }}
-                        >
-                            <Heading style={{ textWrap: 'nowrap' }}>
-                                por {establishmentFilter}
-                            </Heading>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                <Heading>Buscar no Healtie</Heading>
             </div>
             <HeroSearchBar
-                filterValue={establishmentFilter}
+                showFilterOptions
+                filterValue={filterParam || establishmentFilter}
                 onFilterChange={setEstablishmentFilter}
                 autoFocus
                 value={localQuery}

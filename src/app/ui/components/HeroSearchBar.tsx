@@ -6,6 +6,7 @@ import {
     SetStateAction,
     useState,
     useEffect,
+    FormEvent,
 } from 'react'
 import { AnimatePresence, motion, stagger } from 'motion/react'
 import {
@@ -18,10 +19,12 @@ import { Button } from '@/components/Button'
 import { css, cva } from '../../../../styled-system/css'
 
 interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
+    showFilterOptions?: boolean
     filterValue?: string | null
-    onFilterChange?: Dispatch<SetStateAction<string | null>>
     isInputFocused?: boolean
+    onFilterChange?: Dispatch<SetStateAction<string | null>>
     onInputFocusChange?: Dispatch<SetStateAction<boolean>>
+    searchAction?: () => void
 }
 
 const optionsContainer = {
@@ -29,7 +32,7 @@ const optionsContainer = {
         width: '166px',
         opacity: 1,
         transition: {
-            delay: 0.8,
+            delay: 0.2,
             when: 'beforeChildren',
             delayChildren: stagger(0.1),
         },
@@ -50,9 +53,11 @@ const options = {
 
 export function HeroSearchBar({
     filterValue,
+    isInputFocused,
+    showFilterOptions = false,
+    searchAction,
     onFilterChange,
     onInputFocusChange,
-    isInputFocused,
     ...props
 }: HeroSearchBarProps) {
     const [placeholder, setPlaceholder] = useState(
@@ -89,16 +94,23 @@ export function HeroSearchBar({
         }
     }
 
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        searchAction?.()
+    }
+
     return (
         <div className={heroSearchBarContainer}>
-            <AnimatePresence>
-                <motion.div
-                    key={'search-bar'}
-                    className={searchBarContainer}
-                    initial={{ width: '800px' }}
-                    animate={{ width: '634px' }}
-                    transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
-                >
+            <motion.div
+                key={'search-bar'}
+                className={searchBarContainer}
+                initial={{ width: '800px' }}
+                animate={{
+                    width: showFilterOptions ? '634px' : '800px',
+                }}
+                transition={{ type: 'spring', stiffness: 100, delay: 0.2 }}
+            >
+                <form onSubmit={handleSubmit}>
                     <input
                         {...props}
                         onFocus={() => onInputFocusChange?.(true)}
@@ -109,75 +121,80 @@ export function HeroSearchBar({
                     <Button variant="secondary" aria-label="Buscar">
                         <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
-                </motion.div>
-                <motion.div
-                    key={'options'}
-                    className={optionCont}
-                    variants={optionsContainer}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    <motion.div variants={options} key="hospital">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'HOSPITAL'
-                                        ? 'hospital'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('HOSPITAL')}
-                        >
-                            <HospitalIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'HOSPITAL'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
+                </form>
+            </motion.div>
+            {/* OPTIONS */}
+            <AnimatePresence>
+                {showFilterOptions && (
+                    <motion.div
+                        key={'options'}
+                        className={optionCont}
+                        variants={optionsContainer}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <motion.div variants={options} key="hospital">
+                            <button
+                                className={filterButtonSelect({
+                                    type:
+                                        currentFilterType === 'HOSPITAL'
+                                            ? 'hospital'
+                                            : 'default',
+                                })}
+                                onClick={() => handleFilterSelect('HOSPITAL')}
+                            >
+                                <HospitalIcon
+                                    size={26}
+                                    weight={
+                                        currentFilterType === 'HOSPITAL'
+                                            ? 'fill'
+                                            : 'regular'
+                                    }
+                                />
+                            </button>
+                        </motion.div>
+                        <motion.div variants={options} key="ambulance">
+                            <button
+                                className={filterButtonSelect({
+                                    type:
+                                        currentFilterType === 'UPA'
+                                            ? 'UPA'
+                                            : 'default',
+                                })}
+                                onClick={() => handleFilterSelect('UPA')}
+                            >
+                                <AmbulanceIcon
+                                    size={26}
+                                    weight={
+                                        currentFilterType === 'UPA'
+                                            ? 'fill'
+                                            : 'regular'
+                                    }
+                                />
+                            </button>
+                        </motion.div>
+                        <motion.div variants={options} key="first-aid">
+                            <button
+                                className={filterButtonSelect({
+                                    type:
+                                        currentFilterType === 'UBS'
+                                            ? 'UBS'
+                                            : 'default',
+                                })}
+                                onClick={() => handleFilterSelect('UBS')}
+                            >
+                                <FirstAidIcon
+                                    size={26}
+                                    weight={
+                                        currentFilterType === 'UBS'
+                                            ? 'fill'
+                                            : 'regular'
+                                    }
+                                />
+                            </button>
+                        </motion.div>
                     </motion.div>
-                    <motion.div variants={options} key="ambulance">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'UPA'
-                                        ? 'UPA'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('UPA')}
-                        >
-                            <AmbulanceIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'UPA'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
-                    </motion.div>
-                    <motion.div variants={options} key="first-aid">
-                        <button
-                            className={filterButtonSelect({
-                                type:
-                                    currentFilterType === 'UBS'
-                                        ? 'UBS'
-                                        : 'default',
-                            })}
-                            onClick={() => handleFilterSelect('UBS')}
-                        >
-                            <FirstAidIcon
-                                size={26}
-                                weight={
-                                    currentFilterType === 'UBS'
-                                        ? 'fill'
-                                        : 'regular'
-                                }
-                            />
-                        </button>
-                    </motion.div>
-                </motion.div>
+                )}
             </AnimatePresence>
         </div>
     )
@@ -243,6 +260,13 @@ const searchBarContainer = css({
     flex: 1,
     maxHeight: '3.375rem',
     zIndex: 10,
+
+    '& form': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        flex: 1,
+    },
 
     '& input': {
         flex: 1,

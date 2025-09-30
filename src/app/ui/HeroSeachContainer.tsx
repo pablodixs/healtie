@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { css } from '../../../styled-system/css'
@@ -11,6 +12,8 @@ import { Subheading } from '@/components/Typography/Subheading'
 import { Paragraph } from '@/components/Typography/Paragraph'
 
 import data from '@/utils/unidades.json'
+import { Link } from '@/components/Link'
+import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 const FILTER_OPTIONS = {
     HOSPITAL: { label: 'hospitais' },
@@ -20,6 +23,8 @@ const FILTER_OPTIONS = {
 }
 
 export function HeroSearchContainer() {
+    const router = useRouter()
+
     const [isSearchBarFocused, setIsSearchBarFocused] = useState(false)
     const [filterValue, setFilterValue] = useState<string | null>(null)
     const [searchValue, setSearchValue] = useState('')
@@ -47,6 +52,13 @@ export function HeroSearchContainer() {
             setFilteredEstablishments(null)
         }
     }, [searchValue, filterValue])
+
+    function handleSearchAction() {
+        router.push(
+            `/buscar?q=${searchValue}` +
+                (filterValue ? `&filter=${filterValue}` : '')
+        )
+    }
 
     const handleFilterEstablishments = () => {
         const filtered = data.establishments.filter((establishment) => {
@@ -102,6 +114,7 @@ export function HeroSearchContainer() {
                                 filter: 'blur(16px)',
                                 y: 30,
                             }}
+                            transition={{ duration: 0.2 }}
                         >
                             <Image
                                 src={'/pictures/doodle.png'}
@@ -122,6 +135,7 @@ export function HeroSearchContainer() {
                     )}
                 </AnimatePresence>
                 <HeroSearchBar
+                    showFilterOptions={isSearchBarFocused || searchValue != ''}
                     filterValue={filterValue}
                     onFilterChange={setFilterValue}
                     isInputFocused={isSearchBarFocused}
@@ -129,6 +143,7 @@ export function HeroSearchContainer() {
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    searchAction={handleSearchAction}
                 />
                 <AnimatePresence>
                     {(searchValue !== '' || isSearchBarFocused) && (
@@ -182,7 +197,7 @@ export function HeroSearchContainer() {
                                             resultados
                                         </Paragraph>
                                     </header>
-                                    <div>
+                                    <div className="results_list">
                                         {filteredEstablishments?.establishments.map(
                                             (establishment) => (
                                                 <div key={establishment.cnes}>
@@ -193,6 +208,21 @@ export function HeroSearchContainer() {
                                             )
                                         )}
                                     </div>
+                                    <footer>
+                                        <Link
+                                            href={
+                                                `/buscar?q=${searchValue}` +
+                                                (filteredEstablishments
+                                                    ?.establishments.length
+                                                    ? `&filter=${filterValue}`
+                                                    : '')
+                                            }
+                                            variant="text"
+                                        >
+                                            Ver todos os resultados{' '}
+                                            <ArrowUpRightIcon />
+                                        </Link>
+                                    </footer>
                                 </motion.div>
                             )}
                         </>
@@ -227,11 +257,24 @@ const heroContainer = css({
 
 const resultsContainer = css({
     width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
 
     '& header': {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '1rem',
+    },
+
+    '& .results_list': {
+        flex: 1,
+        overflowY: 'auto',
+    },
+
+    '& footer': {
+        borderTop: '1px solid',
+        borderColor: 'background',
     },
 })
