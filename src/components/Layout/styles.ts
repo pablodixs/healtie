@@ -8,4 +8,13 @@ export const mainLayoutContentContainer = cva({
         margin: '0 auto',
         maxWidth: '1280px',
     },
+    variants: {
+        fullWidthPage: {
+            true: {
+                marginTop: '0',
+                maxWidth: 'auto',
+                minWidth: '100%',
+            },
+        },
+    },
 })

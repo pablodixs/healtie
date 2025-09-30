@@ -31,6 +31,7 @@ const searchBarContainer = css({
         fontSize: '0.9375rem',
         marginRight: '0.5rem',
         lineHeight: 1,
+        flex: 1,
 
         _focus: {
             outline: 'none',
@@ -42,6 +43,7 @@ const searchBarContainer = css({
         cursor: 'pointer',
         borderRadius: 'full',
         color: 'primary',
+        transition: 'all ease 0.2s',
 
         '& svg': {
             fontSize: '1.125rem',
