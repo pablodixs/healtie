@@ -7,7 +7,7 @@ import {
     useState,
     useEffect,
 } from 'react'
-import { motion, stagger, AnimatePresence } from 'motion/react'
+import { motion, stagger } from 'motion/react'
 import {
     AmbulanceIcon,
     FirstAidIcon,
@@ -168,7 +168,23 @@ export function HeroSearchBar({
                         </button>
                     </motion.div>
                 </motion.div>
-            </AnimatePresence>
+                <motion.div variants={options} key="first-aid">
+                    <button
+                        className={filterButtonSelect({
+                            type:
+                                currentFilterType === 'UBS' ? 'UBS' : 'default',
+                        })}
+                        onClick={() => handleFilterSelect('UBS')}
+                    >
+                        <FirstAidIcon
+                            size={26}
+                            weight={
+                                currentFilterType === 'UBS' ? 'fill' : 'regular'
+                            }
+                        />
+                    </button>
+                </motion.div>
+            </motion.div>
         </div>
     )
 }
