@@ -69,15 +69,15 @@ export function HeroSearchContainer() {
                 <AnimatePresence>
                     {isSearchBarFocused && (
                         <motion.div
-                        // initial={{
-                        //     opacity: 0,
-                        // }}
-                        // animate={{
-                        //     opacity: 1,
-                        // }}
-                        // exit={{
-                        //     opacity: 0,
-                        // }}
+                            initial={{
+                                opacity: 0,
+                            }}
+                            animate={{
+                                opacity: 1,
+                            }}
+                            exit={{
+                                opacity: 0,
+                            }}
                         >
                             <Subheading>Buscando...</Subheading>
                         </motion.div>
