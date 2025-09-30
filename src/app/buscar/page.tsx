@@ -61,10 +61,7 @@ export default function Page() {
     )
 
     return (
-        <motion.main
-            initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.35 }}
+        <main
             className={css({
                 display: 'flex',
                 flexDirection: 'column',
@@ -134,17 +131,9 @@ export default function Page() {
                         <NoResultsEmptyState query={query} />
                     </motion.div>
                 ) : (
-                    <motion.div
-                        key="empty-state"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <SearchEmptyState />
-                    </motion.div>
+                    <SearchEmptyState />
                 )}
             </AnimatePresence>
-        </motion.main>
+        </main>
     )
 }
