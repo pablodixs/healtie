@@ -7,13 +7,13 @@ import { Logo } from '../Logo'
 const INITIAL_ICON_ANIMATION_PROPERTIES = {
     opacity: 0,
     scale: 0.8,
-    filter: 'blur(4px)',
+    filter: 'blur(max(0px, 4px))',
 }
 
 const ANIMATE_ICON_PROPERTIES = {
     opacity: 1,
     scale: 1,
-    filter: 'blur(0px)',
+    filter: 'blur(max(0px, 0px))',
 }
 
 const TRANSITION_ICON_PROPERTIES = {
@@ -29,7 +29,7 @@ const TRANSITION_ICON_PROPERTIES = {
 const INITIAL_FULL_PROPERTIES = {
     opacity: 0,
     scale: 0.8,
-    filter: 'blur(4px)',
+    filter: 'blur(max(0px, 4px))',
 }
 
 interface NavbarLogoProps {

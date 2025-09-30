@@ -189,7 +189,6 @@ export default function Page() {
                     width={300}
                     height={200}
                     quality={100}
-                    objectFit="cover"
                 />
             </section>
             <section

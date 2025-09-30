@@ -25,18 +25,18 @@ const INITIAL_ANIMATION_PROPERTIES = {
     width: 0,
     marginLeft: '.5rem',
     opacity: 0,
-    filter: 'blur(2px)',
+    filter: 'blur(max(0px, 2px))',
 }
 const FINAL_ANIMATION_PROPERTIES = {
     width: '6ch',
     opacity: 1,
-    filter: 'blur(0px)',
+    filter: 'blur(max(0px, 0px))',
 }
 const EXIT_ANIMATION_PROPERTIES = {
     width: 0,
     opacity: 0,
     marginLeft: 0,
-    filter: 'blur(2px)',
+    filter: 'blur(max(0px, 2px))',
 }
 
 const NAV_LINKS = [
