@@ -14,6 +14,7 @@ export function SearchEmptyState() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ delay: 1 }}
             className={container}
         >
             <header>
@@ -50,7 +51,8 @@ const container = css({
     '& header': {
         borderBottom: '1px solid',
         borderColor: 'gray.200',
-        mb: '1rem',
+        paddingY: '1rem',
+        marginBottom: '1rem',
     },
 })
 
