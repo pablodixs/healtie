@@ -51,8 +51,8 @@ const options = {
 export function HeroSearchBar({
     filterValue,
     onFilterChange,
-    isInputFocused,
     onInputFocusChange,
+    isInputFocused,
     ...props
 }: HeroSearchBarProps) {
     const [placeholder, setPlaceholder] = useState(
@@ -65,7 +65,7 @@ export function HeroSearchBar({
     // Sincronizar placeholder quando filterValue mudar externamente
     useEffect(() => {
         const placeholders = {
-            hospital: 'Buscar por hospitais...',
+            HOSPITAL: 'Buscar por hospitais...',
             UPA: 'Buscar por Unidades de Pronto Atendimento...',
             UBS: 'Buscar por Unidades Básicas de Saúde...',
             default: 'Busque por unidades de saúde, cidade ou serviços...',
@@ -77,7 +77,7 @@ export function HeroSearchBar({
         setPlaceholder(newPlaceholder)
     }, [currentFilterType])
 
-    function handleFilterSelect(filterType: 'hospital' | 'UPA' | 'UBS') {
+    function handleFilterSelect(filterType: 'HOSPITAL' | 'UPA' | 'UBS') {
         const isCurrentlySelected = currentFilterType === filterType
 
         if (isCurrentlySelected) {
@@ -106,7 +106,7 @@ export function HeroSearchBar({
                         type="text"
                         placeholder={placeholder}
                     />
-                    <Button variant="secondary">
+                    <Button variant="secondary" aria-label="Buscar">
                         <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
                 </motion.div>
@@ -121,16 +121,16 @@ export function HeroSearchBar({
                         <button
                             className={filterButtonSelect({
                                 type:
-                                    currentFilterType === 'hospital'
+                                    currentFilterType === 'HOSPITAL'
                                         ? 'hospital'
                                         : 'default',
                             })}
-                            onClick={() => handleFilterSelect('hospital')}
+                            onClick={() => handleFilterSelect('HOSPITAL')}
                         >
                             <HospitalIcon
                                 size={26}
                                 weight={
-                                    currentFilterType === 'hospital'
+                                    currentFilterType === 'HOSPITAL'
                                         ? 'fill'
                                         : 'regular'
                                 }
@@ -229,6 +229,7 @@ const heroSearchBarContainer = css({
     alignItems: 'center',
     justifyContent: 'center',
     gap: '0.5rem',
+    mb: '1.5rem',
 })
 
 const searchBarContainer = css({

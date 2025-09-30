@@ -1,17 +1,75 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { css } from '../../../styled-system/css'
 
-import { Heading } from '@/components/Typography/Heading'
 import { HeroSearchBar } from './components/HeroSearchBar'
 import { SearchTags } from './components/SearchTags'
 import { Subheading } from '@/components/Typography/Subheading'
+import { Paragraph } from '@/components/Typography/Paragraph'
+
+import data from '@/utils/unidades.json'
+
+const FILTER_OPTIONS = {
+    HOSPITAL: { label: 'hospitais' },
+    UPA: { label: 'UPAs' },
+    UBS: { label: 'postos de saúde' },
+    null: { label: 'todo o Healtie' },
+}
 
 export function HeroSearchContainer() {
     const [isSearchBarFocused, setIsSearchBarFocused] = useState(false)
+    const [filterValue, setFilterValue] = useState<string | null>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [filteredEstablishments, setFilteredEstablishments] = useState<
+        typeof data | null
+    >(null)
+
+    // Executar busca automaticamente quando searchValue ou filterValue mudar
+    useEffect(() => {
+        const handleFilterEstablishments = () => {
+            const filtered = data.establishments.filter((establishment) => {
+                const matchesFilter =
+                    filterValue === null || establishment.abb === filterValue
+                const matchesSearch = establishment.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                return matchesFilter && matchesSearch
+            })
+            setFilteredEstablishments({ establishments: filtered })
+        }
+
+        if (searchValue.length > 0 || filterValue !== null) {
+            handleFilterEstablishments()
+        } else {
+            setFilteredEstablishments(null)
+        }
+    }, [searchValue, filterValue])
+
+    const handleFilterEstablishments = () => {
+        const filtered = data.establishments.filter((establishment) => {
+            const matchesFilter =
+                filterValue === null || establishment.abb === filterValue
+            const matchesSearch = establishment.name
+                .toLowerCase()
+                .includes(searchValue.toLowerCase())
+            return matchesFilter && matchesSearch
+        })
+        setFilteredEstablishments({ establishments: filtered })
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            handleFilterEstablishments()
+        }
+        if (event.key === 'Escape') {
+            setSearchValue('')
+            setIsSearchBarFocused(false)
+        }
+    }
+
     return (
         <div className={heroContainer}>
             <div
@@ -20,18 +78,17 @@ export function HeroSearchContainer() {
                     alignItems: 'center',
                     flexDirection: 'column',
                     flex: 1,
-                    gap: '1.5rem',
                     textAlign: 'center',
                 })}
             >
-                <AnimatePresence mode="sync" initial={false}>
-                    {!isSearchBarFocused && (
+                <AnimatePresence initial={false}>
+                    {!isSearchBarFocused && searchValue.length === 0 && (
                         <motion.div
                             initial={{
                                 height: 0,
                                 opacity: 0,
-                                filter: 'blur(10px)',
-                                y: 20,
+                                filter: 'blur(16px)',
+                                y: 30,
                             }}
                             animate={{
                                 height: 'auto',
@@ -42,8 +99,8 @@ export function HeroSearchContainer() {
                             exit={{
                                 height: 0,
                                 opacity: 0,
-                                filter: 'blur(10px)',
-                                y: 20,
+                                filter: 'blur(16px)',
+                                y: 30,
                             }}
                         >
                             <Image
@@ -55,32 +112,90 @@ export function HeroSearchContainer() {
                                 draggable={false}
                                 priority
                             />
-                            <Heading centered>
-                                Seu guia na saúde pública <br /> do Distrito
-                                Federal
-                            </Heading>
+                            <Subheading
+                                centered
+                                style={{ marginBottom: '1rem' }}
+                            >
+                                Seu guia na saúde pública do Distrito Federal
+                            </Subheading>
                         </motion.div>
                     )}
                 </AnimatePresence>
                 <HeroSearchBar
+                    filterValue={filterValue}
+                    onFilterChange={setFilterValue}
                     isInputFocused={isSearchBarFocused}
                     onInputFocusChange={setIsSearchBarFocused}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <AnimatePresence>
-                    {isSearchBarFocused && (
-                        <motion.div
-                            initial={{
-                                opacity: 0,
-                            }}
-                            animate={{
-                                opacity: 1,
-                            }}
-                            exit={{
-                                opacity: 0,
-                            }}
-                        >
-                            <Subheading>Buscando...</Subheading>
-                        </motion.div>
+                    {(searchValue !== '' || isSearchBarFocused) && (
+                        <>
+                            {searchValue.length === 0 && isSearchBarFocused ? (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        transition: {
+                                            delay: 0.5,
+                                        },
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                    }}
+                                >
+                                    <Paragraph centered subtle>
+                                        Digite na barra de busca por hospitais,
+                                        UPAs e postos de saúde.
+                                    </Paragraph>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                    }}
+                                    className={resultsContainer}
+                                >
+                                    <header>
+                                        <Paragraph>
+                                            Buscando por{' '}
+                                            {
+                                                FILTER_OPTIONS[
+                                                    filterValue as keyof typeof FILTER_OPTIONS
+                                                ]?.label
+                                            }
+                                        </Paragraph>
+                                        <Paragraph subtle>
+                                            {filteredEstablishments
+                                                ?.establishments.length ||
+                                                0}{' '}
+                                            resultados
+                                        </Paragraph>
+                                    </header>
+                                    <div>
+                                        {filteredEstablishments?.establishments.map(
+                                            (establishment) => (
+                                                <div key={establishment.cnes}>
+                                                    <Paragraph>
+                                                        {establishment.name}
+                                                    </Paragraph>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </>
                     )}
                 </AnimatePresence>
             </div>
@@ -107,5 +222,16 @@ const heroContainer = css({
             width: '800px',
             height: 'auto',
         },
+    },
+})
+
+const resultsContainer = css({
+    width: '100%',
+
+    '& header': {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '1rem',
     },
 })
