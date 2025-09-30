@@ -40,6 +40,7 @@ export function Header() {
     return (
         <AnimatePresence mode="wait">
             <motion.header
+                initial={false}
                 animate={{
                     height: isCompacted ? HEADER_SIZE : EXPANDED_HEADER_SIZE,
                     padding: '1rem',
