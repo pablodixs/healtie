@@ -89,6 +89,7 @@ export function HeroSearchBar({
         <div className={heroSearchBarContainer}>
             <AnimatePresence>
                 <motion.div
+                    key={'search-bar'}
                     className={searchBarContainer}
                     initial={{ width: '800px' }}
                     animate={{ width: '634px' }}
@@ -100,6 +101,7 @@ export function HeroSearchBar({
                     </Button>
                 </motion.div>
                 <motion.div
+                    key={'options'}
                     className={optionCont}
                     variants={optionsContainer}
                     initial="hidden"
