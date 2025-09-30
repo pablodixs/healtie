@@ -25,6 +25,7 @@ export function HeroSearchContainer() {
                     height={320}
                     quality={100}
                     draggable={false}
+                    priority
                 />
                 <Heading centered>
                     Seu guia na saúde pública <br /> do Distrito Federal
