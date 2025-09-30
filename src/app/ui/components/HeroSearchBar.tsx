@@ -20,6 +20,8 @@ import { css, cva } from '../../../../styled-system/css'
 interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
     filterValue?: string | null
     onFilterChange?: Dispatch<SetStateAction<string | null>>
+    isInputFocused?: boolean
+    onInputFocusChange?: Dispatch<SetStateAction<boolean>>
 }
 
 const optionsContainer = {
@@ -49,6 +51,8 @@ const options = {
 export function HeroSearchBar({
     filterValue,
     onFilterChange,
+    isInputFocused,
+    onInputFocusChange,
     ...props
 }: HeroSearchBarProps) {
     const [placeholder, setPlaceholder] = useState(
@@ -95,7 +99,13 @@ export function HeroSearchBar({
                     animate={{ width: '634px' }}
                     transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
                 >
-                    <input {...props} type="text" placeholder={placeholder} />
+                    <input
+                        {...props}
+                        onFocus={() => onInputFocusChange?.(true)}
+                        onBlur={() => onInputFocusChange?.(false)}
+                        type="text"
+                        placeholder={placeholder}
+                    />
                     <Button variant="secondary">
                         <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
