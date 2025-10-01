@@ -48,7 +48,7 @@ const styles = css({
     width: '30%',
     zIndex: 1,
     backgroundColor: 'white',
-    boxShadow: 'xl',
+    boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
     marginLeft: '1rem',
     padding: '1rem',
     borderRadius: '32px',

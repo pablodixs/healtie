@@ -10,10 +10,39 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 
 import { establishments } from '@/utils/unidades.json'
 import { Subheading } from '@/components/Typography/Subheading'
+import { useRef } from 'react'
+import { Button } from '@/components/Button'
+import {
+    CompassIcon,
+    GpsIcon,
+    InfoIcon,
+    MinusIcon,
+    PlusIcon,
+} from '@phosphor-icons/react'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
+const INITIAL_VIEW_STATE = {
+    longitude: -47.9292,
+    latitude: -15.7801,
+    zoom: 11,
+}
+
 export function MapComponent() {
+    const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    const handleZoomIn = () => {
+        if (mapRef.current) {
+            mapRef.current.zoomIn()
+        }
+    }
+
+    const handleZoomOut = () => {
+        if (mapRef.current) {
+            mapRef.current.zoomOut()
+        }
+    }
+
     return (
         <motion.section
             style={{
@@ -25,53 +54,122 @@ export function MapComponent() {
             transition={{ delay: 0.5 }}
         >
             {MAPBOX_TOKEN && (
-                <Map
-                    initialViewState={{
-                        longitude: -48.0,
-                        latitude: -15.8,
-                        zoom: 11,
-                    }}
+                <main
                     style={{
+                        position: 'relative',
                         width: '100%',
                         height: '100%',
-                        zIndex: 0,
                     }}
-                    mapStyle="mapbox://styles/pablodixs/cmdrihemn00qs01s2dlgp3lp7"
-                    mapboxAccessToken={MAPBOX_TOKEN}
                 >
-                    {establishments
-                        .filter(
-                            (establishment) =>
-                                establishment.location &&
-                                typeof establishment.location.longitude ===
-                                    'number' &&
-                                typeof establishment.location.latitude ===
-                                    'number' &&
-                                !isNaN(establishment.location.longitude) &&
-                                !isNaN(establishment.location.latitude)
-                        )
-                        .map((establishment) => (
-                            <Marker
-                                key={establishment.cnes}
-                                longitude={establishment.location.longitude}
-                                latitude={establishment.location.latitude}
-                                anchor="center"
-                            >
-                                <div
-                                    style={{
-                                        backgroundColor: '#ef4444',
-                                        width: '20px',
-                                        height: '20px',
-                                        borderRadius: '50%',
-                                        border: '2px solid white',
-                                        boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                                        cursor: 'pointer',
-                                    }}
-                                    title={establishment.name}
-                                />
-                            </Marker>
-                        ))}
-                </Map>
+                    <div
+                        style={{
+                            backdropFilter: 'blur(10px)',
+                        }}
+                        className={css({
+                            zIndex: 1,
+                            position: 'absolute',
+                            top: 'header',
+                            right: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            padding: '0.5rem',
+                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                            borderRadius: '9999px',
+                            boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
+                        })}
+                    >
+                        <Button variant="text" iconButton size="large">
+                            <CompassIcon size={24} weight="fill" />
+                        </Button>
+                        <Button variant="text" iconButton size="large">
+                            <InfoIcon size={24} />
+                        </Button>
+                    </div>
+                    <div
+                        style={{
+                            zIndex: 1,
+                            position: 'absolute',
+                            bottom: '1.5rem',
+                            right: '1.5rem',
+                            display: 'flex',
+                            gap: '0.5rem',
+                            padding: '0.5rem',
+                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                            backdropFilter: 'blur(10px)',
+                            borderRadius: '9999px',
+                            boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
+                        }}
+                    >
+                        <Button variant="ghost" iconButton size="large">
+                            <GpsIcon size={24} weight="bold" />
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            iconButton
+                            size="large"
+                            onClick={handleZoomIn}
+                        >
+                            <PlusIcon size={24} weight="bold" />
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            iconButton
+                            size="large"
+                            onClick={handleZoomOut}
+                        >
+                            <MinusIcon size={24} weight="bold" />
+                        </Button>
+                    </div>
+                    <Map
+                        ref={mapRef}
+                        onError={(e) => {
+                            console.error('Map error:', e.error)
+                        }}
+                        initialViewState={INITIAL_VIEW_STATE}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 0,
+                        }}
+                        mapStyle="mapbox://styles/pablodixs/cmdrihemn00qs01s2dlgp3lp7"
+                        mapboxAccessToken={MAPBOX_TOKEN}
+                    >
+                        {establishments
+                            .filter(
+                                (establishment) =>
+                                    establishment.location &&
+                                    typeof establishment.location.longitude ===
+                                        'number' &&
+                                    typeof establishment.location.latitude ===
+                                        'number' &&
+                                    !isNaN(establishment.location.longitude) &&
+                                    !isNaN(establishment.location.latitude)
+                            )
+                            .map((establishment) => (
+                                <Marker
+                                    key={establishment.cnes}
+                                    longitude={establishment.location.longitude}
+                                    latitude={establishment.location.latitude}
+                                    anchor="center"
+                                >
+                                    <div
+                                        style={{
+                                            backgroundColor: '#ef4444',
+                                            width: '20px',
+                                            height: '20px',
+                                            borderRadius: '50%',
+                                            border: '2px solid white',
+                                            boxShadow:
+                                                '0 2px 4px rgba(0,0,0,0.3)',
+                                            cursor: 'pointer',
+                                        }}
+                                        title={establishment.name}
+                                    />
+                                </Marker>
+                            ))}
+                    </Map>
+                </main>
             )}
             <div
                 className={css({
