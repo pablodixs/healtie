@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import Map, { Marker } from 'react-map-gl/mapbox'
+import Map, { NavigationControl, ScaleControl } from 'react-map-gl/mapbox'
 
 import { css } from '../../../../styled-system/css'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -22,6 +22,7 @@ import {
     XIcon,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { MapMarker } from '@/components/Map'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -240,27 +241,15 @@ export function MapComponent() {
                                     !isNaN(establishment.location.latitude)
                             )
                             .map((establishment) => (
-                                <Marker
+                                <MapMarker
                                     key={establishment.cnes}
                                     longitude={establishment.location.longitude}
                                     latitude={establishment.location.latitude}
-                                    anchor="center"
-                                >
-                                    <div
-                                        style={{
-                                            backgroundColor: '#ef4444',
-                                            width: '20px',
-                                            height: '20px',
-                                            borderRadius: '50%',
-                                            border: '2px solid white',
-                                            boxShadow:
-                                                '0 2px 4px rgba(0,0,0,0.3)',
-                                            cursor: 'pointer',
-                                        }}
-                                        title={establishment.name}
-                                    />
-                                </Marker>
+                                    establishmentProps={establishment}
+                                />
                             ))}
+                        <NavigationControl />
+                        <ScaleControl />
                     </Map>
                 </main>
             )}
