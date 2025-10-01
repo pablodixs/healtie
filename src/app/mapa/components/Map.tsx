@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import Map, { Marker } from 'react-map-gl/mapbox'
 
 import { css } from '../../../../styled-system/css'
@@ -10,15 +10,18 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 
 import { establishments } from '@/utils/unidades.json'
 import { Subheading } from '@/components/Typography/Subheading'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/Button'
 import {
+    ArrowUpRightIcon,
     CompassIcon,
     GpsIcon,
     InfoIcon,
     MinusIcon,
     PlusIcon,
+    XIcon,
 } from '@phosphor-icons/react'
+import Link from 'next/link'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -30,6 +33,7 @@ const INITIAL_VIEW_STATE = {
 
 export function MapComponent() {
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
+    const [isExpanded, setIsExpanded] = useState(false)
 
     const handleZoomIn = () => {
         if (mapRef.current) {
@@ -61,7 +65,15 @@ export function MapComponent() {
                         height: '100%',
                     }}
                 >
-                    <div
+                    <motion.div
+                        layout
+                        transition={{
+                            layout: {
+                                type: 'spring',
+                                stiffness: 170,
+                                damping: 19,
+                            },
+                        }}
                         style={{
                             backdropFilter: 'blur(10px)',
                         }}
@@ -70,22 +82,103 @@ export function MapComponent() {
                             position: 'absolute',
                             top: 'header',
                             right: '1.5rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '0.5rem',
-                            padding: '0.5rem',
-                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                            borderRadius: '9999px',
+                            padding: isExpanded ? '1rem' : '0.5rem',
+                            backgroundColor: isExpanded
+                                ? 'rgba(255, 255, 255, 0.8)'
+                                : 'rgba(255, 255, 255, 0.5)',
+                            borderRadius: isExpanded ? '24px' : '9999px',
                             boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
+                            display: 'flex',
+                            overflow: 'hidden',
+                            alignItems: 'center',
+                            transition: 'backgroundColor 0.2s ease',
                         })}
                     >
-                        <Button variant="text" iconButton size="large">
-                            <CompassIcon size={24} weight="fill" />
-                        </Button>
-                        <Button variant="text" iconButton size="large">
-                            <InfoIcon size={24} />
-                        </Button>
-                    </div>
+                        <AnimatePresence mode="popLayout">
+                            {isExpanded ? (
+                                <motion.div
+                                    key="expanded-content"
+                                    layout
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0.95,
+                                        filter: 'blur(6px)',
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        scale: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.9,
+                                        filter: 'blur(6px)',
+                                    }}
+                                    className={css({
+                                        display: 'flex',
+                                        flexDir: 'column',
+                                        alignItems: 'flex-start',
+                                        maxWidth: '300px',
+                                    })}
+                                >
+                                    <Button
+                                        onClick={() => setIsExpanded(false)}
+                                        iconButton
+                                        variant="ghost"
+                                    >
+                                        <XIcon />
+                                    </Button>
+                                    <Paragraph bolder>
+                                        Mapa de Unidades de Saúde
+                                    </Paragraph>
+                                    <Paragraph>
+                                        Explore as unidades de saúde na sua
+                                        região com nosso mapa interativo.
+                                        Encontre facilmente clínicas, hospitais
+                                        e postos de saúde próximos a você.
+                                    </Paragraph>
+                                    <Link href="/mapa" passHref>
+                                        Saiba mais sobre o Mapa{' '}
+                                        <ArrowUpRightIcon />
+                                    </Link>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="collapsed-buttons"
+                                    layout
+                                    initial={{
+                                        opacity: 0,
+                                        filter: 'blur(6px)',
+                                        transition: { delay: 0.2 },
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        filter: 'blur(0px)',
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        filter: 'blur(6px)',
+                                    }}
+                                    className={css({
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '0.5rem',
+                                    })}
+                                >
+                                    <Button iconButton variant="text">
+                                        <CompassIcon size={24} weight="fill" />
+                                    </Button>
+                                    <Button
+                                        iconButton
+                                        variant="text"
+                                        onClick={() => setIsExpanded(true)}
+                                    >
+                                        <InfoIcon size={24} />
+                                    </Button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
                     <div
                         style={{
                             zIndex: 1,
@@ -101,11 +194,11 @@ export function MapComponent() {
                             boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
                         }}
                     >
-                        <Button variant="ghost" iconButton size="large">
+                        <Button variant="text" iconButton size="large">
                             <GpsIcon size={24} weight="bold" />
                         </Button>
                         <Button
-                            variant="secondary"
+                            variant="text"
                             iconButton
                             size="large"
                             onClick={handleZoomIn}
@@ -113,7 +206,7 @@ export function MapComponent() {
                             <PlusIcon size={24} weight="bold" />
                         </Button>
                         <Button
-                            variant="secondary"
+                            variant="text"
                             iconButton
                             size="large"
                             onClick={handleZoomOut}
