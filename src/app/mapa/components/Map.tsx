@@ -85,9 +85,10 @@ export function MapComponent() {
                     justifyContent: 'center',
                     flexDirection: 'column',
                     backgroundColor: 'background',
+                    zIndex: -1,
                 })}
             >
-                {!MAPBOX_TOKEN ? (
+                {!MAPBOX_TOKEN && (
                     <>
                         <svg
                             width="86"
@@ -155,8 +156,6 @@ export function MapComponent() {
                             Tente novamente em alguns minutos!
                         </Paragraph>
                     </>
-                ) : (
-                    <Paragraph centered>Carregando Mapa...</Paragraph>
                 )}
             </div>
         </motion.section>
