@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
 
-import { css } from '../../../../styled-system/css'
+import { css } from '../../../styled-system/css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 import { Paragraph } from '@/components/Typography/Paragraph'

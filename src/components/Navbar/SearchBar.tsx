@@ -22,9 +22,10 @@ const searchBarContainer = css({
     },
     alignItems: 'center',
     gap: '0.25rem',
-    bgColor: 'background',
+    bgColor: 'rgba(246,247,249, 0.9)',
     borderRadius: 'full',
     padding: '.25rem',
+    boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
 
     '& input': {
         fontWeight: 500,
