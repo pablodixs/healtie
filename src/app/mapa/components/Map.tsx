@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import Map, { NavigationControl, ScaleControl } from 'react-map-gl/mapbox'
+import Map, { ScaleControl } from 'react-map-gl/mapbox'
 
 import { css } from '../../../../styled-system/css'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -14,7 +14,6 @@ import { useRef, useState } from 'react'
 import { Button } from '@/components/Button'
 import {
     ArrowUpRightIcon,
-    CompassIcon,
     GpsIcon,
     InfoIcon,
     MinusIcon,
@@ -23,6 +22,7 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { MapMarker } from '@/components/Map'
+import { toolbarContainer } from '@/components/Map/styles'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -83,7 +83,7 @@ export function MapComponent() {
                             position: 'absolute',
                             top: 'header',
                             right: '1.5rem',
-                            padding: isExpanded ? '1rem' : '0.5rem',
+                            padding: isExpanded ? '1rem' : '0.25rem',
                             backgroundColor: isExpanded
                                 ? 'rgba(255, 255, 255, 0.8)'
                                 : 'rgba(255, 255, 255, 0.5)',
@@ -160,21 +160,13 @@ export function MapComponent() {
                                         opacity: 0,
                                         filter: 'blur(6px)',
                                     }}
-                                    className={css({
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: '0.5rem',
-                                    })}
                                 >
-                                    <Button iconButton variant="text">
-                                        <CompassIcon size={24} weight="fill" />
-                                    </Button>
                                     <Button
                                         iconButton
                                         variant="text"
                                         onClick={() => setIsExpanded(true)}
                                     >
-                                        <InfoIcon size={24} />
+                                        <InfoIcon size={18} weight="bold" />
                                     </Button>
                                 </motion.div>
                             )}
@@ -182,21 +174,12 @@ export function MapComponent() {
                     </motion.div>
                     <div
                         style={{
-                            zIndex: 1,
-                            position: 'absolute',
-                            bottom: '1.5rem',
-                            right: '1.5rem',
-                            display: 'flex',
-                            gap: '0.5rem',
-                            padding: '0.5rem',
-                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
                             backdropFilter: 'blur(10px)',
-                            borderRadius: '9999px',
-                            boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
                         }}
+                        className={toolbarContainer}
                     >
                         <Button variant="text" iconButton size="large">
-                            <GpsIcon size={24} weight="bold" />
+                            <GpsIcon size={18} weight="bold" />
                         </Button>
                         <Button
                             variant="text"
@@ -204,7 +187,7 @@ export function MapComponent() {
                             size="large"
                             onClick={handleZoomIn}
                         >
-                            <PlusIcon size={24} weight="bold" />
+                            <PlusIcon size={18} weight="bold" />
                         </Button>
                         <Button
                             variant="text"
@@ -212,7 +195,7 @@ export function MapComponent() {
                             size="large"
                             onClick={handleZoomOut}
                         >
-                            <MinusIcon size={24} weight="bold" />
+                            <MinusIcon size={18} weight="bold" />
                         </Button>
                     </div>
                     <Map
@@ -248,7 +231,6 @@ export function MapComponent() {
                                     establishmentProps={establishment}
                                 />
                             ))}
-                        <NavigationControl />
                         <ScaleControl />
                     </Map>
                 </main>
