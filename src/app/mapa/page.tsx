@@ -5,36 +5,75 @@ import { css } from '../../../styled-system/css'
 import { ArrowClockwiseIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { Button } from '@/components/Button'
-import { SearchBar } from '@/components/Navbar/SearchBar'
 import { Paragraph } from '@/components/Typography/Paragraph'
-import { GpsFixIcon, GpsSlashIcon } from '@phosphor-icons/react'
-import { contentContainer, searchBarContainer } from './styles'
-import { ProgressiveBlur } from '@/components/ProgressiveBlur'
+import { GpsFixIcon, GpsSlashIcon, XIcon } from '@phosphor-icons/react'
+import { contentContainer } from './styles'
 import { AnimatePresence, motion } from 'motion/react'
 
+import { establishments } from '@/utils/unidades.json'
+import { Subheading } from '@/components/Typography/Subheading'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useMapContext } from '@/context/MapContext'
+
 export default function Page() {
+    const router = useRouter()
+    const param = useSearchParams()
+    const { setSelectedEstablishment } = useMapContext()
     const [userAllowedLocation, setUserAllowedLocation] = useState<
         null | boolean
     >(null)
+    const data = establishments.find(
+        (establishment) =>
+            establishment.cnes === Number(param.get('establishment'))
+    )
 
     return (
-        <main>
-            <section className={searchBarContainer}>
-                <SearchBar placeholder="Buscar unidades de saúde" />
-                <ProgressiveBlur />
-            </section>
-            <div className={contentContainer}>
-                <AnimatePresence initial={false}>
-                    {userAllowedLocation === null && (
-                        <LocationPrompt
-                            setUserAllowedLocation={setUserAllowedLocation}
-                        />
-                    )}
-                    {userAllowedLocation === true && <NearbyHeader />}
-                    {userAllowedLocation === false && <LocationDenied />}
-                </AnimatePresence>
-            </div>
-        </main>
+        <AnimatePresence mode="wait" initial={false}>
+            {data ? (
+                <motion.div
+                    initial={{ opacity: 0, filter: 'blur(10px)', x: -50 }}
+                    animate={{ opacity: 1, filter: 'blur(0)', x: 0 }}
+                    exit={{ opacity: 0, filter: 'blur(10px)', x: -50 }}
+                    className={contentContainer}
+                >
+                    <header>
+                        <span>{data.type}</span>
+                        <Button
+                            onClick={() => {
+                                router.push('/mapa')
+                                setSelectedEstablishment(null)
+                            }}
+                            iconButton
+                        >
+                            <XIcon />
+                        </Button>
+                    </header>
+                    <Subheading centered>{data.full_name}</Subheading>
+                </motion.div>
+            ) : (
+                <motion.main
+                    initial={{ opacity: 0, filter: 'blur(10px)', x: 50 }}
+                    animate={{ opacity: 1, filter: 'blur(0)', x: 0 }}
+                    exit={{ opacity: 0, filter: 'blur(10px)', x: 50 }}
+                >
+                    <div className={contentContainer}>
+                        <AnimatePresence initial={false}>
+                            {userAllowedLocation === null && (
+                                <LocationPrompt
+                                    setUserAllowedLocation={
+                                        setUserAllowedLocation
+                                    }
+                                />
+                            )}
+                            {userAllowedLocation === true && <NearbyHeader />}
+                            {userAllowedLocation === false && (
+                                <LocationDenied />
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </motion.main>
+            )}
+        </AnimatePresence>
     )
 }
 

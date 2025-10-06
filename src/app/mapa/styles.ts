@@ -12,12 +12,14 @@ export const styles = css({
     width: '30%',
     maxWidth: '400px',
     maxHeight: 'calc(90dvh - 1rem)',
+    minHeight: '74px',
     zIndex: 1,
     backgroundColor: 'white',
     boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
     marginLeft: '1rem',
     borderRadius: '32px',
     overflow: 'hidden',
+    pt: 'calc(42px + 1rem)',
 })
 
 export const contentContainer = css({
@@ -27,7 +29,6 @@ export const contentContainer = css({
     overflow: 'hidden',
     padding: '1rem',
     position: 'relative',
-    pt: 'calc(42px + 1rem)',
 })
 
 export const searchBarContainer = css({

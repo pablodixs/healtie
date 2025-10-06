@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Marker } from 'react-map-gl/mapbox'
 import { AnimatePresence, motion } from 'motion/react'
 import {
@@ -12,6 +13,7 @@ import {
 import { Establishment } from '@/interfaces/Establishment'
 
 import { labelStyles, markerContainer } from './maker.styles'
+import { useMapContext } from '@/context/MapContext'
 
 interface MapMarkerProps {
     longitude: number
@@ -26,7 +28,8 @@ export function MapMarker({
     establishmentProps,
     showLabel = true,
 }: MapMarkerProps) {
-    const [isMarkerDetailsOpen, setIsMarkerDetailsOpen] = useState(false)
+    const router = useRouter()
+    const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
 
     if (!establishmentProps) return null
 
@@ -35,10 +38,13 @@ export function MapMarker({
             longitude={longitude}
             latitude={latitude}
             anchor="center"
-            onClick={() => setIsMarkerDetailsOpen(!isMarkerDetailsOpen)}
+            onClick={() => {
+                router.push(`/mapa?establishment=${establishmentProps.cnes}`)
+                setSelectedEstablishment(establishmentProps)
+            }}
         >
-            <AnimatePresence mode="wait">
-                {isMarkerDetailsOpen ? (
+            <AnimatePresence mode="wait" initial={false}>
+                {selectedEstablishment?.cnes === establishmentProps.cnes ? (
                     <div
                         style={{
                             position: 'relative',
