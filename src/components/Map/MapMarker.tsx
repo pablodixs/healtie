@@ -33,12 +33,14 @@ interface MapMarkerProps {
     longitude: number
     latitude: number
     establishmentProps?: Establishment
+    showLabel?: boolean
 }
 
 export function MapMarker({
     longitude,
     latitude,
     establishmentProps,
+    showLabel = true,
 }: MapMarkerProps) {
     const [isMarkerDetailsOpen, setIsMarkerDetailsOpen] = useState(false)
 
@@ -77,7 +79,17 @@ export function MapMarker({
                     {establishmentProps.abb === 'UPA' && (
                         <AmbulanceIcon weight="fill" />
                     )}
-                    <span>{establishmentProps.name}</span>
+                    <AnimatePresence>
+                        {showLabel && (
+                            <motion.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                {establishmentProps.name}
+                            </motion.span>
+                        )}
+                    </AnimatePresence>
                 </motion.div>
             </AnimatePresence>
         </Marker>
@@ -97,7 +109,6 @@ const markerContainer = cva({
         border: '2px solid white',
         cursor: 'pointer',
         position: 'relative',
-        overflow: 'hidden',
 
         '& svg': {
             fontSize: '1.5rem',

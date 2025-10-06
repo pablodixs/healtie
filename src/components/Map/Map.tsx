@@ -34,6 +34,7 @@ const INITIAL_VIEW_STATE = {
 export function MapComponent() {
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
     const [isExpanded, setIsExpanded] = useState(false)
+    const [showLabels, setShowLabels] = useState(true)
 
     const handleZoomIn = () => {
         if (mapRef.current) {
@@ -145,8 +146,11 @@ export function MapComponent() {
                                                     <XIcon />
                                                 </Button>
                                             </header>
-                                            <Toggle label="Mostrar nomes" />
-                                            <Toggle label="Mostrar nomes" />
+                                            <Toggle
+                                                label="Mostrar nome das unidades"
+                                                checked={showLabels}
+                                                onChange={setShowLabels}
+                                            />
                                         </>
                                     )}
                                 </motion.div>
@@ -246,6 +250,7 @@ export function MapComponent() {
                                             | 'hospital'
                                             | 'upa',
                                     }}
+                                    showLabel={showLabels}
                                 />
                             ))}
                         <ScaleControl />
