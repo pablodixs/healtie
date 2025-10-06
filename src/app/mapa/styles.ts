@@ -2,7 +2,7 @@ import { css } from '../../../styled-system/css'
 
 export const mainContainer = css({
     position: 'relative',
-    height: '100dvh',
+    height: '100vh',
 })
 
 export const styles = css({
