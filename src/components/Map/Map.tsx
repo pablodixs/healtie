@@ -13,16 +13,15 @@ import { Subheading } from '@/components/Typography/Subheading'
 import { useRef, useState } from 'react'
 import { Button } from '@/components/Button'
 import {
-    ArrowUpRightIcon,
+    GearIcon,
     GpsIcon,
-    InfoIcon,
     MinusIcon,
     PlusIcon,
     XIcon,
 } from '@phosphor-icons/react'
-import Link from 'next/link'
 import { MapMarker } from '@/components/Map'
 import { toolbarContainer } from '@/components/Map/styles'
+import { Toggle } from '../Toggle'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -83,7 +82,7 @@ export function MapComponent() {
                             position: 'absolute',
                             top: 'header',
                             right: '1.5rem',
-                            padding: isExpanded ? '1rem' : '0.25rem',
+                            padding: isExpanded ? '.5rem 1rem' : '0.25rem',
                             backgroundColor: isExpanded
                                 ? 'rgba(255, 255, 255, 0.8)'
                                 : 'rgba(255, 255, 255, 0.5)',
@@ -119,29 +118,37 @@ export function MapComponent() {
                                         display: 'flex',
                                         flexDir: 'column',
                                         alignItems: 'flex-start',
-                                        maxWidth: '300px',
+                                        minWidth: '300px',
                                     })}
                                 >
-                                    <Button
-                                        onClick={() => setIsExpanded(false)}
-                                        iconButton
-                                        variant="ghost"
-                                    >
-                                        <XIcon />
-                                    </Button>
-                                    <Paragraph bolder>
-                                        Mapa de Unidades de Saúde
-                                    </Paragraph>
-                                    <Paragraph>
-                                        Explore as unidades de saúde na sua
-                                        região com nosso mapa interativo.
-                                        Encontre facilmente clínicas, hospitais
-                                        e postos de saúde próximos a você.
-                                    </Paragraph>
-                                    <Link href="/mapa" passHref>
-                                        Saiba mais sobre o Mapa{' '}
-                                        <ArrowUpRightIcon />
-                                    </Link>
+                                    {isExpanded && (
+                                        <>
+                                            <header
+                                                className={css({
+                                                    width: '100%',
+                                                    display: 'flex',
+                                                    justifyContent:
+                                                        'space-between',
+                                                    alignItems: 'center',
+                                                })}
+                                            >
+                                                <Paragraph bolder>
+                                                    Preferências do Mapa
+                                                </Paragraph>
+                                                <Button
+                                                    onClick={() =>
+                                                        setIsExpanded(false)
+                                                    }
+                                                    iconButton
+                                                    variant="ghost"
+                                                >
+                                                    <XIcon />
+                                                </Button>
+                                            </header>
+                                            <Toggle label="Mostrar nomes" />
+                                            <Toggle label="Mostrar nomes" />
+                                        </>
+                                    )}
                                 </motion.div>
                             ) : (
                                 <motion.div
@@ -160,13 +167,17 @@ export function MapComponent() {
                                         opacity: 0,
                                         filter: 'blur(6px)',
                                     }}
+                                    className={css({
+                                        display: 'flex',
+                                        flexDir: 'column',
+                                    })}
                                 >
                                     <Button
                                         iconButton
                                         variant="text"
                                         onClick={() => setIsExpanded(true)}
                                     >
-                                        <InfoIcon size={18} weight="bold" />
+                                        <GearIcon size={18} />
                                     </Button>
                                 </motion.div>
                             )}
@@ -228,7 +239,13 @@ export function MapComponent() {
                                     key={establishment.cnes}
                                     longitude={establishment.location.longitude}
                                     latitude={establishment.location.latitude}
-                                    establishmentProps={establishment}
+                                    establishmentProps={{
+                                        ...establishment,
+                                        type: establishment.type as
+                                            | 'ubs'
+                                            | 'hospital'
+                                            | 'upa',
+                                    }}
                                 />
                             ))}
                         <ScaleControl />
