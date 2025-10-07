@@ -20,9 +20,10 @@ function isAllowedFilter(value: string | null): value is AllowedFilter {
 }
 import { SearchEmptyState } from './components/SearchEmptyState'
 import { NoResultsEmptyState } from './components/NoResultsEmpytState'
-import { ArrowRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
+import { CaretRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Divider } from '@/components/Divider'
+import { Tooltip } from '@/components/Tooltip'
 
 export default function Page() {
     const router = useRouter()
@@ -144,7 +145,7 @@ export default function Page() {
                     <motion.div
                         className={css({
                             width: '100%',
-                            maxWidth: '800px',
+                            maxWidth: '1000px',
                             padding: '0 1rem',
                         })}
                         key="results"
@@ -162,7 +163,6 @@ export default function Page() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: '100%',
-                                maxWidth: '800px',
                             })}
                         >
                             {filteredEstablishments.map((establishment) => (
@@ -221,17 +221,25 @@ export default function Page() {
                                             })}
                                         >
                                             <Link
-                                                variant="primary"
-                                                href={`/estabelecimento/${establishment.cnes}`}
-                                            >
-                                                Ver Detalhes <ArrowRightIcon />
-                                            </Link>
-                                            <Link
-                                                variant="text"
+                                                size="sm"
+                                                variant="textSubtle"
                                                 href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
                                             >
-                                                <MapTrifoldIcon /> Ver no Mapa
+                                                <MapTrifoldIcon size={18} /> Ver
+                                                no Mapa
                                             </Link>
+                                            <Tooltip content="Ver detalhes do estabelecimento">
+                                                <Link
+                                                    onlyIcon
+                                                    variant="subtle"
+                                                    href={`/estabelecimento/${establishment.cnes}`}
+                                                >
+                                                    <CaretRightIcon
+                                                        size={20}
+                                                        weight="bold"
+                                                    />
+                                                </Link>
+                                            </Tooltip>
                                         </div>
                                     </div>
                                     <Divider margin="compact" />

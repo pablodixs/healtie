@@ -1,6 +1,24 @@
 {
     "establishments": [
         {
+            "cnes": 100,
+            "name": "Centro Integrado Ambulatorial - UCB",
+            "full_name": "Centro Integrado Ambulatorial da Universidade Católica de Brasília",
+            "description": "Centro de saúde especializado em atendimentos ambulatoriais da Universidade Católica de Brasília.",
+            "address": "QS 7, 01",
+            "district": "Taguatinga",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72338712",
+            "abb": "HOSPITAL",
+            "type": "Hospital Privado",
+            "phone": "6133569107",
+            "location": {
+                "longitude": -48.030660005299886,
+                "latitude": -15.866701312839304
+            }
+        },
+        {
             "cnes": 7771479,
             "name": "UBS 11 de Samambaia",
             "full_name": "Unidade Básica de Saúde 11 de Samambaia",

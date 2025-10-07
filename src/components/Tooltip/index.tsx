@@ -245,7 +245,7 @@ const tooltipContainer = cva({
         position: 'fixed',
         zIndex: 1000,
         willChange: 'transform, opacity',
-        padding: '0.375rem 0.625rem',
+        padding: '0.5rem 1rem',
         borderRadius: '9999px',
         fontSize: '0.875rem',
         pointerEvents: 'none',

@@ -15,6 +15,7 @@ import {
     MapPinAreaIcon,
     MapPinIcon,
     PhoneIcon,
+    WarningCircleIcon,
     XIcon,
 } from '@phosphor-icons/react'
 
@@ -26,6 +27,7 @@ import { establishments } from '@/utils/unidades.json'
 import { useMapContext } from '@/context/MapContext'
 import { Link } from '@/components/Link'
 import { Tooltip } from '@/components/Tooltip'
+import { Divider } from '@/components/Divider'
 
 export default function Page() {
     const router = useRouter()
@@ -160,8 +162,8 @@ export default function Page() {
                         </div>
                         <h1
                             className={css({
-                                fontSize: '1.375rem',
-                                lineHeight: '1lh',
+                                fontSize: '1.5rem',
+                                lineHeight: '120%',
                                 fontWeight: 550,
                                 color: 'primary',
                                 marginTop: '1rem',
@@ -170,14 +172,25 @@ export default function Page() {
                         >
                             {data.full_name}
                         </h1>
-                        <span
-                            className={css({
-                                color: 'gray.400',
-                                fontSize: '0.875rem',
-                            })}
-                        >
-                            {data.district}, {data.city} - {data.state}
-                        </span>
+                        <div>
+                            <span
+                                className={css({
+                                    color: 'gray.400',
+                                    fontSize: '0.875rem',
+                                })}
+                            >
+                                {data.district}, {data.city} - {data.state}{' '}
+                                &bull;{' '}
+                                <span
+                                    className={css({
+                                        color: 'green.600',
+                                        fontWeight: 450,
+                                    })}
+                                >
+                                    Aberto agora
+                                </span>
+                            </span>
+                        </div>
                         <section
                             className={css({
                                 marginY: '1rem',
@@ -270,8 +283,12 @@ export default function Page() {
                             >
                                 <BuildingIcon size={18} /> CNES: {data.cnes}
                             </span>
-                            <Button variant="text">Ver no Google Maps</Button>
-                            <Button variant="text">Informar erro</Button>
+                            <div>
+                                <Divider margin="compact" />
+                                <Link href={'#'} variant="textSubtle" size="sm">
+                                    <WarningCircleIcon /> Informar erro
+                                </Link>
+                            </div>
                         </section>
                     </motion.div>
                 ) : (

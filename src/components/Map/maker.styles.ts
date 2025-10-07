@@ -59,4 +59,5 @@ export const labelStyles = css({
     textAlign: 'center',
     fontSize: '0.75rem',
     width: 'max-content',
+    maxWidth: '30ch',
 })

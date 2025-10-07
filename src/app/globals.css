@@ -24,6 +24,10 @@
     font-feature-settings: 'ss01', 'ss17', 'ss15', 'ss19';
 }
 
+body {
+    color: '#151515';
+}
+
 button {
     cursor: 'pointer';
 }

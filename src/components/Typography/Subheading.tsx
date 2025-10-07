@@ -16,6 +16,7 @@ export function Subheading({ children, centered, ...props }: SubheadingProps) {
 
 const subHeadingStyles = cva({
     base: {
+        position: 'relative',
         fontSize: {
             md: '1.875rem',
             base: '1.5rem',

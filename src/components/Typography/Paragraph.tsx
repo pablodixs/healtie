@@ -9,6 +9,7 @@ interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
     size?: 'subheadline' | 'body' | 'caption'
     bolder?: boolean
     compact?: boolean
+    marginCompact?: boolean
 }
 
 export function Paragraph({
@@ -18,6 +19,7 @@ export function Paragraph({
     size = 'body',
     bolder,
     compact,
+    marginCompact,
     ...props
 }: ParagraphProps) {
     return (
@@ -28,6 +30,7 @@ export function Paragraph({
                 size,
                 bolder,
                 compact,
+                marginCompact,
             })}
             {...props}
         >
@@ -81,6 +84,11 @@ const paragraphStyles = cva({
         compact: {
             true: {
                 maxWidth: '70ch',
+            },
+        },
+        marginCompact: {
+            true: {
+                margin: '.25rem 0',
             },
         },
     },

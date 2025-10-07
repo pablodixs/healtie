@@ -1,5 +1,5 @@
 interface DividerProps {
-    margin?: 'compact' | 'normal' | 'spacious'
+    margin?: 'ultracompact' | 'compact' | 'normal' | 'spacious'
 }
 
 export function Divider({ margin = 'normal' }: DividerProps) {
@@ -11,7 +11,10 @@ export function Divider({ margin = 'normal' }: DividerProps) {
                         ? '1rem 0'
                         : margin === 'spacious'
                           ? '3rem 0'
-                          : '2rem 0',
+                          : margin === 'ultracompact'
+                            ? '0.75rem 0'
+                            : '2rem 0',
+
                 color: 'rgba(0,0,0, 0.05)',
                 width: '100%',
             }}

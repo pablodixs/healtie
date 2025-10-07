@@ -45,7 +45,7 @@ const linkStyle = cva({
         justifyContent: 'center',
         backgroundColor: 'primary',
         color: 'white',
-        gap: '.75rem',
+        gap: '.5rem',
         padding: '.5rem 1rem',
 
         '& svg': {
@@ -53,7 +53,6 @@ const linkStyle = cva({
         },
 
         _hover: {
-            scale: 1.025,
             backgroundColor: '#202020',
         },
 

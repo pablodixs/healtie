@@ -19,16 +19,12 @@ export const buttonStyles = cva({
         whiteSpace: 'nowrap',
 
         padding: {
-            lg: '0.5rem 1rem',
+            lg: '0.625rem 1rem',
             base: '0.75rem 1rem',
         },
 
         '& svg': {
             fontSize: '1.125rem',
-        },
-
-        _hover: {
-            scale: 1.025,
         },
 
         _active: {
@@ -66,6 +62,7 @@ export const buttonStyles = cva({
 
                 _hover: {
                     color: '#202020',
+                    scale: 'inherit',
                 },
             },
             textSubtle: {
@@ -77,6 +74,7 @@ export const buttonStyles = cva({
 
                 _hover: {
                     color: '#202020',
+                    scale: 'inherit',
                 },
             },
             ghost: {
