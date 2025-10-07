@@ -19,31 +19,56 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 import { Divider } from '@/components/Divider'
 
 export default function Page() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
     const [establishmentFilter, setEstablishmentFilter] = useState<
         string | null
     >(null)
-    const [localQuery, setLocalQuery] = useState('')
-
-    const router = useRouter()
-    const searchParams = useSearchParams()
+    const initialQuery = searchParams.get('q') || ''
+    const [localQuery, setLocalQuery] = useState(initialQuery)
     const query = searchParams.get('q') || ''
     const filterParam = searchParams.get('filter')
+    // Ref para evitar sobrescrever a digitação enquanto sincroniza com a URL
 
-    // Sincroniza o estado local com o query da URL na primeira renderização
+    // Sincroniza o estado local somente quando o parâmetro de URL realmente muda
     useEffect(() => {
         setLocalQuery(query)
     }, [query])
 
-    // Debounce para atualizar a URL
+    // Sincroniza o filtro vindo da URL (ex: compartilhamento de link)
     useEffect(() => {
-        const timer = setTimeout(() => {
-            if (localQuery !== query) {
-                router.push(`?q=${localQuery}`)
-            }
-        }, 300) // 300ms de delay
+        if (filterParam && filterParam !== establishmentFilter) {
+            setEstablishmentFilter(filterParam)
+        }
+        if (!filterParam && establishmentFilter) {
+            setEstablishmentFilter(null)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filterParam])
 
-        return () => clearTimeout(timer)
-    }, [localQuery, query, router])
+    // Debounce para atualizar a URL com query e filtro
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const nextQuery = localQuery.trim()
+            const nextFilter = establishmentFilter
+
+            const isSameQuery = nextQuery === query
+            const isSameFilter = (nextFilter || '') === (filterParam || '')
+
+            if (isSameQuery && isSameFilter) return
+
+            const params = new URLSearchParams()
+            if (nextQuery) params.set('q', nextQuery)
+            if (nextFilter) params.set('filter', nextFilter)
+
+            const searchString = params.toString()
+            const nextUrl = searchString ? `/buscar?${searchString}` : '/buscar'
+
+            router.push(nextUrl, { scroll: false })
+        }, 300)
+
+        return () => clearTimeout(handler)
+    }, [localQuery, establishmentFilter, query, filterParam, router])
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,12 +78,18 @@ export default function Page() {
         []
     )
 
+    const activeFilter = filterParam || establishmentFilter
     const filteredEstablishments = data.establishments.filter(
         (establishment) => {
-            const searchTerm = query.toLowerCase()
+            if (activeFilter && establishment.abb !== activeFilter) return false
+            const searchTerm = localQuery.toLowerCase()
+            if (!searchTerm) return true
             return (
                 establishment.name.toLowerCase().includes(searchTerm) ||
-                establishment.city.toLowerCase().includes(searchTerm)
+                establishment.city.toLowerCase().includes(searchTerm) ||
+                establishment.district.toLowerCase().includes(searchTerm) ||
+                establishment.type.toLowerCase().includes(searchTerm) ||
+                establishment.abb.toLowerCase().includes(searchTerm)
             )
         }
     )
@@ -92,7 +123,7 @@ export default function Page() {
                 onChange={handleChange}
             />
             <AnimatePresence mode="wait">
-                {filteredEstablishments.length > 0 && query.length >= 2 ? (
+                {filteredEstablishments.length > 0 && localQuery.length >= 2 ? (
                     <motion.div
                         className={css({
                             width: '100%',
@@ -180,7 +211,7 @@ export default function Page() {
                             ))}
                         </div>
                     </motion.div>
-                ) : query.length >= 2 ? (
+                ) : localQuery.length >= 2 ? (
                     <motion.div
                         key="no-results"
                         initial={{ opacity: 0, y: 20 }}
@@ -188,7 +219,7 @@ export default function Page() {
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <NoResultsEmptyState query={query} />
+                        <NoResultsEmptyState query={localQuery} />
                     </motion.div>
                 ) : (
                     <SearchEmptyState />
