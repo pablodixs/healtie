@@ -20,6 +20,7 @@ interface MapMarkerProps {
     establishmentProps?: Establishment
     showLabel?: boolean
     delay?: boolean
+    expanded?: boolean
 }
 
 export function MapMarker({
@@ -28,6 +29,7 @@ export function MapMarker({
     establishmentProps,
     showLabel = true,
     delay = false,
+    expanded = false,
 }: MapMarkerProps) {
     const router = useRouter()
     const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
@@ -45,7 +47,8 @@ export function MapMarker({
             }}
         >
             <AnimatePresence mode="wait">
-                {selectedEstablishment?.cnes === establishmentProps.cnes ? (
+                {selectedEstablishment?.cnes === establishmentProps.cnes ||
+                expanded ? (
                     <div
                         style={{
                             position: 'relative',

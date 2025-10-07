@@ -44,6 +44,7 @@ export default function Page() {
 
     // Sincroniza o filtro vindo da URL (ex: compartilhamento de link)
     useEffect(() => {
+        // Se a URL muda (ex: back/forward ou link externo), manter estado alinhado
         if (filterParam !== establishmentFilter) {
             setEstablishmentFilter(filterParam)
         }
@@ -81,7 +82,18 @@ export default function Page() {
         []
     )
 
-    const activeFilter = filterParam || establishmentFilter
+    const handleFilterChange = useCallback(
+        (newFilter: string | null | ((prev: string | null) => string | null)) => {
+            if (typeof newFilter === 'function') {
+                setEstablishmentFilter(prev => newFilter(prev))
+            } else {
+                setEstablishmentFilter(newFilter)
+            }
+        },
+        []
+    )
+
+    const activeFilter = establishmentFilter
     const filteredEstablishments = data.establishments.filter(
         (establishment) => {
             if (activeFilter && establishment.abb !== activeFilter) return false
@@ -119,8 +131,8 @@ export default function Page() {
             </div>
             <HeroSearchBar
                 showFilterOptions
-                filterValue={filterParam || establishmentFilter}
-                onFilterChange={setEstablishmentFilter}
+                filterValue={establishmentFilter}
+                onFilterChange={handleFilterChange}
                 autoFocus
                 value={localQuery}
                 onChange={handleChange}
