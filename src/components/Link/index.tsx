@@ -5,14 +5,21 @@ import { cva } from '../../../styled-system/css'
 type LinkProps = ComponentProps<typeof NextLink> & {
     variant?: 'text' | 'primary' | 'asChild' | 'subtle' | 'textSubtle'
     fullWidth?: boolean
+    onlyIcon?: boolean
 }
 
-export function Link({ variant, fullWidth = false, ...props }: LinkProps) {
+export function Link({
+    variant,
+    fullWidth = false,
+    onlyIcon = false,
+    ...props
+}: LinkProps) {
     return (
         <NextLink
             className={linkStyle({
                 variant,
                 fullWidth,
+                onlyIcon,
             })}
             {...props}
         >
@@ -110,6 +117,12 @@ const linkStyle = cva({
             true: {
                 width: '100%',
                 flex: 1,
+            },
+        },
+        onlyIcon: {
+            true: {
+                padding: '.5rem',
+                aspectRatio: '1/1',
             },
         },
     },

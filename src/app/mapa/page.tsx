@@ -173,7 +173,7 @@ export default function Page() {
                             className={css({
                                 marginY: '1rem',
                                 display: 'flex',
-                                gap: '1rem',
+                                gap: '.5rem',
                             })}
                         >
                             <Button fullWidth>
@@ -185,6 +185,19 @@ export default function Page() {
                                 variant="subtle"
                             >
                                 Ver mais
+                            </Link>
+                            <Link
+                                onlyIcon
+                                variant="subtle"
+                                target="_blank"
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}`}
+                            >
+                                <Image
+                                    src={'/pictures/google_maps_icon.png'}
+                                    alt="Ícone do Google Maps "
+                                    width={14}
+                                    height={14}
+                                />
                             </Link>
                         </section>
                         <section>
