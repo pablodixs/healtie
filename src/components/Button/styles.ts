@@ -73,5 +73,11 @@ export const buttonStyles = cva({
                 aspectRatio: '1/1',
             },
         },
+        fullWidth: {
+            true: {
+                width: '100%',
+                flex: 1,
+            },
+        },
     },
 })
