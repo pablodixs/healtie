@@ -25,6 +25,7 @@ import { contentContainer, styles } from './styles'
 import { establishments } from '@/utils/unidades.json'
 import { useMapContext } from '@/context/MapContext'
 import { Link } from '@/components/Link'
+import { Tooltip } from '@/components/Tooltip'
 
 export default function Page() {
     const router = useRouter()
@@ -76,27 +77,31 @@ export default function Page() {
                                     fontWeight: 500,
                                 })}
                             >
-                                <Button
-                                    variant="subtle"
-                                    onClick={() => {
-                                        router.back()
-                                        setSelectedEstablishment(null)
-                                    }}
-                                    iconButton
-                                >
-                                    <ArrowLeftIcon weight="bold" />
-                                </Button>
+                                <Tooltip placement="bottom" content="Voltar">
+                                    <Button
+                                        variant="subtle"
+                                        onClick={() => {
+                                            router.back()
+                                            setSelectedEstablishment(null)
+                                        }}
+                                        iconButton
+                                    >
+                                        <ArrowLeftIcon weight="bold" />
+                                    </Button>
+                                </Tooltip>
                                 <span>{data.type}</span>
-                                <Button
-                                    variant="subtle"
-                                    onClick={() => {
-                                        router.push('/mapa')
-                                        setSelectedEstablishment(null)
-                                    }}
-                                    iconButton
-                                >
-                                    <XIcon weight="bold" />
-                                </Button>
+                                <Tooltip placement="bottom" content="Fechar">
+                                    <Button
+                                        variant="subtle"
+                                        onClick={() => {
+                                            router.push('/mapa')
+                                            setSelectedEstablishment(null)
+                                        }}
+                                        iconButton
+                                    >
+                                        <XIcon weight="bold" />
+                                    </Button>
+                                </Tooltip>
                             </header>
                         ) : (
                             <header
@@ -108,27 +113,31 @@ export default function Page() {
                                     fontWeight: 500,
                                 })}
                             >
-                                <Button
-                                    variant="subtle"
-                                    onClick={() => {
-                                        router.push('/mapa')
-                                        setSelectedEstablishment(null)
-                                    }}
-                                    iconButton
-                                >
-                                    <DotsThreeIcon weight="bold" />
-                                </Button>
+                                <Tooltip placement="bottom" content="Menu">
+                                    <Button
+                                        variant="subtle"
+                                        onClick={() => {
+                                            router.push('/mapa')
+                                            setSelectedEstablishment(null)
+                                        }}
+                                        iconButton
+                                    >
+                                        <DotsThreeIcon weight="bold" />
+                                    </Button>
+                                </Tooltip>
                                 <span>{data.type}</span>
-                                <Button
-                                    variant="subtle"
-                                    onClick={() => {
-                                        router.push('/mapa')
-                                        setSelectedEstablishment(null)
-                                    }}
-                                    iconButton
-                                >
-                                    <XIcon weight="bold" />
-                                </Button>
+                                <Tooltip placement="bottom" content="Fechar">
+                                    <Button
+                                        variant="subtle"
+                                        onClick={() => {
+                                            router.push('/mapa')
+                                            setSelectedEstablishment(null)
+                                        }}
+                                        iconButton
+                                    >
+                                        <XIcon weight="bold" />
+                                    </Button>
+                                </Tooltip>
                             </header>
                         )}
                         <div>
@@ -186,19 +195,21 @@ export default function Page() {
                             >
                                 Ver mais
                             </Link>
-                            <Link
-                                onlyIcon
-                                variant="subtle"
-                                target="_blank"
-                                href={`https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}`}
-                            >
-                                <Image
-                                    src={'/pictures/google_maps_icon.png'}
-                                    alt="Ícone do Google Maps "
-                                    width={14}
-                                    height={14}
-                                />
-                            </Link>
+                            <Tooltip content="Ver rotas no Google Maps">
+                                <Link
+                                    onlyIcon
+                                    variant="subtle"
+                                    target="_blank"
+                                    href={`https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}`}
+                                >
+                                    <Image
+                                        src={'/pictures/google_maps_icon.png'}
+                                        alt="Ícone do Google Maps "
+                                        width={14}
+                                        height={14}
+                                    />
+                                </Link>
+                            </Tooltip>
                         </section>
                         <section>
                             <h2

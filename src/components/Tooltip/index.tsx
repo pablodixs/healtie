@@ -1,25 +1,44 @@
 'use client'
 
-import {
-    useEffect,
-    useRef,
-    useState,
-    cloneElement,
-    isValidElement,
-} from 'react'
+import { useEffect, useRef, useState, isValidElement, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { cva } from '../../../styled-system/css'
 
+interface TooltipTriggerProps {
+    onMouseEnter?: (e: React.MouseEvent) => void
+    onMouseLeave?: (e: React.MouseEvent) => void
+    onFocus?: (e: React.FocusEvent) => void
+    onBlur?: (e: React.FocusEvent) => void
+    // permitir outras props sem forçar 'any'
+    className?: string
+    style?: React.CSSProperties
+    id?: string
+    tabIndex?: number
+    disabled?: boolean
+}
+
 interface TooltipProps {
     content: React.ReactNode
-    children: React.ReactElement // precisa ser elemento React, não texto puro
+    children: React.ReactElement<TooltipTriggerProps> // precisa ser elemento React, não texto puro
     placement?: 'top' | 'bottom' | 'left' | 'right'
     delay?: number
     variant?: 'subtle' | 'default'
+    group?: string // agrupar tooltips para compartilhar lógica de delay
+    offset?: number // distância entre trigger e tooltip
 }
 
-let openTooltips = 0
-let resetTimer: NodeJS.Timeout | null = null
+// Estado global por grupo para controlar delay após primeiro abrir
+const tooltipGroups: Record<
+    string,
+    { openCount: number; resetTimer: NodeJS.Timeout | null }
+> = {}
+const getGroupState = (group: string) => {
+    if (!tooltipGroups[group]) {
+        tooltipGroups[group] = { openCount: 0, resetTimer: null }
+    }
+    return tooltipGroups[group]
+}
 
 export function Tooltip({
     content,
@@ -27,6 +46,8 @@ export function Tooltip({
     placement = 'top',
     delay = 300,
     variant = 'default',
+    group = 'default',
+    offset = 8,
 }: TooltipProps) {
     const [visible, setVisible] = useState(false)
     const [style, setStyle] = useState<React.CSSProperties>({})
@@ -39,72 +60,89 @@ export function Tooltip({
     useEffect(() => {
         return () => {
             if (timer) clearTimeout(timer)
-            if (resetTimer) clearTimeout(resetTimer)
-            if (visible && openTooltips > 0) {
-                openTooltips--
+            const groupState = getGroupState(group)
+            if (groupState.resetTimer) clearTimeout(groupState.resetTimer)
+            if (visible && groupState.openCount > 0) {
+                groupState.openCount--
             }
         }
-    }, [timer, visible])
+    }, [timer, visible, group])
+
+    const computePosition = useCallback(() => {
+        if (!visible || !triggerRef.current || !tooltipRef.current) return
+        const triggerRect = triggerRef.current.getBoundingClientRect()
+        const tooltipRect = tooltipRef.current.getBoundingClientRect()
+
+        let top = 0
+        let left = 0
+
+        switch (placement) {
+            case 'top':
+                top = triggerRect.top - tooltipRect.height - offset
+                left =
+                    triggerRect.left +
+                    triggerRect.width / 2 -
+                    tooltipRect.width / 2
+                break
+            case 'bottom':
+                top = triggerRect.bottom + offset
+                left =
+                    triggerRect.left +
+                    triggerRect.width / 2 -
+                    tooltipRect.width / 2
+                break
+            case 'left':
+                top =
+                    triggerRect.top +
+                    triggerRect.height / 2 -
+                    tooltipRect.height / 2
+                left = triggerRect.left - tooltipRect.width - offset
+                break
+            case 'right':
+                top =
+                    triggerRect.top +
+                    triggerRect.height / 2 -
+                    tooltipRect.height / 2
+                left = triggerRect.right + offset
+                break
+        }
+
+        // Clamp dentro do viewport para evitar corte de borda
+        const margin = 4
+        const vw = window.innerWidth
+        const vh = window.innerHeight
+        top = Math.min(Math.max(top, margin), vh - tooltipRect.height - margin)
+        left = Math.min(Math.max(left, margin), vw - tooltipRect.width - margin)
+
+        setStyle({ top: `${top}px`, left: `${left}px` })
+    }, [visible, placement, offset])
 
     useEffect(() => {
-        if (visible && triggerRef.current && tooltipRef.current) {
-            const triggerRect = triggerRef.current.getBoundingClientRect()
-            const tooltipRect = tooltipRef.current.getBoundingClientRect()
+        computePosition()
+    }, [computePosition])
 
-            let top = 0
-            let left = 0
-
-            switch (placement) {
-                case 'top':
-                    top = triggerRect.top - tooltipRect.height - 8
-                    left =
-                        triggerRect.left +
-                        triggerRect.width / 2 -
-                        tooltipRect.width / 2
-                    break
-                case 'bottom':
-                    top = triggerRect.bottom + 8
-                    left =
-                        triggerRect.left +
-                        triggerRect.width / 2 -
-                        tooltipRect.width / 2
-                    break
-                case 'left':
-                    top =
-                        triggerRect.top +
-                        triggerRect.height / 2 -
-                        tooltipRect.height / 2
-                    left = triggerRect.left - tooltipRect.width - 8
-                    break
-                case 'right':
-                    top =
-                        triggerRect.top +
-                        triggerRect.height / 2 -
-                        tooltipRect.height / 2
-                    left = triggerRect.right + 8
-                    break
-            }
-
-            setStyle({
-                top: `${top}px`,
-                left: `${left}px`,
-            })
+    useEffect(() => {
+        if (!visible) return
+        window.addEventListener('scroll', computePosition, true)
+        window.addEventListener('resize', computePosition)
+        return () => {
+            window.removeEventListener('scroll', computePosition, true)
+            window.removeEventListener('resize', computePosition)
         }
-    }, [visible, placement])
+    }, [visible, computePosition])
 
     const showTooltip = () => {
-        const actualDelay = openTooltips > 0 ? 0 : delay
+        const groupState = getGroupState(group)
+        const actualDelay = groupState.openCount > 0 ? 0 : delay
         if (timer) clearTimeout(timer)
-
-        // Cancelar o reset timer se existir
-        if (resetTimer) {
-            clearTimeout(resetTimer)
-            resetTimer = null
+        if (groupState.resetTimer) {
+            clearTimeout(groupState.resetTimer)
+            groupState.resetTimer = null
         }
-
         const t = setTimeout(() => {
-            openTooltips++
+            groupState.openCount++
             setVisible(true)
+            computePosition()
         }, actualDelay)
         setTimer(t)
     }
@@ -112,48 +150,92 @@ export function Tooltip({
     const hideTooltip = () => {
         if (timer) clearTimeout(timer)
         setVisible(false)
-
-        if (openTooltips > 0) {
-            openTooltips--
-
-            // Se não há mais tooltips abertos, resetar o contador após um delay
-            // para manter o comportamento "sem delay" por um tempo
-            if (openTooltips === 0) {
-                resetTimer = setTimeout(() => {
-                    openTooltips = 0
-                }, 500) // 500ms de "janela" para manter o comportamento sem delay
+        const groupState = getGroupState(group)
+        if (groupState.openCount > 0) {
+            groupState.openCount--
+            if (groupState.openCount === 0) {
+                groupState.resetTimer = setTimeout(() => {
+                    groupState.openCount = 0
+                }, 500)
             }
         }
     }
 
     // garante que o filho receba os eventos sem wrapper extra
-    const childWithProps = isValidElement(children)
-        ? cloneElement(children, {
-              // @ts-expect-error - forçar ref para funcionar com cloneElement
-              ref: triggerRef,
-              onMouseEnter: showTooltip,
-              onMouseLeave: hideTooltip,
-          })
-        : children
+    const tooltipId = useRef(`tooltip-${Math.random().toString(36).slice(2)}`)
+
+    const childWithProps = (
+        <span
+            ref={triggerRef as React.RefObject<HTMLSpanElement>}
+            style={{ display: 'inline-flex' }}
+            onMouseEnter={(e) => {
+                if (isValidElement(children)) {
+                    const fn = (
+                        children as React.ReactElement<TooltipTriggerProps>
+                    ).props.onMouseEnter
+                    if (typeof fn === 'function') fn(e)
+                }
+                showTooltip()
+            }}
+            onMouseLeave={(e) => {
+                if (isValidElement(children)) {
+                    const fn = (
+                        children as React.ReactElement<TooltipTriggerProps>
+                    ).props.onMouseLeave
+                    if (typeof fn === 'function') fn(e)
+                }
+                hideTooltip()
+            }}
+            onFocus={(e) => {
+                if (isValidElement(children)) {
+                    const fn = (
+                        children as React.ReactElement<TooltipTriggerProps>
+                    ).props.onFocus
+                    if (typeof fn === 'function') fn(e)
+                }
+                showTooltip()
+            }}
+            onBlur={(e) => {
+                if (isValidElement(children)) {
+                    const fn = (
+                        children as React.ReactElement<TooltipTriggerProps>
+                    ).props.onBlur
+                    if (typeof fn === 'function') fn(e)
+                }
+                hideTooltip()
+            }}
+            aria-describedby={visible ? tooltipId.current : undefined}
+        >
+            {children}
+        </span>
+    )
+
+    const tooltipNode = (
+        <AnimatePresence>
+            {visible && (
+                <motion.div
+                    ref={tooltipRef}
+                    role="tooltip"
+                    id={tooltipId.current}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.12 }}
+                    className={tooltipContainer({ variant })}
+                    style={style}
+                >
+                    {content}
+                </motion.div>
+            )}
+        </AnimatePresence>
+    )
 
     return (
         <>
             {childWithProps}
-            <AnimatePresence>
-                {visible && (
-                    <motion.div
-                        ref={tooltipRef}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.1 }}
-                        className={tooltipContainer({ variant })}
-                        style={style}
-                    >
-                        {content}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {typeof window !== 'undefined'
+                ? createPortal(tooltipNode, document.body)
+                : null}
         </>
     )
 }
@@ -162,13 +244,14 @@ const tooltipContainer = cva({
     base: {
         position: 'fixed',
         zIndex: 1000,
-
-        padding: '0.375rem 0.75rem',
+        willChange: 'transform, opacity',
+        padding: '0.375rem 0.625rem',
         borderRadius: '9999px',
         fontSize: '0.875rem',
         pointerEvents: 'none',
         whiteSpace: 'nowrap',
         lineHeight: '1',
+        boxSizing: 'border-box',
     },
 
     variants: {

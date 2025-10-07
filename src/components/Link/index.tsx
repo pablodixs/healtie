@@ -133,8 +133,9 @@ const linkStyle = cva({
         },
         onlyIcon: {
             true: {
+                minWidth: '42px',
                 padding: '.5rem',
-                aspectRatio: '1/1',
+                aspectRatio: 'square',
             },
         },
     },
