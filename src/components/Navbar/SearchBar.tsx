@@ -1,16 +1,26 @@
 import { InputHTMLAttributes } from 'react'
+import { FadersIcon, MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
+
 import { css } from '../../../styled-system/css'
-import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
+
+import { Tooltip } from '../Tooltip'
 
 type SearchBarProps = InputHTMLAttributes<HTMLInputElement>
 
 export function SearchBar({ ...props }: SearchBarProps) {
     return (
         <div className={searchBarContainer}>
-            <button>
-                <MagnifyingGlassIcon />
-            </button>
+            <Tooltip content="Buscar" placement="bottom">
+                <button>
+                    <MagnifyingGlassIcon weight="bold" />
+                </button>
+            </Tooltip>
             <input {...props} type="search" autoComplete="false" />
+            <Tooltip content="Filtrar" placement="bottom">
+                <button>
+                    <FadersIcon />
+                </button>
+            </Tooltip>
         </div>
     )
 }
@@ -26,6 +36,7 @@ const searchBarContainer = css({
     borderRadius: 'full',
     padding: '.25rem',
     boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
+    flex: 1,
 
     '& input': {
         fontWeight: 500,

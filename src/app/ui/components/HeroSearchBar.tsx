@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/Button'
 import { css, cva } from '../../../../styled-system/css'
 import { XIcon } from '@phosphor-icons/react'
+import { Tooltip } from '@/components/Tooltip'
 
 interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
     showFilterOptions?: boolean
@@ -54,11 +55,11 @@ const options = {
 
 export function HeroSearchBar({
     filterValue,
-    isInputFocused,
     showFilterOptions = false,
     searchAction,
     onFilterChange,
     onInputFocusChange,
+    isInputFocused,
     ...props
 }: HeroSearchBarProps) {
     const [placeholder, setPlaceholder] = useState(
@@ -151,66 +152,74 @@ export function HeroSearchBar({
                         initial="hidden"
                         animate="visible"
                     >
-                        <motion.div variants={options} key="hospital">
-                            <button
-                                className={filterButtonSelect({
-                                    type:
-                                        currentFilterType === 'HOSPITAL'
-                                            ? 'hospital'
-                                            : 'default',
-                                })}
-                                onClick={() => handleFilterSelect('HOSPITAL')}
-                            >
-                                <HospitalIcon
-                                    size={26}
-                                    weight={
-                                        currentFilterType === 'HOSPITAL'
-                                            ? 'fill'
-                                            : 'regular'
+                        <Tooltip content="Hospital">
+                            <motion.div variants={options} key="hospital">
+                                <button
+                                    className={filterButtonSelect({
+                                        type:
+                                            currentFilterType === 'HOSPITAL'
+                                                ? 'hospital'
+                                                : 'default',
+                                    })}
+                                    onClick={() =>
+                                        handleFilterSelect('HOSPITAL')
                                     }
-                                />
-                            </button>
-                        </motion.div>
-                        <motion.div variants={options} key="ambulance">
-                            <button
-                                className={filterButtonSelect({
-                                    type:
-                                        currentFilterType === 'UPA'
-                                            ? 'UPA'
-                                            : 'default',
-                                })}
-                                onClick={() => handleFilterSelect('UPA')}
-                            >
-                                <AmbulanceIcon
-                                    size={26}
-                                    weight={
-                                        currentFilterType === 'UPA'
-                                            ? 'fill'
-                                            : 'regular'
-                                    }
-                                />
-                            </button>
-                        </motion.div>
-                        <motion.div variants={options} key="first-aid">
-                            <button
-                                className={filterButtonSelect({
-                                    type:
-                                        currentFilterType === 'UBS'
-                                            ? 'UBS'
-                                            : 'default',
-                                })}
-                                onClick={() => handleFilterSelect('UBS')}
-                            >
-                                <FirstAidIcon
-                                    size={26}
-                                    weight={
-                                        currentFilterType === 'UBS'
-                                            ? 'fill'
-                                            : 'regular'
-                                    }
-                                />
-                            </button>
-                        </motion.div>
+                                >
+                                    <HospitalIcon
+                                        size={26}
+                                        weight={
+                                            currentFilterType === 'HOSPITAL'
+                                                ? 'fill'
+                                                : 'regular'
+                                        }
+                                    />
+                                </button>
+                            </motion.div>
+                        </Tooltip>
+                        <Tooltip content="Unidade de Pronto Atendimento">
+                            <motion.div variants={options} key="ambulance">
+                                <button
+                                    className={filterButtonSelect({
+                                        type:
+                                            currentFilterType === 'UPA'
+                                                ? 'UPA'
+                                                : 'default',
+                                    })}
+                                    onClick={() => handleFilterSelect('UPA')}
+                                >
+                                    <AmbulanceIcon
+                                        size={26}
+                                        weight={
+                                            currentFilterType === 'UPA'
+                                                ? 'fill'
+                                                : 'regular'
+                                        }
+                                    />
+                                </button>
+                            </motion.div>
+                        </Tooltip>
+                        <Tooltip content="Unidade Básica de Saúde">
+                            <motion.div variants={options} key="first-aid">
+                                <button
+                                    className={filterButtonSelect({
+                                        type:
+                                            currentFilterType === 'UBS'
+                                                ? 'UBS'
+                                                : 'default',
+                                    })}
+                                    onClick={() => handleFilterSelect('UBS')}
+                                >
+                                    <FirstAidIcon
+                                        size={26}
+                                        weight={
+                                            currentFilterType === 'UBS'
+                                                ? 'fill'
+                                                : 'regular'
+                                        }
+                                    />
+                                </button>
+                            </motion.div>
+                        </Tooltip>
                     </motion.div>
                 )}
             </AnimatePresence>

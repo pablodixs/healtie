@@ -118,15 +118,21 @@ export function HeroSearchContainer() {
                             }}
                             transition={{ duration: 0.2 }}
                         >
-                            <Image
-                                src={'/pictures/doodle.png'}
-                                alt=""
-                                width={800}
-                                height={320}
-                                quality={100}
-                                draggable={false}
-                                priority
-                            />
+                            <Link
+                                title="Campanha Nacional de Vacinação"
+                                href={'/campanhas/N202510001'}
+                                variant="asChild"
+                            >
+                                <Image
+                                    src={'/pictures/doodle.png'}
+                                    alt=""
+                                    width={800}
+                                    height={320}
+                                    quality={100}
+                                    draggable={false}
+                                    priority
+                                />
+                            </Link>
                             <Subheading
                                 centered
                                 style={{ marginBottom: '1rem' }}
@@ -290,6 +296,7 @@ const heroContainer = css({
 const resultsContainer = css({
     width: '100%',
     height: '100%',
+    maxHeight: '500px',
     display: 'flex',
     flexDirection: 'column',
 

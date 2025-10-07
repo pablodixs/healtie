@@ -6,12 +6,14 @@ type LinkProps = ComponentProps<typeof NextLink> & {
     variant?: 'text' | 'primary' | 'asChild' | 'subtle' | 'textSubtle'
     fullWidth?: boolean
     onlyIcon?: boolean
+    size?: 'sm' | 'md' | 'lg'
 }
 
 export function Link({
     variant,
     fullWidth = false,
     onlyIcon = false,
+    size = 'md',
     ...props
 }: LinkProps) {
     return (
@@ -20,6 +22,7 @@ export function Link({
                 variant,
                 fullWidth,
                 onlyIcon,
+                size,
             })}
             {...props}
         >
@@ -68,6 +71,7 @@ const linkStyle = cva({
                 color: 'tint',
                 padding: 'inherit',
                 gap: '.25rem',
+                borderRadius: 0,
 
                 _hover: {
                     scale: 1,
@@ -81,6 +85,7 @@ const linkStyle = cva({
                 color: 'primary',
                 padding: 'inherit',
                 gap: '.25rem',
+                borderRadius: 0,
 
                 _hover: {
                     scale: 1,
@@ -112,6 +117,13 @@ const linkStyle = cva({
                     color: 'inherit',
                 },
             },
+        },
+        size: {
+            sm: { fontSize: '0.875rem' },
+            md: {
+                fontSize: '1rem',
+            },
+            lg: { fontSize: '1.125rem' },
         },
         fullWidth: {
             true: {

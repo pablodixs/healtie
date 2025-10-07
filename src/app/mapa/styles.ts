@@ -40,6 +40,8 @@ export const searchBarContainer = css({
     zIndex: 2,
     background:
         'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%)',
+    display: 'flex',
+    gap: '.5rem',
 })
 
 export const errorStateContainer = css({

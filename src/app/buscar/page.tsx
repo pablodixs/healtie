@@ -234,7 +234,7 @@ export default function Page() {
                                             </Link>
                                         </div>
                                     </div>
-                                    <Divider />
+                                    <Divider margin="compact" />
                                 </div>
                             ))}
                         </div>
