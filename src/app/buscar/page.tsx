@@ -83,9 +83,11 @@ export default function Page() {
     )
 
     const handleFilterChange = useCallback(
-        (newFilter: string | null | ((prev: string | null) => string | null)) => {
+        (
+            newFilter: string | null | ((prev: string | null) => string | null)
+        ) => {
             if (typeof newFilter === 'function') {
-                setEstablishmentFilter(prev => newFilter(prev))
+                setEstablishmentFilter((prev) => newFilter(prev))
             } else {
                 setEstablishmentFilter(newFilter)
             }
