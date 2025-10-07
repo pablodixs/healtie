@@ -228,11 +228,11 @@ export function HeroSearchContainer() {
                                                             </span>
                                                         </Link>
                                                         <Link
-                                                            variant="primary"
+                                                            variant="textSubtle"
                                                             href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
                                                         >
                                                             <MapTrifoldIcon />{' '}
-                                                            Mostrar no Mapa
+                                                            Ver no Mapa
                                                         </Link>
                                                     </div>
                                                     <Divider />

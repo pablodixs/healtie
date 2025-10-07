@@ -3,8 +3,14 @@ import { buttonStyles } from './styles'
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     children: ReactNode
-    variant?: 'primary' | 'secondary' | 'subtle' | 'text' | 'ghost'
-    size?: 'small' | 'medium' | 'large'
+    variant?:
+        | 'primary'
+        | 'secondary'
+        | 'subtle'
+        | 'text'
+        | 'ghost'
+        | 'textSubtle'
+    size?: 'small' | 'medium' | 'large' | 'larger'
     iconButton?: boolean
     fullWidth?: boolean
 }
@@ -12,7 +18,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 export function Button({
     children,
     variant = 'primary',
-    size = 'medium',
+    size,
     iconButton = false,
     fullWidth = false,
     ...props

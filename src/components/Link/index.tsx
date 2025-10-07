@@ -3,12 +3,19 @@ import NextLink from 'next/link'
 import { cva } from '../../../styled-system/css'
 
 type LinkProps = ComponentProps<typeof NextLink> & {
-    variant?: 'text' | 'primary' | 'asChild'
+    variant?: 'text' | 'primary' | 'asChild' | 'subtle' | 'textSubtle'
+    fullWidth?: boolean
 }
 
-export function Link(props: LinkProps) {
+export function Link({ variant, fullWidth = false, ...props }: LinkProps) {
     return (
-        <NextLink className={linkStyle({ variant: props.variant })} {...props}>
+        <NextLink
+            className={linkStyle({
+                variant,
+                fullWidth,
+            })}
+            {...props}
+        >
             {props.children}
         </NextLink>
     )
@@ -36,8 +43,12 @@ const linkStyle = cva({
         },
 
         _hover: {
-            scale: 1.05,
+            scale: 1.025,
             backgroundColor: '#202020',
+        },
+
+        _active: {
+            scale: 0.975,
         },
     },
     variants: {
@@ -47,7 +58,22 @@ const linkStyle = cva({
             },
             text: {
                 backgroundColor: 'transparent',
+                color: 'tint',
+                padding: 'inherit',
+                gap: '.25rem',
+
+                _hover: {
+                    scale: 1,
+                    backgroundColor: 'transparent',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '4px',
+                },
+            },
+            textSubtle: {
+                backgroundColor: 'transparent',
                 color: 'primary',
+                padding: 'inherit',
+                gap: '.25rem',
 
                 _hover: {
                     scale: 1,
@@ -69,6 +95,21 @@ const linkStyle = cva({
                     scale: 'inherit',
                     opacity: '0.75',
                 },
+            },
+            subtle: {
+                backgroundColor: 'cream',
+                color: 'primary',
+
+                _hover: {
+                    backgroundColor: 'cream',
+                    color: 'inherit',
+                },
+            },
+        },
+        fullWidth: {
+            true: {
+                width: '100%',
+                flex: 1,
             },
         },
     },

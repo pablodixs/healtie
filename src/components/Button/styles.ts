@@ -2,20 +2,37 @@ import { cva } from '../../../styled-system/css'
 
 export const buttonStyles = cva({
     base: {
+        width: 'fit-content',
         cursor: 'pointer',
         border: 'none',
         borderRadius: 'full',
         fontWeight: '500',
         lineHeight: 'short',
-        transition: 'background-color 0.2s ease',
+        transition: 'all 0.2s ease',
         fontSize: '0.875rem',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '.75rem',
+        textWrap: 'nowrap',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+
+        padding: {
+            lg: '0.5rem 1rem',
+            base: '0.75rem 1rem',
+        },
 
         '& svg': {
             fontSize: '1.125rem',
+        },
+
+        _hover: {
+            scale: 1.025,
+        },
+
+        _active: {
+            scale: 0.975,
         },
     },
     variants: {
@@ -23,6 +40,7 @@ export const buttonStyles = cva({
             primary: {
                 backgroundColor: 'tint',
                 color: 'white',
+
                 '&:hover': {
                     backgroundColor: 'blue.600',
                 },
@@ -30,6 +48,7 @@ export const buttonStyles = cva({
             secondary: {
                 backgroundColor: 'primary',
                 color: 'white',
+
                 '&:hover': {
                     backgroundColor: '#151515',
                 },
@@ -42,7 +61,19 @@ export const buttonStyles = cva({
                 backgroundColor: 'transparent',
                 color: 'primary',
                 padding: 0,
-                transition: 'all ease 150ms',
+                justifyContent: 'flex-start',
+                gap: '.25rem',
+
+                _hover: {
+                    color: '#202020',
+                },
+            },
+            textSubtle: {
+                backgroundColor: 'transparent',
+                color: 'gray.500',
+                padding: 0,
+                justifyContent: 'flex-start',
+                gap: '.25rem',
 
                 _hover: {
                     color: '#202020',
@@ -50,12 +81,17 @@ export const buttonStyles = cva({
             },
             ghost: {
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                color: 'rgba(0, 0, 0, 0.85)',
             },
         },
         size: {
             small: {
-                fontSize: 'xs',
+                fontSize: '0.75rem',
                 padding: '0.5rem 0.75rem',
+
+                '& svg': {
+                    fontSize: '1rem',
+                },
             },
             medium: {
                 padding: {
@@ -64,7 +100,12 @@ export const buttonStyles = cva({
                 },
             },
             large: {
+                padding: '.75rem 1.5rem',
+                fontSize: '1rem',
+            },
+            larger: {
                 padding: '1rem 1.5rem',
+                fontSize: '1.125rem',
             },
         },
         iconButton: {

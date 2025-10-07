@@ -24,6 +24,7 @@ import { contentContainer, styles } from './styles'
 
 import { establishments } from '@/utils/unidades.json'
 import { useMapContext } from '@/context/MapContext'
+import { Link } from '@/components/Link'
 
 export default function Page() {
     const router = useRouter()
@@ -178,9 +179,13 @@ export default function Page() {
                             <Button fullWidth>
                                 <MapPinAreaIcon /> Estou Aqui
                             </Button>
-                            <Button fullWidth variant="subtle">
+                            <Link
+                                href={`/estabelecimento/${data.cnes}`}
+                                fullWidth
+                                variant="subtle"
+                            >
                                 Ver mais
-                            </Button>
+                            </Link>
                         </section>
                         <section>
                             <h2

@@ -42,6 +42,10 @@ const paragraphStyles = cva({
         color: 'primary',
         lineHeight: 'normal',
         margin: '.75rem 0',
+
+        '& b': {
+            fontWeight: 500,
+        },
     },
     variants: {
         subtle: {
@@ -63,6 +67,7 @@ const paragraphStyles = cva({
             subheadline: {
                 fontSize: '1.125rem',
                 lineHeight: 'short',
+                letterSpacing: '-0.01em',
             },
             body: {
                 fontSize: '1rem',

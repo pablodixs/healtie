@@ -17,6 +17,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@/components/Button'
 import { css, cva } from '../../../../styled-system/css'
+import { XIcon } from '@phosphor-icons/react'
 
 interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
     showFilterOptions?: boolean
@@ -118,7 +119,24 @@ export function HeroSearchBar({
                         type="text"
                         placeholder={placeholder}
                     />
-                    <Button variant="secondary" aria-label="Buscar">
+                    {props.value && (
+                        <Button
+                            iconButton
+                            variant="textSubtle"
+                            aria-label="Limpar campo de busca"
+                            title="Limpar campo de busca"
+                            onClick={() =>
+                                props.value
+                                    ? props.onChange?.({
+                                          target: { value: '' },
+                                      } as React.ChangeEvent<HTMLInputElement>)
+                                    : null
+                            }
+                        >
+                            <XIcon />
+                        </Button>
+                    )}
+                    <Button iconButton variant="secondary" aria-label="Buscar">
                         <MagnifyingGlassIcon size={22} weight="bold" />
                     </Button>
                 </form>
@@ -275,19 +293,5 @@ const searchBarContainer = css({
         backgroundColor: 'transparent',
         lineHeight: '1rem',
         fontSize: '1.125rem',
-    },
-
-    '& button': {
-        backgroundColor: 'primary',
-        color: 'white',
-        padding: '.5rem',
-        borderRadius: 'full',
-        border: 'none',
-        cursor: 'pointer',
-        transition: 'all 0.1s ease-in-out',
-
-        _hover: {
-            backgroundColor: '#202020',
-        },
     },
 })
