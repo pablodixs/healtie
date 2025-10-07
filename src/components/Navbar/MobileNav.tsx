@@ -12,7 +12,6 @@ import {
 
 import { css } from '../../../styled-system/css'
 import { Button } from '../Button'
-import { NavbarItems } from './NavbarItems'
 import { NavbarLink } from './NavbarLink'
 
 export function MobileNav() {

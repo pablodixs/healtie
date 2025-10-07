@@ -3,7 +3,7 @@
 import { ReactNode, useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { css } from '../../../styled-system/css'
-import { ArrowRightIcon, CaretRightIcon } from '@phosphor-icons/react/dist/ssr'
+import { CaretRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 interface CollapsibleItem {
     title: string

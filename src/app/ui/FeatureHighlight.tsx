@@ -3,7 +3,6 @@
 import Lottie from 'lottie-react'
 import { css } from '../../../styled-system/css'
 
-import { Button } from '@/components/Button'
 import { Stack } from '@/components/Stacks'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Subheading } from '@/components/Typography/Subheading'

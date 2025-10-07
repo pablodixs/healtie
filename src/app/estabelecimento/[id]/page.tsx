@@ -12,7 +12,6 @@ import {
     ArrowLeftIcon,
     ArrowUpRightIcon,
     ClockCountdownIcon,
-    CompassIcon,
     MapPinAreaIcon,
     QuestionIcon,
     WarningCircleIcon,
