@@ -78,6 +78,10 @@ const linkStyle = cva({
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
                 },
+
+                _active: {
+                    scale: 'inherit',
+                },
             },
             textSubtle: {
                 backgroundColor: 'transparent',
@@ -91,6 +95,10 @@ const linkStyle = cva({
                     backgroundColor: 'transparent',
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
+                },
+
+                _active: {
+                    scale: 'inherit',
                 },
             },
             asChild: {

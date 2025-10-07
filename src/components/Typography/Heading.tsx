@@ -23,7 +23,7 @@ const headingStyles = cva({
         color: '#151515',
         fontWeight: '570',
         lineHeight: 'tight',
-        letterSpacing: 'tight',
+        letterSpacing: '-0.075rem',
         textWrap: 'balance',
     },
     variants: {

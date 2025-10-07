@@ -137,9 +137,15 @@ export function HeroSearchBar({
                             <XIcon />
                         </Button>
                     )}
-                    <Button iconButton variant="secondary" aria-label="Buscar">
-                        <MagnifyingGlassIcon size={22} weight="bold" />
-                    </Button>
+                    <Tooltip content="Buscar">
+                        <Button
+                            iconButton
+                            variant="secondary"
+                            aria-label="Buscar"
+                        >
+                            <MagnifyingGlassIcon size={22} weight="bold" />
+                        </Button>
+                    </Tooltip>
                 </form>
             </motion.div>
             {/* OPTIONS */}
