@@ -43,7 +43,7 @@ export function MapMarker({
                 setSelectedEstablishment(establishmentProps)
             }}
         >
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence mode="wait">
                 {selectedEstablishment?.cnes === establishmentProps.cnes ? (
                     <div
                         style={{
