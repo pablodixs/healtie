@@ -15,6 +15,7 @@ import {
 import { establishments } from '@/utils/unidades.json'
 import { useMapView } from '@/hooks/useMapView'
 import { useMapContext } from '@/context/MapContext'
+import { useSearchParams } from 'next/navigation'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -25,14 +26,106 @@ const INITIAL_VIEW_STATE = {
 }
 
 export function MapComponent() {
+    const param = useSearchParams()
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
     const [showLabels, setShowLabels] = useState(true)
-    const { selectedEstablishment } = useMapContext()
-    const { viewState, setViewState } = useMapView(INITIAL_VIEW_STATE)
+    const { selectedEstablishment, setSelectedEstablishment } = useMapContext()
+    const latitudeParam = param.get('lat')
+    const longitudeParam = param.get('long')
+    const fromSearchPage = param.get('from') === 'search-page'
+
+    // Derive initial view from URL params if both are valid numbers, else fallback
+    const parsedLat = latitudeParam ? parseFloat(latitudeParam) : undefined
+    const parsedLon = longitudeParam ? parseFloat(longitudeParam) : undefined
+    const urlHasValidCoords =
+        typeof parsedLat === 'number' &&
+        !isNaN(parsedLat) &&
+        typeof parsedLon === 'number' &&
+        !isNaN(parsedLon)
+
+    // Initial view tries URL first (if valid) else defaults
+    const initialView = urlHasValidCoords
+        ? {
+              latitude: parsedLat as number,
+              longitude: parsedLon as number,
+              zoom: 15,
+          }
+        : INITIAL_VIEW_STATE
+
+    const { setViewState } = useMapView(initialView)
+
+    useEffect(() => {
+        if (!urlHasValidCoords) return
+        const newState = {
+            latitude: parsedLat as number,
+            longitude: parsedLon as number,
+            zoom: 15,
+        }
+        setViewState(newState)
+        if (mapRef.current) {
+            const map = mapRef.current.getMap()
+            map.once('load', () => {
+                map.flyTo({
+                    center: [newState.longitude, newState.latitude],
+                    zoom: newState.zoom,
+                    duration: 800,
+                })
+            })
+            if (map.isStyleLoaded()) {
+                map.flyTo({
+                    center: [newState.longitude, newState.latitude],
+                    zoom: newState.zoom,
+                    duration: 800,
+                })
+            }
+        }
+
+        // Tentar selecionar um estabelecimento correspondente/mais próximo às coordenadas da URL
+        if (setSelectedEstablishment) {
+            const targetLon = newState.longitude
+            const targetLat = newState.latitude
+
+            // Distância euclidiana simples em graus (suficiente para pequena área)
+            const distance = (aLon: number, aLat: number) =>
+                Math.sqrt(
+                    Math.pow(aLon - targetLon, 2) +
+                        Math.pow(aLat - targetLat, 2)
+                )
+
+            let closest = null as (typeof establishments)[number] | null
+            let closestDist = Number.POSITIVE_INFINITY
+            for (const est of establishments) {
+                if (
+                    est.location &&
+                    typeof est.location.longitude === 'number' &&
+                    typeof est.location.latitude === 'number'
+                ) {
+                    const d = distance(
+                        est.location.longitude,
+                        est.location.latitude
+                    )
+                    if (d < closestDist) {
+                        closestDist = d
+                        closest = est
+                    }
+                }
+            }
+
+            // Definir limite para considerar "o mesmo" ponto (~80m): 0.0007 graus aprox
+            if (closest && closestDist < 0.0007) {
+                setSelectedEstablishment({
+                    ...closest,
+                    type: closest.type as 'ubs' | 'hospital' | 'upa',
+                })
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         if (selectedEstablishment && mapRef.current) {
             const map = mapRef.current.getMap()
+
             map.flyTo({
                 center: [
                     selectedEstablishment.location.longitude,
@@ -69,9 +162,14 @@ export function MapComponent() {
                     <MapToolbar mapRef={mapRef} />
                     <Map
                         ref={mapRef}
-                        initialViewState={INITIAL_VIEW_STATE}
-                        {...viewState}
-                        onMove={(evt) => setViewState(evt.viewState)}
+                        initialViewState={initialView}
+                        onMove={(evt) =>
+                            setViewState({
+                                longitude: evt.viewState.longitude,
+                                latitude: evt.viewState.latitude,
+                                zoom: evt.viewState.zoom,
+                            })
+                        }
                         style={{
                             width: '100%',
                             height: '100%',
@@ -104,6 +202,7 @@ export function MapComponent() {
                                             | 'upa',
                                     }}
                                     showLabel={showLabels}
+                                    delay={fromSearchPage}
                                 />
                             ))}
                         <ScaleControl />

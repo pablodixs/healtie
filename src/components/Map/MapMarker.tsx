@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Marker } from 'react-map-gl/mapbox'
 import { AnimatePresence, motion } from 'motion/react'
@@ -20,6 +19,7 @@ interface MapMarkerProps {
     latitude: number
     establishmentProps?: Establishment
     showLabel?: boolean
+    delay?: boolean
 }
 
 export function MapMarker({
@@ -27,6 +27,7 @@ export function MapMarker({
     latitude,
     establishmentProps,
     showLabel = true,
+    delay = false,
 }: MapMarkerProps) {
     const router = useRouter()
     const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
@@ -66,6 +67,7 @@ export function MapMarker({
                             exit={{
                                 scale: 0,
                             }}
+                            transition={{ delay: delay ? 0.75 : 0 }}
                             className={markerContainer({
                                 type: establishmentProps.abb as
                                     | 'HOSPITAL'

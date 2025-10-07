@@ -7,6 +7,7 @@ import { ArrowClockwiseIcon } from '@phosphor-icons/react/dist/ssr'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
+    ArrowLeftIcon,
     BuildingIcon,
     DotsThreeIcon,
     GpsFixIcon,
@@ -27,10 +28,12 @@ import { useMapContext } from '@/context/MapContext'
 export default function Page() {
     const router = useRouter()
     const param = useSearchParams()
+    const fromSearchPage = param.get('from') === 'search-page'
     const { setSelectedEstablishment } = useMapContext()
     const [userAllowedLocation, setUserAllowedLocation] = useState<
         null | boolean
     >(null)
+
     const data = establishments.find(
         (establishment) =>
             establishment.cnes === Number(param.get('establishment'))
@@ -62,37 +65,71 @@ export default function Page() {
                         exit={{ opacity: 0, filter: 'blur(10px)', y: 50 }}
                         className={contentContainer}
                     >
-                        <header
-                            className={css({
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                color: 'gray.500',
-                                fontWeight: 500,
-                            })}
-                        >
-                            <Button
-                                variant="subtle"
-                                onClick={() => {
-                                    router.push('/mapa')
-                                    setSelectedEstablishment(null)
-                                }}
-                                iconButton
+                        {fromSearchPage ? (
+                            <header
+                                className={css({
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    color: 'gray.500',
+                                    fontWeight: 500,
+                                })}
                             >
-                                <DotsThreeIcon weight="bold" />
-                            </Button>
-                            <span>{data.type}</span>
-                            <Button
-                                variant="subtle"
-                                onClick={() => {
-                                    router.push('/mapa')
-                                    setSelectedEstablishment(null)
-                                }}
-                                iconButton
+                                <Button
+                                    variant="subtle"
+                                    onClick={() => {
+                                        router.back()
+                                        setSelectedEstablishment(null)
+                                    }}
+                                    iconButton
+                                >
+                                    <ArrowLeftIcon weight="bold" />
+                                </Button>
+                                <span>{data.type}</span>
+                                <Button
+                                    variant="subtle"
+                                    onClick={() => {
+                                        router.push('/mapa')
+                                        setSelectedEstablishment(null)
+                                    }}
+                                    iconButton
+                                >
+                                    <XIcon weight="bold" />
+                                </Button>
+                            </header>
+                        ) : (
+                            <header
+                                className={css({
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    color: 'gray.500',
+                                    fontWeight: 500,
+                                })}
                             >
-                                <XIcon weight="bold" />
-                            </Button>
-                        </header>
+                                <Button
+                                    variant="subtle"
+                                    onClick={() => {
+                                        router.push('/mapa')
+                                        setSelectedEstablishment(null)
+                                    }}
+                                    iconButton
+                                >
+                                    <DotsThreeIcon weight="bold" />
+                                </Button>
+                                <span>{data.type}</span>
+                                <Button
+                                    variant="subtle"
+                                    onClick={() => {
+                                        router.push('/mapa')
+                                        setSelectedEstablishment(null)
+                                    }}
+                                    iconButton
+                                >
+                                    <XIcon weight="bold" />
+                                </Button>
+                            </header>
+                        )}
                         <div>
                             <Image
                                 src={'/pictures/establishment_ubs.png'}
