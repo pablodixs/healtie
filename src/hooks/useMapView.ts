@@ -1,0 +1,93 @@
+import { useState, useCallback, useEffect } from 'react'
+
+interface MapViewState {
+    longitude: number
+    latitude: number
+    zoom: number
+}
+
+interface UseMapViewReturn {
+    viewState: MapViewState
+    setViewState: (viewState: MapViewState) => void
+    centerOnLocation: (
+        longitude: number,
+        latitude: number,
+        zoom?: number
+    ) => void
+}
+
+const LAST_LOCATION_KEY = 'clue_last_map_location'
+
+const getLastLocationFromStorage = (): MapViewState | null => {
+    if (typeof window === 'undefined') return null
+
+    try {
+        const stored = localStorage.getItem(LAST_LOCATION_KEY)
+        if (stored) {
+            const parsed = JSON.parse(stored)
+            // Validar se os dados estão no formato correto
+            if (
+                typeof parsed.longitude === 'number' &&
+                typeof parsed.latitude === 'number' &&
+                typeof parsed.zoom === 'number'
+            ) {
+                return parsed
+            }
+        }
+    } catch (error) {
+        console.warn(
+            'Erro ao recuperar última localização do localStorage:',
+            error
+        )
+    }
+
+    return null
+}
+
+const saveLocationToStorage = (viewState: MapViewState): void => {
+    if (typeof window === 'undefined') return
+
+    try {
+        localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(viewState))
+    } catch (error) {
+        console.warn('Erro ao salvar localização no localStorage:', error)
+    }
+}
+
+export function useMapView(initialViewState: MapViewState): UseMapViewReturn {
+    // Tentar carregar a última localização salva, senão usar a inicial
+    const getInitialState = (): MapViewState => {
+        const lastLocation = getLastLocationFromStorage()
+        return lastLocation || initialViewState
+    }
+
+    const [viewState, setViewState] = useState<MapViewState>(getInitialState)
+
+    // Salvar automaticamente quando o viewState mudar
+    useEffect(() => {
+        saveLocationToStorage(viewState)
+    }, [viewState])
+
+    // Função personalizada para atualizar o viewState
+    const updateViewState = useCallback((newViewState: MapViewState) => {
+        setViewState(newViewState)
+    }, [])
+
+    const centerOnLocation = useCallback(
+        (longitude: number, latitude: number, zoom: number = 14) => {
+            const newViewState = {
+                longitude,
+                latitude,
+                zoom,
+            }
+            setViewState(newViewState)
+        },
+        []
+    )
+
+    return {
+        viewState,
+        setViewState: updateViewState,
+        centerOnLocation,
+    }
+}

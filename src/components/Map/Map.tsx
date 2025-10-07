@@ -1,7 +1,7 @@
 'use client'
 
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -13,6 +13,8 @@ import {
 } from '@/components/Map'
 
 import { establishments } from '@/utils/unidades.json'
+import { useMapView } from '@/hooks/useMapView'
+import { useMapContext } from '@/context/MapContext'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -25,6 +27,22 @@ const INITIAL_VIEW_STATE = {
 export function MapComponent() {
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
     const [showLabels, setShowLabels] = useState(true)
+    const { selectedEstablishment } = useMapContext()
+    const { viewState, setViewState } = useMapView(INITIAL_VIEW_STATE)
+
+    useEffect(() => {
+        if (selectedEstablishment && mapRef.current) {
+            const map = mapRef.current.getMap()
+            map.flyTo({
+                center: [
+                    selectedEstablishment.location.longitude,
+                    selectedEstablishment.location.latitude,
+                ],
+                zoom: 16,
+                duration: 1000,
+            })
+        }
+    }, [selectedEstablishment])
 
     return (
         <motion.section
@@ -52,6 +70,8 @@ export function MapComponent() {
                     <Map
                         ref={mapRef}
                         initialViewState={INITIAL_VIEW_STATE}
+                        {...viewState}
+                        onMove={(evt) => setViewState(evt.viewState)}
                         style={{
                             width: '100%',
                             height: '100%',

@@ -1,11 +1,11 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { css } from '../../../styled-system/css'
 import { ArrowClockwiseIcon } from '@phosphor-icons/react/dist/ssr'
-
-import { Button } from '@/components/Button'
-import { Paragraph } from '@/components/Typography/Paragraph'
+import { AnimatePresence, motion } from 'motion/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
     BuildingIcon,
     DotsThreeIcon,
@@ -16,14 +16,13 @@ import {
     PhoneIcon,
     XIcon,
 } from '@phosphor-icons/react'
+
+import { Button } from '@/components/Button'
+import { Paragraph } from '@/components/Typography/Paragraph'
 import { contentContainer, styles } from './styles'
-import { AnimatePresence, motion } from 'motion/react'
 
 import { establishments } from '@/utils/unidades.json'
-import { Subheading } from '@/components/Typography/Subheading'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useMapContext } from '@/context/MapContext'
-import Image from 'next/image'
 
 export default function Page() {
     const router = useRouter()
