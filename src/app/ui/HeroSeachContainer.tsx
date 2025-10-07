@@ -14,6 +14,8 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 import data from '@/utils/unidades.json'
 import { Link } from '@/components/Link'
 import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr'
+import { MapTrifoldIcon } from '@phosphor-icons/react'
+import { Divider } from '@/components/Divider'
 
 const FILTER_OPTIONS = {
     HOSPITAL: { label: 'hospitais' },
@@ -201,9 +203,39 @@ export function HeroSearchContainer() {
                                         {filteredEstablishments?.establishments.map(
                                             (establishment) => (
                                                 <div key={establishment.cnes}>
-                                                    <Paragraph>
-                                                        {establishment.name}
-                                                    </Paragraph>
+                                                    <div
+                                                        className={
+                                                            establishmentItem
+                                                        }
+                                                    >
+                                                        <Link
+                                                            variant="asChild"
+                                                            href={`/estabelecimento/${establishment.cnes}`}
+                                                        >
+                                                            <h1>
+                                                                {
+                                                                    establishment.name
+                                                                }
+                                                            </h1>
+                                                            <span>
+                                                                {
+                                                                    establishment.district
+                                                                }
+                                                                ,{' '}
+                                                                {
+                                                                    establishment.city
+                                                                }
+                                                            </span>
+                                                        </Link>
+                                                        <Link
+                                                            variant="primary"
+                                                            href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
+                                                        >
+                                                            <MapTrifoldIcon />{' '}
+                                                            Mostrar no Mapa
+                                                        </Link>
+                                                    </div>
+                                                    <Divider />
                                                 </div>
                                             )
                                         )}
@@ -276,5 +308,18 @@ const resultsContainer = css({
     '& footer': {
         borderTop: '1px solid',
         borderColor: 'background',
+    },
+})
+
+const establishmentItem = css({
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    textAlign: 'left',
+
+    '& span': {
+        fontSize: '0.875rem',
+        color: 'gray.500',
     },
 })

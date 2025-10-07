@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { cva } from '../../../styled-system/css'
 
 type LinkProps = ComponentProps<typeof NextLink> & {
-    variant?: 'text' | 'primary'
+    variant?: 'text' | 'primary' | 'asChild'
 }
 
 export function Link(props: LinkProps) {
@@ -42,7 +42,9 @@ const linkStyle = cva({
     },
     variants: {
         variant: {
-            primary: {},
+            primary: {
+                backgroundColor: 'tint',
+            },
             text: {
                 backgroundColor: 'transparent',
                 color: 'primary',
@@ -52,6 +54,20 @@ const linkStyle = cva({
                     backgroundColor: 'transparent',
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
+                },
+            },
+            asChild: {
+                backgroundColor: 'inherit',
+                color: 'inherit',
+                fontSize: 'inherit',
+                display: 'block',
+                fontWeight: 'inherit',
+                padding: 'inherit',
+
+                _hover: {
+                    backgroundColor: 'inherit',
+                    scale: 'inherit',
+                    opacity: '0.75',
                 },
             },
         },

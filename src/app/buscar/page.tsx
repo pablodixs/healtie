@@ -12,6 +12,12 @@ import { Heading } from '@/components/Typography/Heading'
 import { Link } from '@/components/Link'
 
 import data from '@/utils/unidades.json'
+
+const allowedFilters = ['HOSPITAL', 'UPA', 'UBS'] as const
+type AllowedFilter = (typeof allowedFilters)[number]
+function isAllowedFilter(value: string | null): value is AllowedFilter {
+    return !!value && allowedFilters.includes(value as AllowedFilter)
+}
 import { SearchEmptyState } from './components/SearchEmptyState'
 import { NoResultsEmptyState } from './components/NoResultsEmpytState'
 import { ArrowRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
@@ -27,7 +33,8 @@ export default function Page() {
     const initialQuery = searchParams.get('q') || ''
     const [localQuery, setLocalQuery] = useState(initialQuery)
     const query = searchParams.get('q') || ''
-    const filterParam = searchParams.get('filter')
+    const rawFilterParam = searchParams.get('filter')
+    const filterParam = isAllowedFilter(rawFilterParam) ? rawFilterParam : null
     // Ref para evitar sobrescrever a digitação enquanto sincroniza com a URL
 
     // Sincroniza o estado local somente quando o parâmetro de URL realmente muda
@@ -37,14 +44,10 @@ export default function Page() {
 
     // Sincroniza o filtro vindo da URL (ex: compartilhamento de link)
     useEffect(() => {
-        if (filterParam && filterParam !== establishmentFilter) {
+        if (filterParam !== establishmentFilter) {
             setEstablishmentFilter(filterParam)
         }
-        if (!filterParam && establishmentFilter) {
-            setEstablishmentFilter(null)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterParam])
+    }, [filterParam, establishmentFilter])
 
     // Debounce para atualizar a URL com query e filtro
     useEffect(() => {
@@ -59,7 +62,7 @@ export default function Page() {
 
             const params = new URLSearchParams()
             if (nextQuery) params.set('q', nextQuery)
-            if (nextFilter) params.set('filter', nextFilter)
+            if (isAllowedFilter(nextFilter)) params.set('filter', nextFilter)
 
             const searchString = params.toString()
             const nextUrl = searchString ? `/buscar?${searchString}` : '/buscar'
@@ -161,9 +164,12 @@ export default function Page() {
                                             display: 'flex',
                                             width: '100%',
                                             justifyContent: 'space-between',
+                                            borderBottom:
+                                                '1px solid rgba(0, 0, 0,',
                                         })}
                                     >
-                                        <div
+                                        <Link
+                                            href={`/estabelecimento/${establishment.cnes}`}
                                             className={css({
                                                 display: 'flex',
                                                 flexDirection: 'column',
@@ -172,6 +178,13 @@ export default function Page() {
                                             <b
                                                 className={css({
                                                     fontWeight: 500,
+                                                    color: 'tint',
+
+                                                    _hover: {
+                                                        textDecoration:
+                                                            'underline',
+                                                        textUnderlineOffset: 5,
+                                                    },
                                                 })}
                                             >
                                                 {establishment.name}
@@ -185,7 +198,7 @@ export default function Page() {
                                                 {establishment.district},{' '}
                                                 {establishment.city}
                                             </span>
-                                        </div>
+                                        </Link>
                                         <div
                                             className={css({
                                                 display: 'flex',
@@ -194,6 +207,7 @@ export default function Page() {
                                             })}
                                         >
                                             <Link
+                                                variant="primary"
                                                 href={`/estabelecimento/${establishment.cnes}`}
                                             >
                                                 Ver Detalhes <ArrowRightIcon />
