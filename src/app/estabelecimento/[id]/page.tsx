@@ -31,11 +31,15 @@ import { Link } from '@/components/Link'
 import { Divider } from '@/components/Divider'
 import Image from 'next/image'
 import { Tooltip } from '@/components/Tooltip'
+import { Portal } from '@/components/Portal'
+import { ReportModal } from '../components/ReportModal'
+import { useState } from 'react'
 
 export default function Page() {
     const path = usePathname()
-    const id = path.split('/').pop()
     const router = useRouter()
+    const id = path.split('/').pop()
+    const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false)
 
     const establishment = establishments.find((est) => est.cnes === Number(id))
 
@@ -164,7 +168,10 @@ export default function Page() {
                                 <MapPinAreaIcon weight="bold" size={20} /> Estou
                                 Aqui
                             </Button>
-                            <Button variant="subtle">
+                            <Button
+                                variant="subtle"
+                                onClick={() => setIsReportModalOpen(true)}
+                            >
                                 <SpeedometerIcon size={20} /> Reportar
                             </Button>
                             <Button variant="subtle">
@@ -381,6 +388,15 @@ export default function Page() {
                     </aside>
                 </section>
             </main>
+            <Portal>
+                {isReportModalOpen && (
+                    <ReportModal
+                        isOpen={isReportModalOpen}
+                        onOpenChange={setIsReportModalOpen}
+                        establishment={establishment as Establishment}
+                    />
+                )}
+            </Portal>
         </MapContextProvider>
     )
 }

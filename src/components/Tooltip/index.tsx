@@ -243,7 +243,7 @@ export function Tooltip({
 const tooltipContainer = cva({
     base: {
         position: 'fixed',
-        zIndex: 1000,
+        zIndex: 100000,
         willChange: 'transform, opacity',
         padding: '0.5rem 1rem',
         borderRadius: '9999px',

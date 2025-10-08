@@ -17,6 +17,7 @@ export default function RootLayout({
     return (
         <html lang="pt-br">
             <body>
+                <div id="portal" />
                 <MainLayout>{children}</MainLayout>
             </body>
         </html>
