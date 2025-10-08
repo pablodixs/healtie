@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { motion } from 'motion/react'
 import {
+    CaretRightIcon,
     ClockCountdownIcon,
     PillIcon,
     ProhibitInsetIcon,
@@ -12,11 +13,12 @@ import {
 
 import { css } from '../../../../styled-system/css'
 
-import { Paragraph, Subheading } from '@/components/Typography'
+import { Paragraph } from '@/components/Typography'
 import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 
 import { Establishment } from '@/interfaces/Establishment'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 
 interface ReportModalProps {
     isOpen: boolean
@@ -62,59 +64,99 @@ export function ReportModal({
                 role="dialog"
                 aria-modal="true"
             >
-                <header className={headerStyles}>
-                    <Paragraph bolder marginCompact>
-                        Reportar
-                    </Paragraph>
-                    <Tooltip placement="bottom" content="Fechar">
+                <div className={bodyWrapperStyles}>
+                    <header className={headerStyles}>
+                        <Paragraph bolder marginCompact subtle>
+                            Reportar
+                        </Paragraph>
+                        <Tooltip placement="bottom" content="Fechar">
+                            <Button
+                                variant="ghost"
+                                iconButton
+                                onClick={() => onOpenChange?.(false)}
+                                aria-label="Fechar "
+                            >
+                                <XIcon weight="bold" />
+                            </Button>
+                        </Tooltip>
+                    </header>
+                    <section
+                        className={css({
+                            mt: '3rem',
+                        })}
+                    >
+                        <EstablishmentIcon
+                            type={
+                                establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'
+                            }
+                            delay
+                        />
+                        <h1
+                            className={css({
+                                fontSize: '1.5rem',
+                                fontWeight: '600',
+                                letterSpacing: '-0.02em',
+                                color: 'primary',
+                                textAlign: 'center',
+                                mt: '0.5rem',
+                            })}
+                        >
+                            {establishment.name}
+                        </h1>
+                    </section>
+                    <section
+                        className={css({
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(4, 1fr)',
+                            gap: '1rem',
+                            mt: '1.5rem',
+                        })}
+                    >
+                        <button className={buttonStyles}>
+                            <span>
+                                <ClockCountdownIcon size={32} />
+                            </span>
+                            Tempo de espera
+                        </button>
+                        <button className={buttonStyles}>
+                            <span>
+                                <PillIcon size={32} />
+                            </span>
+                            Falta de medicamentos
+                        </button>
+                        <button className={buttonStyles}>
+                            <span>
+                                <ProhibitInsetIcon size={32} />
+                            </span>
+                            Falta de serviços
+                        </button>
+                        <button className={buttonStyles}>
+                            <span>
+                                <StethoscopeIcon size={32} />
+                            </span>
+                            Sem médicos
+                        </button>
+                    </section>
+                </div>
+                <footer className={footerStyles}>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            gap: '.5rem',
+                        })}
+                    >
                         <Button
                             variant="ghost"
-                            iconButton
                             onClick={() => onOpenChange?.(false)}
-                            aria-label="Fechar "
                         >
-                            <XIcon weight="bold" />
+                            Cancelar
                         </Button>
-                    </Tooltip>
-                </header>
-                <section>
-                    <Paragraph centered size="subheadline" bolder>
-                        {establishment.name}
-                    </Paragraph>
-                </section>
-                <section
-                    className={css({
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
-                        gap: '1rem',
-                        mt: '1.5rem',
-                    })}
-                >
-                    <button className={buttonStyles}>
-                        <span>
-                            <ClockCountdownIcon size={32} />
-                        </span>
-                        Tempo de espera
-                    </button>
-                    <button className={buttonStyles}>
-                        <span>
-                            <PillIcon size={32} />
-                        </span>
-                        Falta de medicamentos
-                    </button>
-                    <button className={buttonStyles}>
-                        <span>
-                            <ProhibitInsetIcon size={32} />
-                        </span>
-                        Falta de serviços
-                    </button>
-                    <button className={buttonStyles}>
-                        <span>
-                            <StethoscopeIcon size={32} />
-                        </span>
-                        Sem médicos
-                    </button>
-                </section>
+                        <Button>
+                            Próximo <CaretRightIcon />
+                        </Button>
+                    </div>
+                </footer>
             </motion.div>
         </motion.div>
     )
@@ -122,11 +164,16 @@ export function ReportModal({
 
 const modalContainer = css({
     backgroundColor: 'white',
-    padding: '1.5rem',
+    p: '1.5rem',
     borderRadius: '0.75rem',
     width: '100%',
-    maxWidth: '600px',
+    minW: '600px',
+    maxW: '800px',
+    maxHeight: '90vh',
+    display: 'flex',
+    flexDirection: 'column',
     position: 'relative',
+    pb: '6rem',
 })
 
 const overlay = css({
@@ -147,7 +194,7 @@ const headerStyles = css({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '0.5rem',
+    marginBottom: '1rem',
 })
 
 const buttonStyles = css({
@@ -169,11 +216,30 @@ const buttonStyles = css({
         width: 'fit-content',
         padding: '0.5rem',
         borderRadius: '50%',
-        background: 'linear-gradient(to bottom, #AE35FF 0%, #9900FF 100%)',
+        background: 'linear-gradient(to bottom, #12b3eb 0%, #5460f9 100%)',
+        border: '2px solid white',
         color: 'white',
     },
 
     _hover: {
         backgroundColor: 'background',
     },
+})
+
+const footerStyles = css({
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    padding: '1rem',
+    borderTop: '1px solid',
+    borderColor: 'gray.100',
+    borderRadius: '0 0 0.75rem 0.75rem',
+})
+
+const bodyWrapperStyles = css({
+    overflowY: 'auto',
+    maxHeight: 'calc(90vh - 5rem)',
 })

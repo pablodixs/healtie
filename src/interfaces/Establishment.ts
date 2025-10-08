@@ -8,7 +8,7 @@ export interface Establishment {
     state: string
     zip_code: string
     abb: string
-    type: 'ubs' | 'hospital' | 'upa'
+    type: string
     phone: string
     location: {
         longitude: number

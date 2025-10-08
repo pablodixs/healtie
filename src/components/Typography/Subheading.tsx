@@ -22,7 +22,7 @@ const subHeadingStyles = cva({
             base: '1.5rem',
         },
         color: '#151515',
-        fontWeight: '500',
+        fontWeight: 550,
         lineHeight: 'tight',
         letterSpacing: 'tight',
         textWrap: 'balance',
