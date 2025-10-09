@@ -49,6 +49,14 @@ export function MobileNav() {
 }
 
 const mobileNavContainer = css({
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    height: '60px',
+    bgColor: 'red',
+    width: '100%',
+    zIndex: 1000,
+
     display: {
         md: 'none',
         base: 'flex',

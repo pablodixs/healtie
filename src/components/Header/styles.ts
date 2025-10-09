@@ -7,7 +7,10 @@ export const headerContainer = cva({
         left: 0,
         right: 0,
         zIndex: 1000,
-        display: 'flex',
+        display: {
+            base: 'none',
+            md: 'flex',
+        },
         justifyContent: 'space-between',
         alignItems: 'center',
         background:
