@@ -20,6 +20,14 @@ export function NavbarLink({ children, href, ...props }: NavbarLinkProps) {
 const navbarLink = cva({
     base: {
         display: 'flex',
+        flexDirection: {
+            base: 'column',
+            md: 'row',
+        },
+        gap: {
+            base: '.25rem',
+            md: 'inherit',
+        },
         alignItems: 'center',
         borderRadius: 'md',
         lineHeight: 1,
