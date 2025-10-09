@@ -26,13 +26,16 @@ const navbarLink = cva({
         },
         gap: {
             base: '.25rem',
-            md: 'inherit',
+            md: '0',
         },
         alignItems: 'center',
         borderRadius: 'md',
         lineHeight: 1,
         fontWeight: 500,
-        fontSize: '0.875rem',
+        fontSize: {
+            base: '0.625rem',
+            md: '0.875rem',
+        },
         color: '#202020',
         width: '100%',
         transition: 'all ease-in-out 0.2s',
