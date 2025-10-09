@@ -68,7 +68,10 @@ function Navbar({ isCompacted }: NavbarProps) {
 }
 
 const navStyles = css({
-    display: 'flex',
+    display: {
+        md: 'flex',
+        base: 'none',
+    },
     gap: '1.125rem',
     flex: 1,
     justifyContent: 'center',
