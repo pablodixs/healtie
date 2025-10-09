@@ -7,11 +7,27 @@ export const mainContainer = css({
 
 export const styles = css({
     position: 'absolute',
-    top: 'header',
+    top: {
+        md: 'header',
+    },
+    bottom: {
+        base: '4rem',
+        md: 'inherit',
+    },
     left: 0,
-    width: '30%',
+    right: {
+        md: 'inherit',
+        base: '1rem',
+    },
+    width: {
+        md: '30%',
+        base: '100%',
+    },
     maxWidth: '400px',
-    maxHeight: 'calc(90dvh - 1rem)',
+    maxHeight: {
+        md: 'calc(90dvh - 1rem)',
+        base: '50%',
+    },
     minHeight: '74px',
     zIndex: 1,
     backgroundColor: 'white',
