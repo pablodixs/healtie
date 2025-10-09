@@ -17,25 +17,33 @@ export const styles = css({
     left: 0,
     right: {
         md: 'inherit',
-        base: '1rem',
+        base: 0,
     },
     width: {
         md: '30%',
         base: '100%',
     },
-    maxWidth: '400px',
+    maxWidth: {
+        md: '400px',
+        base: '100%',
+    },
     maxHeight: {
         md: 'calc(90dvh - 1rem)',
         base: '50%',
+    },
+    marginLeft: {
+        md: '1rem',
+        base: '0',
+    },
+    pt: {
+        md: 'calc(42px + 1rem)',
     },
     minHeight: '74px',
     zIndex: 1,
     backgroundColor: 'white',
     boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
-    marginLeft: '1rem',
     borderRadius: '32px',
     overflow: 'hidden',
-    pt: 'calc(42px + 1rem)',
 })
 
 export const contentContainer = css({
