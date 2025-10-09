@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 import { MainLayout } from '@/components/Layout'
-import { MobileNav } from '@/components/Navbar/MobileNav'
+import { MobileNav } from '@/components/Header/MobileNav'
 
 export const metadata: Metadata = {
     title: 'Healtie',

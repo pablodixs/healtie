@@ -3,16 +3,11 @@
 import { memo } from 'react'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
-import {
-    CompassIcon,
-    HouseIcon,
-    MagnifyingGlassIcon,
-    MapTrifoldIcon,
-} from '@phosphor-icons/react'
 
 import { css } from '../../../styled-system/css'
 
 import { NavbarLink } from '../Navbar/NavbarLink'
+import { NAV_LINKS } from './navLinks'
 
 // Animations
 const SPRING = {
@@ -38,18 +33,6 @@ const EXIT_ANIMATION_PROPERTIES = {
     marginLeft: 0,
     filter: 'blur(max(0px, 2px))',
 }
-
-const NAV_LINKS = [
-    { href: '/', label: 'Início', Icon: HouseIcon, key: 'home' },
-    { href: '/mapa', label: 'Mapa', Icon: MapTrifoldIcon, key: 'map' },
-    { href: '/onde-ir', label: 'Onde ir', Icon: CompassIcon, key: 'where' },
-    {
-        href: '/buscar',
-        label: 'Buscar',
-        Icon: MagnifyingGlassIcon,
-        key: 'search',
-    },
-]
 
 interface NavbarProps {
     isCompacted: boolean
