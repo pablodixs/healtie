@@ -8,8 +8,8 @@ import { motion, stagger } from 'motion/react'
 //     VirusIcon,
 // } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
-import { Link } from '@/components/Link'
 import { SyringeIcon } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 
 const list = {
     visible: {
@@ -58,13 +58,35 @@ export function SearchTags() {
                     <SyringeIcon /> Vacinação
                 </Link>
             </motion.div> */}
-            <Link variant="text" href={'/campanhas/N202510001'}>
-                <SyringeIcon size={20} /> Começou a Campanha Nacional de
-                Vacinação para Proteção de Crianças e Adolescentes
-            </Link>
+            <div className={callout}>
+                <Link href={'/campanhas/N202510001'}>
+                    <SyringeIcon size={18} /> Começou a Campanha Nacional de
+                    Vacinação para Proteção de Crianças e Adolescentes
+                </Link>
+            </div>
         </motion.div>
     )
 }
+
+const callout = css({
+    padding: '.75rem 1rem',
+    backgroundColor: 'neutral.50',
+    borderRadius: '12px',
+
+    '& a': {
+        fontSize: '0.875rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        fontWeight: 450,
+        color: 'neutral.600',
+        transition: 'all ease 150ms',
+
+        _hover: {
+            color: 'tint',
+        },
+    },
+})
 
 const searchTagsContainer = css({
     display: 'flex',

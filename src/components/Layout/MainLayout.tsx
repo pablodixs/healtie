@@ -5,10 +5,17 @@ import { usePathname } from 'next/navigation'
 
 import { Header } from '../Header'
 import { Footer } from '../Footer'
+import { CookiesDialog } from '../OneTimeDialogs/CookiesDialog'
 import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
+
+import { Portal } from '../Portal'
+
+import { useCookiesPreferences } from '@/hooks/useCookiesPreferences'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     const path = usePathname()
+    const { hasSetPreference, allowCookies, isPreferenceReady } =
+        useCookiesPreferences()
 
     return (
         <div className={mainLayoutContainer}>
@@ -21,6 +28,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 {path !== '/mapa' && <Footer />}
             </section>
+            <Portal>
+                {isPreferenceReady && !hasSetPreference && (
+                    <CookiesDialog savePreference={allowCookies} />
+                )}
+            </Portal>
         </div>
     )
 }
