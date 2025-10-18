@@ -1,4 +1,4 @@
-import { Heading, Paragraph, Subheading } from '@/components/Typography'
+import { Heading, Paragraph } from '@/components/Typography'
 import { css } from '../../../../styled-system/css'
 import { Input } from '@/components/Form/Input'
 import { Label } from '@/components/Form/Label'
@@ -8,7 +8,7 @@ import { Button } from '@/components/Button'
 export default function Page() {
     return (
         <main className={layoutStyle}>
-            <div>
+            <div className={formContainerStyle}>
                 <Heading centered>Bem-vindo de volta!</Heading>
                 <Paragraph subtle centered>
                     Entre na sua conta do Healtie para continuar.
@@ -26,27 +26,33 @@ export default function Page() {
                         placeholder="********"
                         type="password"
                     />
-                    <Link
-                        href="/auth/recuperacao"
-                        variant="textSubtle"
-                        size="sm"
-                    >
-                        Esqueceu a senha?
-                    </Link>
-                    <div>
-                        <Button size="large" variant="secondary" fullWidth>
+                    <footer className={formFooterStyle}>
+                        <Link
+                            href="/auth/recuperacao"
+                            variant="textSubtle"
+                            size="sm"
+                        >
+                            Esqueceu a senha?
+                        </Link>
+                        <Button variant="secondary" fullWidth>
                             Entrar
                         </Button>
-                        <Button size="large" variant="subtle" fullWidth>
+                        <Button variant="subtle" fullWidth>
                             Criar uma conta
                         </Button>
-                    </div>
+                    </footer>
                 </form>
             </div>
             <div className={illustrationStyle}></div>
         </main>
     )
 }
+
+const formContainerStyle = css({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+})
 
 const layoutStyle = css({
     display: 'grid',
@@ -56,11 +62,19 @@ const layoutStyle = css({
 })
 
 const formStyle = css({
-    mt: '2.5rem',
+    my: '2.5rem',
 
     '& input': {
         width: '100%',
     },
+})
+
+const formFooterStyle = css({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: '1rem',
+    mt: '1rem',
 })
 
 const illustrationStyle = css({
