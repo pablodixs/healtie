@@ -45,6 +45,7 @@ const paragraphStyles = cva({
         color: 'primary',
         lineHeight: 'normal',
         margin: '.75rem 0',
+        textWrap: 'pretty',
 
         '& b': {
             fontWeight: 500,

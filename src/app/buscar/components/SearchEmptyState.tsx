@@ -1,7 +1,4 @@
-'use client'
-
 import Link from 'next/link'
-import { motion } from 'motion/react'
 import { TrendUpIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { css } from '../../../../styled-system/css'
@@ -10,13 +7,7 @@ import { Subheading } from '@/components/Typography/Subheading'
 
 export function SearchEmptyState() {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ delay: 1 }}
-            className={container}
-        >
+        <div className={container}>
             <header>
                 <Subheading>Sugestões</Subheading>
             </header>
@@ -34,7 +25,7 @@ export function SearchEmptyState() {
                     <TrendUpIcon size={18} /> Pronto socorro
                 </Link>
             </section>
-        </motion.div>
+        </div>
     )
 }
 

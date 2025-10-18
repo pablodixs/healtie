@@ -82,7 +82,9 @@ export function Footer() {
                             <Link href="/">LGPD</Link>
                         </li>
                         <li>
-                            <Link href="/">Gerenciar cookies</Link>
+                            <Link href="/privacidade/preferencias">
+                                Preferências de Privacidade
+                            </Link>
                         </li>
                     </ul>
                 </div>

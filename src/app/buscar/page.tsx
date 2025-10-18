@@ -24,6 +24,7 @@ import { CaretRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Divider } from '@/components/Divider'
 import { Tooltip } from '@/components/Tooltip'
+import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
 
 export default function Page() {
     const router = useRouter()
@@ -258,7 +259,16 @@ export default function Page() {
                         <NoResultsEmptyState query={localQuery} />
                     </motion.div>
                 ) : (
-                    <SearchEmptyState />
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ delay: 1 }}
+                        className={css({ width: '800px' })}
+                    >
+                        <NearEstablishmentsBanner />
+                        <SearchEmptyState />
+                    </motion.div>
                 )}
             </AnimatePresence>
         </main>
