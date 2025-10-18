@@ -59,7 +59,7 @@ export function Header() {
                 <NavLogo scrollY={scrollY} />
                 <Navbar isCompacted={isCompacted} />
                 <div className="auth">
-                    <NavbarLink href="/">
+                    <NavbarLink href="/auth/login">
                         Entrar{' '}
                         <UserCircleIcon
                             className={css({ marginLeft: '.5rem' })}

@@ -11,7 +11,6 @@ import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
 import { Portal } from '../Portal'
 
 import { useCookiesPreferences } from '@/hooks/useCookiesPreferences'
-import { AllowLocationDialog } from '../OneTimeDialogs'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     const path = usePathname()
@@ -33,7 +32,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 {isPreferenceReady && !hasSetPreference && (
                     <CookiesDialog savePreference={allowCookies} />
                 )}
-                <AllowLocationDialog />
             </Portal>
         </div>
     )

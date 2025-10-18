@@ -8,14 +8,14 @@ export function Input(props: InputProps) {
 
 const inputStyles = css({
     padding: '0.5rem 0.75rem',
-    borderRadius: 'full',
+    borderRadius: '12px',
     border: '1px solid',
-    borderColor: 'gray.300',
+    borderColor: 'neutral.50',
     fontSize: '1rem',
     lineHeight: '1.5rem',
     transition: 'all 0.2s ease-in-out',
     marginBottom: '1rem',
-    backgroundColor: 'background',
+    backgroundColor: 'neutral.50',
 
     _focus: {
         borderColor: 'tint',
