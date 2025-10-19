@@ -16,7 +16,7 @@ interface UseMapViewReturn {
     ) => void
 }
 
-const LAST_LOCATION_KEY = 'clue_last_map_location'
+const LAST_LOCATION_KEY = 'healtie_last_map_location'
 
 const getLastLocationFromStorage = (): MapViewState | null => {
     if (typeof window === 'undefined') return null

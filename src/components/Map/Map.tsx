@@ -52,7 +52,7 @@ export function MapComponent() {
           }
         : INITIAL_VIEW_STATE
 
-    const { setViewState } = useMapView(initialView)
+    const { viewState, setViewState } = useMapView(initialView)
 
     useEffect(() => {
         if (!urlHasValidCoords) return
@@ -162,7 +162,7 @@ export function MapComponent() {
                     <MapToolbar mapRef={mapRef} />
                     <Map
                         ref={mapRef}
-                        initialViewState={initialView}
+                        {...viewState}
                         onMove={(evt) =>
                             setViewState({
                                 longitude: evt.viewState.longitude,
