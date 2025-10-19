@@ -46,6 +46,9 @@ export type UseUserGeolocationReturn = {
     // Backwards-compatibility fields
     userDidAllowLocation: boolean | null
     setUserDidAllowLocation: Dispatch<SetStateAction<boolean | null>>
+    // Location string (city, state)
+    location: string | null
+    isLoadingLocation: boolean
 }
 
 /**
@@ -88,6 +91,8 @@ export function useUserGeolocation(
     const [userDidAllowLocation, setUserDidAllowLocation] = useState<
         boolean | null
     >(null)
+    const [location, setLocation] = useState<string | null>(null)
+    const [isLoadingLocation, setIsLoadingLocation] = useState<boolean>(false)
 
     const watchIdRef = useRef<number | null>(null)
     const mountedRef = useRef<boolean>(false)
@@ -257,6 +262,74 @@ export function useUserGeolocation(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSupported, immediate, watch])
 
+    // Reverse geocoding with localStorage cache
+    useEffect(() => {
+        const fetchLocation = async () => {
+            if (!coords) return
+
+            const { latitude: lat, longitude: lng } = coords
+            const cacheKey = `location_${lat.toFixed(4)}_${lng.toFixed(4)}`
+
+            // Check localStorage cache first
+            if (isBrowser) {
+                try {
+                    const cached = localStorage.getItem(cacheKey)
+                    if (cached) {
+                        const { location: cachedLocation, timestamp } =
+                            JSON.parse(cached)
+                        // Cache valid for 7 days
+                        const isValid =
+                            Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000
+                        if (isValid) {
+                            setLocation(cachedLocation)
+                            return
+                        }
+                    }
+                } catch {
+                    // Ignore localStorage errors
+                }
+            }
+
+            // Fetch from API if not cached
+            setIsLoadingLocation(true)
+            try {
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+                )
+                const data = await res.json()
+                const city =
+                    data.address.city ||
+                    data.address.town ||
+                    data.address.village
+                const state = data.address.state
+                const locationString = `${city}, ${state}`
+
+                setLocation(locationString)
+
+                // Save to localStorage
+                if (isBrowser) {
+                    try {
+                        localStorage.setItem(
+                            cacheKey,
+                            JSON.stringify({
+                                location: locationString,
+                                timestamp: Date.now(),
+                            })
+                        )
+                    } catch {
+                        // Ignore localStorage errors
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching location:', err)
+            } finally {
+                setIsLoadingLocation(false)
+            }
+        }
+
+        fetchLocation()
+    }, [coords, isBrowser])
+
     return {
         userCurrentPosition,
         coords,
@@ -270,5 +343,8 @@ export function useUserGeolocation(
         // Back-compat
         userDidAllowLocation,
         setUserDidAllowLocation,
+        // Location string
+        location,
+        isLoadingLocation,
     }
 }

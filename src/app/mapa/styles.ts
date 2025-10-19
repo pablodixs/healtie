@@ -50,9 +50,10 @@ export const contentContainer = css({
     maxH: 'calc(90dvh - 6rem)',
     height: '100%',
     overflowY: 'auto',
-    overflow: 'hidden',
+    overflowX: 'hidden',
     padding: '1rem',
     position: 'relative',
+    willChange: 'height, transform, opacity',
 })
 
 export const searchBarContainer = css({

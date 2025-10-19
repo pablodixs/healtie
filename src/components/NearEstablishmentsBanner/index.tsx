@@ -2,7 +2,7 @@
 
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { AskLocationBanner } from '../AskLocationBanner'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { css } from '../../../styled-system/css'
 
 import { establishments } from '@/utils/unidades.json'
@@ -21,29 +21,13 @@ import { SectionTitle } from './SectionTitle'
 type NearbyEstablishment = Establishment & { distance: number }
 
 export function NearEstablishmentsBanner() {
-    const { coords, userDidAllowLocation, requestLocation } =
-        useUserGeolocation()
-    const [location, setLocation] = useState<string | null>(null)
-    const [isLoadingLocation, setIsLoadingLocation] = useState(false)
-
-    useEffect(() => {
-        const fetchLocation = async () => {
-            if (!coords) return
-            setIsLoadingLocation(true)
-            const { latitude: lat, longitude: lng } = coords
-            const res = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
-            )
-            const data = await res.json()
-            const city =
-                data.address.city || data.address.town || data.address.village
-            const state = data.address.state
-            setLocation(`${city}, ${state}`)
-            setIsLoadingLocation(false)
-        }
-
-        fetchLocation()
-    }, [coords])
+    const {
+        coords,
+        userDidAllowLocation,
+        requestLocation,
+        location,
+        isLoadingLocation,
+    } = useUserGeolocation()
 
     const establishmentsWithDistance: NearbyEstablishment[] = useMemo(() => {
         if (!coords) return []

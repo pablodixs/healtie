@@ -8,7 +8,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 
 import { AsideToolbar } from './AsideToolbar'
-import { AnimatedMainContainer } from './MainContainer'
+import { AnimatedMainContainer } from './AnimatedMainContainer'
 import { Link } from '@/components/Link'
 import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
@@ -34,7 +34,7 @@ export function AsideEstablishmentDetails({
     selectedEstablishmentData,
 }: AsideEstablishmentDetailsProps) {
     return (
-        <AnimatedMainContainer>
+        <AnimatedMainContainer key="establishment-details">
             <AsideToolbar data={selectedEstablishmentData} />
             <Image
                 src={'/pictures/establishment_ubs.png'}
