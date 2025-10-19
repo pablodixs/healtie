@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { css } from '../../../styled-system/css'
 import { ArrowClockwiseIcon } from '@phosphor-icons/react/dist/ssr'
 import { AnimatePresence, motion } from 'motion/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import {
     ArrowLeftIcon,
     BuildingIcon,
@@ -19,21 +19,19 @@ import {
     XIcon,
 } from '@phosphor-icons/react'
 
-import { Button } from '@/components/Button'
-import { Paragraph } from '@/components/Typography/Paragraph'
 import { contentContainer, styles } from './styles'
 
-import { establishments } from '@/utils/unidades.json'
-import { useMapContext } from '@/context/MapContext'
 import { Link } from '@/components/Link'
+import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 import { Divider } from '@/components/Divider'
+import { Paragraph } from '@/components/Typography/Paragraph'
+
+import { establishments } from '@/utils/unidades.json'
+import { AsideToolbar } from './components/AsideToolbar'
 
 export default function Page() {
-    const router = useRouter()
     const param = useSearchParams()
-    const fromSearchPage = param.get('from') === 'search-page'
-    const { setSelectedEstablishment } = useMapContext()
     const [userAllowedLocation, setUserAllowedLocation] = useState<
         null | boolean
     >(null)
@@ -69,79 +67,7 @@ export default function Page() {
                         exit={{ opacity: 0, filter: 'blur(10px)', y: 50 }}
                         className={contentContainer}
                     >
-                        {fromSearchPage ? (
-                            <header
-                                className={css({
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    color: 'gray.500',
-                                    fontWeight: 500,
-                                })}
-                            >
-                                <Tooltip placement="bottom" content="Voltar">
-                                    <Button
-                                        variant="subtle"
-                                        onClick={() => {
-                                            router.back()
-                                            setSelectedEstablishment(null)
-                                        }}
-                                        iconButton
-                                    >
-                                        <ArrowLeftIcon weight="bold" />
-                                    </Button>
-                                </Tooltip>
-                                <span>{data.type}</span>
-                                <Tooltip placement="bottom" content="Fechar">
-                                    <Button
-                                        variant="subtle"
-                                        onClick={() => {
-                                            router.push('/mapa')
-                                            setSelectedEstablishment(null)
-                                        }}
-                                        iconButton
-                                    >
-                                        <XIcon weight="bold" />
-                                    </Button>
-                                </Tooltip>
-                            </header>
-                        ) : (
-                            <header
-                                className={css({
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    color: 'gray.500',
-                                    fontWeight: 500,
-                                })}
-                            >
-                                <Tooltip placement="bottom" content="Menu">
-                                    <Button
-                                        variant="subtle"
-                                        onClick={() => {
-                                            router.push('/mapa')
-                                            setSelectedEstablishment(null)
-                                        }}
-                                        iconButton
-                                    >
-                                        <DotsThreeIcon weight="bold" />
-                                    </Button>
-                                </Tooltip>
-                                <span>{data.type}</span>
-                                <Tooltip placement="bottom" content="Fechar">
-                                    <Button
-                                        variant="subtle"
-                                        onClick={() => {
-                                            router.push('/mapa')
-                                            setSelectedEstablishment(null)
-                                        }}
-                                        iconButton
-                                    >
-                                        <XIcon weight="bold" />
-                                    </Button>
-                                </Tooltip>
-                            </header>
-                        )}
+                        <AsideToolbar data={data} />
                         <div>
                             <Image
                                 src={'/pictures/establishment_ubs.png'}
