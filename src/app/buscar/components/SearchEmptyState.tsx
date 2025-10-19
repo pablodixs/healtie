@@ -3,13 +3,13 @@ import { TrendUpIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { css } from '../../../../styled-system/css'
 
-import { Subheading } from '@/components/Typography/Subheading'
+import { SectionTitle } from '@/components/NearEstablishmentsBanner/SectionTitle'
 
 export function SearchEmptyState() {
     return (
         <div className={container}>
             <header>
-                <Subheading>Sugestões</Subheading>
+                <SectionTitle title="Sugestões" Icon={TrendUpIcon} />
             </header>
             <section>
                 <Link className={linkStyle} href={'#'}>

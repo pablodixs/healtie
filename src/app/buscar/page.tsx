@@ -18,7 +18,6 @@ type AllowedFilter = (typeof allowedFilters)[number]
 function isAllowedFilter(value: string | null): value is AllowedFilter {
     return !!value && allowedFilters.includes(value as AllowedFilter)
 }
-import { SearchEmptyState } from './components/SearchEmptyState'
 import { NoResultsEmptyState } from './components/NoResultsEmpytState'
 import { CaretRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
 import { Paragraph } from '@/components/Typography/Paragraph'
@@ -180,7 +179,7 @@ export default function Page() {
                                             width: '100%',
                                             justifyContent: 'space-between',
                                             borderBottom:
-                                                '1px solid rgba(0, 0, 0,',
+                                                '1px solid rgba(0, 0, 0, 0.1)',
                                         })}
                                     >
                                         <Link
@@ -266,8 +265,14 @@ export default function Page() {
                         transition={{ delay: 1 }}
                         className={css({ width: '800px' })}
                     >
+                        {/* <div>
+                            <SectionTitle
+                                title="Histórico"
+                                Icon={ClockCounterClockwiseIcon}
+                            />
+                        </div> */}
                         <NearEstablishmentsBanner />
-                        <SearchEmptyState />
+                        {/* <SearchEmptyState /> */}
                     </motion.div>
                 )}
             </AnimatePresence>

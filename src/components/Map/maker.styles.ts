@@ -38,6 +38,18 @@ export const markerContainer = cva({
                     'linear-gradient(to bottom, #FF6A30 0%, #FF5310 100%)',
             },
         },
+        size: {
+            default: {},
+            small: {
+                width: '36px',
+                height: '36px',
+                border: '2px solid white',
+
+                '& svg': {
+                    fontSize: '1.25rem',
+                },
+            },
+        },
     },
 })
 
