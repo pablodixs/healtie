@@ -43,7 +43,6 @@ export default function Page() {
                     </footer>
                 </form>
             </div>
-            <div className={illustrationStyle}></div>
         </main>
     )
 }
@@ -52,13 +51,13 @@ const formContainerStyle = css({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    mt: '2rem',
 })
 
 const layoutStyle = css({
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    minHeight: 'calc(100dvh - 8.25rem)',
-    gap: '2rem',
+    maxWidth: '400px',
+    margin: '0 auto',
+    minHeight: 'calc(100dvh - 4rem)',
 })
 
 const formStyle = css({
@@ -75,11 +74,4 @@ const formFooterStyle = css({
     alignItems: 'flex-end',
     gap: '1rem',
     mt: '1rem',
-})
-
-const illustrationStyle = css({
-    backgroundColor: 'neutral.100',
-    borderRadius: '12px',
-    height: '100%',
-    width: '100%',
 })
