@@ -34,12 +34,21 @@ import { Tooltip } from '@/components/Tooltip'
 import { Portal } from '@/components/Portal'
 import { ReportModal } from '../components/ReportModal'
 import { useState } from 'react'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import {
+    calculateDistance,
+    formatDistance,
+} from '@/utils/functions/calculateDistance'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 
 export default function Page() {
     const path = usePathname()
     const router = useRouter()
     const id = path.split('/').pop()
     const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false)
+    const { coords } = useUserGeolocation({
+        immediate: true,
+    })
 
     const establishment = establishments.find((est) => est.cnes === Number(id))
 
@@ -54,6 +63,15 @@ export default function Page() {
             </div>
         )
     }
+
+    const distanceToEstablishment = coords
+        ? calculateDistance(
+              establishment.location.latitude,
+              establishment.location.longitude,
+              coords.latitude,
+              coords.longitude
+          )
+        : null
 
     return (
         <MapContextProvider>
@@ -105,15 +123,20 @@ export default function Page() {
                 >
                     <section>
                         <div>
-                            <p
-                                className={css({
-                                    color: 'gray.500',
-                                    fontWeight: 450,
-                                })}
-                            >
-                                {establishment.type}
-                            </p>
-                            <Heading> {establishment.name}</Heading>
+                            <EstablishmentIcon
+                                decoration
+                                size="large"
+                                type={
+                                    establishment.abb as
+                                        | 'HOSPITAL'
+                                        | 'UPA'
+                                        | 'UBS'
+                                }
+                            />
+
+                            <Heading style={{ marginTop: '1rem' }}>
+                                {establishment.name}
+                            </Heading>
                             {establishment.description && (
                                 <Paragraph subtle size="subheadline">
                                     {establishment.description}
@@ -126,6 +149,8 @@ export default function Page() {
                                     gap: '.5rem',
                                     color: 'gray.400',
                                     mb: '.25rem',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
                                 })}
                             >
                                 <span
@@ -133,7 +158,6 @@ export default function Page() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: '0.25rem',
-                                        fontWeight: '500',
                                         marginY: '1rem',
                                         color: 'green.600',
                                     })}
@@ -150,21 +174,26 @@ export default function Page() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: '0.25rem',
-                                        fontWeight: '500',
-                                        color: 'green.600',
                                         marginY: '1rem',
                                     })}
                                 >
-                                    <MapPinSimpleAreaIcon
-                                        weight="bold"
-                                        size={18}
-                                    />
-                                    Próximo de você
+                                    {distanceToEstablishment && (
+                                        <>
+                                            <MapPinSimpleAreaIcon
+                                                weight="bold"
+                                                size={18}
+                                            />
+                                            {formatDistance(
+                                                distanceToEstablishment
+                                            )}{' '}
+                                            de distância
+                                        </>
+                                    )}
                                 </span>
                             </section>
                         </div>
                         <div className={css({ display: 'flex', gap: '.5rem' })}>
-                            <Button fullWidth>
+                            <Button>
                                 <MapPinAreaIcon weight="bold" size={20} /> Estou
                                 Aqui
                             </Button>

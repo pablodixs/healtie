@@ -12,7 +12,7 @@ import { markerContainer } from '../Map/maker.styles'
 interface EstablishmentIconProps {
     type: 'HOSPITAL' | 'UBS' | 'UPA'
     delay?: boolean
-    size?: 'default' | 'small'
+    size?: 'default' | 'small' | 'large'
     decoration?: boolean
 }
 
