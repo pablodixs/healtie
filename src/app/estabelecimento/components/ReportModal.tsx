@@ -33,9 +33,9 @@ export function ReportModal({
 }: ReportModalProps) {
     useEffect(() => {
         if (isOpen) {
-            document.body.style.overflow = 'hidden' // Disable scrolling
+            document.body.style.overflow = 'hidden'
         } else {
-            document.body.style.overflow = 'unset' // Re-enable scrolling
+            document.body.style.overflow = 'unset'
         }
 
         return () => {

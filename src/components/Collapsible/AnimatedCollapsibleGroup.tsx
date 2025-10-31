@@ -41,9 +41,8 @@ export function AnimatedCollapsibleGroup({
 
     const handleItemClick = (index: number) => {
         setActiveIndex(index)
-        setIsPlaying(false) // Para a reprodução automática quando o usuário interage
+        setIsPlaying(false)
 
-        // Reinicia a reprodução automática após 10 segundos de inatividade
         if (intervalRef.current) {
             clearInterval(intervalRef.current)
         }

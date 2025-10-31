@@ -88,10 +88,8 @@ export function HeroSearchBar({
         const isCurrentlySelected = currentFilterType === filterType
 
         if (isCurrentlySelected) {
-            // Desselecionar o filtro atual
             onFilterChange?.(null)
         } else {
-            // Selecionar novo filtro
             onFilterChange?.(filterType)
         }
     }

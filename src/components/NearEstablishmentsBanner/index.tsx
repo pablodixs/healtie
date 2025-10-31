@@ -18,7 +18,7 @@ import { CaretRightIcon, MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
 import { Tooltip } from '../Tooltip'
 import { SectionTitle } from './SectionTitle'
 
-type NearbyEstablishment = Establishment & { distance: number }
+export type NearbyEstablishment = Establishment & { distance: number }
 
 export function NearEstablishmentsBanner() {
     const {

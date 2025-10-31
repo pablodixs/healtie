@@ -34,7 +34,6 @@ export function MapComponent() {
     const longitudeParam = param.get('long')
     const fromSearchPage = param.get('from') === 'search-page'
 
-    // Derive initial view from URL params if both are valid numbers, else fallback
     const parsedLat = latitudeParam ? parseFloat(latitudeParam) : undefined
     const parsedLon = longitudeParam ? parseFloat(longitudeParam) : undefined
     const urlHasValidCoords =
@@ -43,7 +42,6 @@ export function MapComponent() {
         typeof parsedLon === 'number' &&
         !isNaN(parsedLon)
 
-    // Initial view tries URL first (if valid) else defaults
     const initialView = urlHasValidCoords
         ? {
               latitude: parsedLat as number,
@@ -80,12 +78,10 @@ export function MapComponent() {
             }
         }
 
-        // Tentar selecionar um estabelecimento correspondente/mais próximo às coordenadas da URL
         if (setSelectedEstablishment) {
             const targetLon = newState.longitude
             const targetLat = newState.latitude
 
-            // Distância euclidiana simples em graus (suficiente para pequena área)
             const distance = (aLon: number, aLat: number) =>
                 Math.sqrt(
                     Math.pow(aLon - targetLon, 2) +
@@ -111,7 +107,6 @@ export function MapComponent() {
                 }
             }
 
-            // Definir limite para considerar "o mesmo" ponto (~80m): 0.0007 graus aprox
             if (closest && closestDist < 0.0007) {
                 setSelectedEstablishment({
                     ...closest,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -9,7 +9,6 @@ import { css } from '../../../styled-system/css'
 import { HeroSearchBar } from '../ui/components/HeroSearchBar'
 
 import { Heading } from '@/components/Typography/Heading'
-import { Link } from '@/components/Link'
 
 import data from '@/utils/unidades.json'
 
@@ -19,11 +18,14 @@ function isAllowedFilter(value: string | null): value is AllowedFilter {
     return !!value && allowedFilters.includes(value as AllowedFilter)
 }
 import { NoResultsEmptyState } from './components/NoResultsEmpytState'
-import { CaretRightIcon, MapTrifoldIcon } from '@phosphor-icons/react'
 import { Paragraph } from '@/components/Typography/Paragraph'
-import { Divider } from '@/components/Divider'
-import { Tooltip } from '@/components/Tooltip'
-import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
+import {
+    NearbyEstablishment,
+    NearEstablishmentsBanner,
+} from '@/components/NearEstablishmentsBanner'
+import { calculateDistance } from '@/utils/functions/calculateDistance'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { EstablishmentResultItem } from './components/EstablishmentResultItem'
 
 export default function Page() {
     const router = useRouter()
@@ -36,16 +38,16 @@ export default function Page() {
     const query = searchParams.get('q') || ''
     const rawFilterParam = searchParams.get('filter')
     const filterParam = isAllowedFilter(rawFilterParam) ? rawFilterParam : null
-    // Ref para evitar sobrescrever a digitação enquanto sincroniza com a URL
+    const { coords, userDidAllowLocation } = useUserGeolocation({
+        immediate: true,
+    })
 
-    // Sincroniza o estado local somente quando o parâmetro de URL realmente muda
     useEffect(() => {
         setLocalQuery(query)
     }, [query])
 
     // Sincroniza o filtro vindo da URL (ex: compartilhamento de link)
     useEffect(() => {
-        // Se a URL muda (ex: back/forward ou link externo), manter estado alinhado
         if (filterParam !== establishmentFilter) {
             setEstablishmentFilter(filterParam)
         }
@@ -97,8 +99,10 @@ export default function Page() {
     )
 
     const activeFilter = establishmentFilter
-    const filteredEstablishments = data.establishments.filter(
-        (establishment) => {
+
+    const establishments = useMemo(() => {
+        // Filtra por filtro ativo e termo de busca
+        const filtered = data.establishments.filter((establishment) => {
             if (activeFilter && establishment.abb !== activeFilter) return false
             const searchTerm = localQuery.toLowerCase()
             if (!searchTerm) return true
@@ -109,8 +113,34 @@ export default function Page() {
                 establishment.type.toLowerCase().includes(searchTerm) ||
                 establishment.abb.toLowerCase().includes(searchTerm)
             )
-        }
-    )
+        })
+
+        // Se não tem coordenadas, retorna filtrado sem distância
+        if (!userDidAllowLocation || !coords) return filtered
+
+        // Adiciona distância e ordena por proximidade
+        return filtered
+            .map<NearbyEstablishment>((establishment) => {
+                const distance = calculateDistance(
+                    coords.latitude,
+                    coords.longitude,
+                    establishment.location.latitude,
+                    establishment.location.longitude
+                )
+
+                return {
+                    ...establishment,
+                    distance,
+                }
+            })
+            .sort((a, b) => a.distance - b.distance)
+    }, [localQuery, activeFilter, coords, userDidAllowLocation])
+
+    console.log({
+        userDidAllowLocation,
+        coords,
+        establishmentsCount: establishments.length,
+    })
 
     return (
         <main
@@ -141,7 +171,7 @@ export default function Page() {
                 onChange={handleChange}
             />
             <AnimatePresence mode="wait">
-                {filteredEstablishments.length > 0 && localQuery.length >= 2 ? (
+                {establishments.length > 0 && localQuery.length >= 2 ? (
                     <motion.div
                         className={css({
                             width: '100%',
@@ -155,7 +185,7 @@ export default function Page() {
                         transition={{ duration: 0.2 }}
                     >
                         <Paragraph size="caption" subtle>
-                            {filteredEstablishments.length} resultados{' '}
+                            {establishments.length} resultados{' '}
                         </Paragraph>
                         <div
                             className={css({
@@ -165,85 +195,11 @@ export default function Page() {
                                 width: '100%',
                             })}
                         >
-                            {filteredEstablishments.map((establishment) => (
-                                <div
+                            {establishments.map((establishment) => (
+                                <EstablishmentResultItem
+                                    establishment={establishment}
                                     key={establishment.cnes}
-                                    className={css({
-                                        width: '100%',
-                                    })}
-                                >
-                                    <div
-                                        className={css({
-                                            fontSize: '1.125rem',
-                                            display: 'flex',
-                                            width: '100%',
-                                            justifyContent: 'space-between',
-                                            borderBottom:
-                                                '1px solid rgba(0, 0, 0, 0.1)',
-                                        })}
-                                    >
-                                        <Link
-                                            href={`/estabelecimento/${establishment.cnes}`}
-                                            className={css({
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                            })}
-                                        >
-                                            <b
-                                                className={css({
-                                                    fontWeight: 500,
-                                                    color: 'tint',
-
-                                                    _hover: {
-                                                        textDecoration:
-                                                            'underline',
-                                                        textUnderlineOffset: 5,
-                                                    },
-                                                })}
-                                            >
-                                                {establishment.name}
-                                            </b>
-                                            <span
-                                                className={css({
-                                                    color: 'gray.500',
-                                                    fontSize: '0.875rem',
-                                                })}
-                                            >
-                                                {establishment.district},{' '}
-                                                {establishment.city}
-                                            </span>
-                                        </Link>
-                                        <div
-                                            className={css({
-                                                display: 'flex',
-                                                gap: '1rem',
-                                                alignItems: 'center',
-                                            })}
-                                        >
-                                            <Link
-                                                size="sm"
-                                                variant="textSubtle"
-                                                href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
-                                            >
-                                                <MapTrifoldIcon size={18} /> Ver
-                                                no Mapa
-                                            </Link>
-                                            <Tooltip content="Ver detalhes do estabelecimento">
-                                                <Link
-                                                    onlyIcon
-                                                    variant="subtle"
-                                                    href={`/estabelecimento/${establishment.cnes}`}
-                                                >
-                                                    <CaretRightIcon
-                                                        size={20}
-                                                        weight="bold"
-                                                    />
-                                                </Link>
-                                            </Tooltip>
-                                        </div>
-                                    </div>
-                                    <Divider margin="compact" />
-                                </div>
+                                />
                             ))}
                         </div>
                     </motion.div>
