@@ -232,7 +232,10 @@ export function HeroSearchBar({
 }
 
 const optionCont = css({
-    display: 'flex',
+    display: {
+        md: 'flex',
+        base: 'none',
+    },
     alignItems: 'center',
     gap: '0.5rem',
 })
@@ -281,6 +284,10 @@ const heroSearchBarContainer = css({
 })
 
 const searchBarContainer = css({
+    maxWidth: {
+        md: '800px',
+        base: '70%',
+    },
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem 1rem',

@@ -136,6 +136,7 @@ export function NearEstablishmentsBanner() {
                     <div
                         className={css({
                             display: 'flex',
+                            flexDir: 'column',
                             gap: '1rem',
                             mt: '.5rem',
                         })}

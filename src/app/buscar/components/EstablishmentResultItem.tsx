@@ -19,9 +19,8 @@ export function EstablishmentResultItem({
             key={establishment.cnes}
             className={css({
                 width: '100%',
-                backgroundColor: 'neutral.50',
                 borderRadius: '12px',
-                padding: '1rem',
+                padding: { md: '1rem', base: '0.5rem' },
                 mb: '1rem',
 
                 _hover: {
@@ -49,6 +48,7 @@ export function EstablishmentResultItem({
                     <EstablishmentIcon
                         type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
                         decoration
+                        animation={false}
                     />
                     <div
                         className={css({
@@ -68,6 +68,7 @@ export function EstablishmentResultItem({
                         <div
                             className={css({
                                 display: 'flex',
+                                flexWrap: 'wrap',
                                 gap: '.25rem',
                                 alignItems: 'center',
                                 fontSize: '0.875rem',
@@ -104,14 +105,17 @@ export function EstablishmentResultItem({
                 <div
                     className={css({
                         display: 'flex',
-                        gap: '1rem',
+                        gap: {
+                            md: '1rem',
+                            base: '0.5rem',
+                        },
                         alignItems: 'center',
                     })}
                 >
                     <Tooltip content="Ver no mapa">
                         <Link
                             onlyIcon
-                            variant="subtle"
+                            variant="bordered"
                             href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
                         >
                             <MapTrifoldIcon size={18} weight="bold" />

@@ -150,7 +150,7 @@ export default function Page() {
                 flex: 1,
                 alignItems: 'center',
                 gap: '1rem',
-                height: '95dvh',
+                minHeight: '95dvh',
             })}
         >
             <div
@@ -176,7 +176,10 @@ export default function Page() {
                         className={css({
                             width: '100%',
                             maxWidth: '1000px',
-                            padding: '0 1rem',
+                            padding: {
+                                md: '0 1rem',
+                                base: '1rem',
+                            },
                         })}
                         key="results"
                         initial={{ opacity: 0, y: 20 }}
@@ -219,7 +222,14 @@ export default function Page() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ delay: 1 }}
-                        className={css({ width: '800px' })}
+                        className={css({
+                            maxWidth: '800px',
+                            minWidth: '100%',
+                            padding: {
+                                md: '0 1rem',
+                                base: '1rem',
+                            },
+                        })}
                     >
                         {/* <div>
                             <SectionTitle

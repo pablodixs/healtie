@@ -30,10 +30,15 @@ export function DetailsAsideView({
                 title="Bairro/Distrito"
                 value={`${establishment.district}`}
             />
-            <DetailItem
-                title="Cidade"
-                value={`${establishment.city} - ${establishment.state}`}
-            />
+            <Link
+                variant="asChild"
+                href={`/cidade/${establishment.city.toLowerCase}`}
+            >
+                <DetailItem
+                    title="Cidade"
+                    value={`${establishment.city} - ${establishment.state}`}
+                />
+            </Link>
             <DetailItem title="Tipo" value={establishment.type} />
             <DetailItem title="CNES" value={establishment.cnes.toString()} />
             <Divider margin="compact" />
@@ -80,7 +85,7 @@ const DetailItem = ({ title, value }: { title: string; value: string }) => {
             <Paragraph subtle size="caption">
                 {title}
             </Paragraph>
-            <Paragraph size="caption">
+            <Paragraph size="caption" style={{ textAlign: 'right' }}>
                 <b>{value}</b>
             </Paragraph>
         </div>
