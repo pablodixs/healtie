@@ -120,18 +120,18 @@ export function HeaderView({
 
 const establishmentInfoContainer = css({
     display: 'flex',
+    flexWrap: 'wrap',
     alignItems: 'center',
     gap: '.5rem',
     color: 'neutral.500',
-    mb: '.25rem',
     fontSize: '0.875rem',
+    marginY: '1rem',
 })
 
 const openSpanStyle = css({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '0.25rem',
-    marginY: '1rem',
     color: 'green.600',
 })
 
@@ -144,6 +144,17 @@ const distanceSpanStyle = css({
 
 const toolbarContainer = css({
     display: 'flex',
+    flexDir: {
+        base: 'column',
+        md: 'row',
+    },
     gap: '.5rem',
     marginBottom: '2rem',
+
+    '& button': {
+        width: {
+            md: 'inherit',
+            base: '100%',
+        },
+    },
 })

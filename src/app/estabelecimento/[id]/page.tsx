@@ -16,6 +16,7 @@ import { NavigationTabItem, NavigationTabs } from '@/components/NavigationTabs'
 
 import { establishments } from '@/utils/unidades.json'
 import { Establishment } from '@/interfaces/Establishment'
+import { Divider } from '@/components/Divider'
 
 export default function Page() {
     const path = usePathname()
@@ -47,13 +48,7 @@ export default function Page() {
 
     return (
         <MapContextProvider>
-            <main
-                className={css({
-                    minHeight: '90dvh',
-                    maxW: '1280px',
-                    margin: '0 auto',
-                })}
-            >
+            <main className={mainContainer}>
                 <HeaderView
                     establishment={establishment}
                     setIsReportModalOpen={setIsReportModalOpen}
@@ -89,13 +84,7 @@ export default function Page() {
                         badge="1"
                     />
                 </NavigationTabs>
-                <section
-                    className={css({
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 300px',
-                        gap: '2rem',
-                    })}
-                >
+                <section className={contentContainer}>
                     {selectedTab === 'overview' && (
                         <>
                             <div>
@@ -106,6 +95,7 @@ export default function Page() {
                     )}
                 </section>
             </main>
+            <Divider />
             <Portal>
                 {isReportModalOpen && (
                     <ReportModal
@@ -118,3 +108,20 @@ export default function Page() {
         </MapContextProvider>
     )
 }
+
+const mainContainer = css({
+    minH: 'calc(100dvh - 4rem)',
+    paddingX: {
+        base: '1rem',
+        md: '0',
+    },
+})
+
+const contentContainer = css({
+    display: {
+        base: 'block',
+        md: 'grid',
+    },
+    gridTemplateColumns: '1fr 300px',
+    gap: '2rem',
+})
