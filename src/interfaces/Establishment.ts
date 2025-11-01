@@ -2,6 +2,7 @@ export interface Establishment {
     cnes: number
     name: string
     full_name: string
+    description?: string
     address: string
     district: string
     city: string

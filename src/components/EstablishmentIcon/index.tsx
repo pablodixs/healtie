@@ -14,6 +14,8 @@ interface EstablishmentIconProps {
     delay?: boolean
     size?: 'default' | 'small' | 'large'
     decoration?: boolean
+    animation?: boolean
+    square?: boolean
 }
 
 export function EstablishmentIcon({
@@ -21,10 +23,12 @@ export function EstablishmentIcon({
     delay,
     size = 'default',
     decoration = false,
+    animation = true,
+    square = false,
 }: EstablishmentIconProps) {
     if (decoration) {
         return (
-            <AnimatePresence>
+            <AnimatePresence initial={animation}>
                 <motion.div
                     initial={{
                         scale: 0,
@@ -41,6 +45,7 @@ export function EstablishmentIcon({
                     className={markerContainer({
                         type: type as 'HOSPITAL' | 'UBS' | 'UPA',
                         size,
+                        square,
                     })}
                 >
                     {type === 'HOSPITAL' && <HospitalIcon weight="fill" />}
@@ -52,7 +57,7 @@ export function EstablishmentIcon({
     }
 
     return (
-        <AnimatePresence>
+        <AnimatePresence initial={animation}>
             <div
                 style={{
                     position: 'relative',
@@ -78,6 +83,7 @@ export function EstablishmentIcon({
                     className={markerContainer({
                         type: type as 'HOSPITAL' | 'UBS' | 'UPA',
                         size,
+                        square,
                     })}
                 >
                     {type === 'HOSPITAL' && <HospitalIcon weight="fill" />}

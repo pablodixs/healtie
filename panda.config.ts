@@ -13,6 +13,13 @@ export default defineConfig({
     // Files to exclude
     exclude: [],
 
+    // Conditions
+    conditions: {
+        extend: {
+            selected: '&[data-selected="true"]',
+        },
+    },
+
     // Useful for theme customization
     theme: {
         extend: {

@@ -60,6 +60,13 @@ export const markerContainer = cva({
                 },
             },
         },
+        square: {
+            true: {
+                borderRadius: '50%',
+                boxShadow: 'inherit',
+                border: 'inherit',
+            },
+        },
     },
 })
 

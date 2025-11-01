@@ -54,7 +54,7 @@ const paragraphStyles = cva({
     variants: {
         subtle: {
             true: {
-                color: 'gray.500',
+                color: 'neutral.500',
             },
         },
         centered: {
