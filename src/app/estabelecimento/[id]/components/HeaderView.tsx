@@ -90,14 +90,14 @@ export function HeaderView({
                     <MapPinAreaIcon weight="bold" size={20} /> Estou Aqui
                 </Button>
                 <Button
-                    variant="subtle"
+                    variant="bordered"
                     onClick={() => setIsReportModalOpen(true)}
                 >
                     <SpeedometerIcon size={20} /> Reportar
                 </Button>
                 <Link
                     href={`/mapa?establishment=${establishment.cnes}&from=search-page`}
-                    variant="subtle"
+                    variant="bordered"
                     size="sm"
                 >
                     <MapTrifoldIcon size={20} /> Ver no Mapa
@@ -105,12 +105,12 @@ export function HeaderView({
                 <Link
                     target="_blank"
                     href={`https://www.google.com/maps/dir/?api=1&destination=${establishment.location.latitude},${establishment.location.longitude}`}
-                    variant="subtle"
+                    variant="bordered"
                     size="sm"
                 >
                     <CarIcon size={20} /> Rotas
                 </Link>
-                <Button variant="subtle">
+                <Button variant="bordered">
                     <ChatCircleIcon size={20} /> Comentar
                 </Button>
             </div>

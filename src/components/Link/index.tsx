@@ -3,7 +3,13 @@ import NextLink from 'next/link'
 import { cva } from '../../../styled-system/css'
 
 type LinkProps = ComponentProps<typeof NextLink> & {
-    variant?: 'text' | 'primary' | 'asChild' | 'subtle' | 'textSubtle'
+    variant?:
+        | 'text'
+        | 'primary'
+        | 'asChild'
+        | 'subtle'
+        | 'textSubtle'
+        | 'bordered'
     fullWidth?: boolean
     onlyIcon?: boolean
     size?: 'sm' | 'md' | 'lg'
@@ -99,6 +105,17 @@ const linkStyle = cva({
 
                 _active: {
                     scale: 'inherit',
+                },
+            },
+            bordered: {
+                backgroundColor: 'inherit',
+                color: 'primary',
+                boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s ease-in-out',
+
+                _hover: {
+                    backgroundColor: 'inherit',
+                    boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.25)',
                 },
             },
             asChild: {

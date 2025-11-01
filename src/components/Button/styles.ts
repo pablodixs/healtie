@@ -28,7 +28,7 @@ export const buttonStyles = cva({
         },
 
         _active: {
-            scale: 0.975,
+            scale: 0.95,
         },
     },
     variants: {
@@ -52,6 +52,15 @@ export const buttonStyles = cva({
             subtle: {
                 backgroundColor: 'cream',
                 color: '#151515',
+            },
+            bordered: {
+                boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s ease-in-out',
+
+                _hover: {
+                    backgroundColor: 'inherit',
+                    boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.25)',
+                },
             },
             text: {
                 backgroundColor: 'transparent',
