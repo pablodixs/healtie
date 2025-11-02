@@ -26,6 +26,8 @@ import {
 import { calculateDistance } from '@/utils/functions/calculateDistance'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { EstablishmentResultItem } from './components/EstablishmentResultItem'
+import { Banner } from '@/components/Banner'
+import { QuestionIcon } from '@phosphor-icons/react/dist/ssr'
 
 export default function Page() {
     const router = useRouter()
@@ -204,6 +206,13 @@ export default function Page() {
                                     key={establishment.cnes}
                                 />
                             ))}
+                            <Banner
+                                icon={<QuestionIcon />}
+                                title="Não sabe onde ir?"
+                                message={
+                                    'Com o Onde Ir você sabe qual o melhor estabelecimento pra você a partir dos seus sintomas.'
+                                }
+                            />
                         </div>
                     </motion.div>
                 ) : localQuery.length >= 2 ? (
