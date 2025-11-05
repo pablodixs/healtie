@@ -122,9 +122,10 @@ export function HeroSearchContainer() {
                                 title="Campanha Nacional de Vacinação"
                                 href={'/campanhas/N202510001'}
                                 variant="asChild"
+                                style={{ marginBottom: '1rem' }}
                             >
                                 <Image
-                                    src={'/pictures/doodle.png'}
+                                    src={'/pictures/doodles/2025_november.png'}
                                     alt=""
                                     width={800}
                                     height={320}
@@ -133,12 +134,6 @@ export function HeroSearchContainer() {
                                     priority
                                 />
                             </Link>
-                            <Subheading
-                                centered
-                                style={{ marginBottom: '1rem' }}
-                            >
-                                Seu guia na saúde pública do Distrito Federal
-                            </Subheading>
                         </motion.div>
                     )}
                 </AnimatePresence>
