@@ -16,6 +16,8 @@ import { establishments } from '@/utils/unidades.json'
 import { useMapView } from '@/hooks/useMapView'
 import { useMapContext } from '@/context/MapContext'
 import { useSearchParams } from 'next/navigation'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { MapUserMarker } from './MapUserMarker'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -30,6 +32,7 @@ export function MapComponent() {
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
     const [showLabels, setShowLabels] = useState(true)
     const { selectedEstablishment, setSelectedEstablishment } = useMapContext()
+    const { coords } = useUserGeolocation()
     const latitudeParam = param.get('lat')
     const longitudeParam = param.get('long')
     const fromSearchPage = param.get('from') === 'search-page'
@@ -200,6 +203,14 @@ export function MapComponent() {
                                     delay={fromSearchPage}
                                 />
                             ))}
+                        {coords && (
+                            <MapUserMarker
+                                userLocation={{
+                                    longitude: coords.longitude,
+                                    latitude: coords.latitude,
+                                }}
+                            />
+                        )}
                         <ScaleControl />
                     </Map>
                 </main>
