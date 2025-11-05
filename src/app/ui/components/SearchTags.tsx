@@ -8,7 +8,7 @@ import { motion, stagger } from 'motion/react'
 //     VirusIcon,
 // } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
-import { SyringeIcon } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRightIcon, SyringeIcon } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 const list = {
@@ -60,8 +60,8 @@ export function SearchTags() {
             </motion.div> */}
             <div className={callout}>
                 <Link href={'/campanhas/N202510001'}>
-                    <SyringeIcon size={18} /> Começou a Campanha Nacional de
-                    Vacinação para Proteção de Crianças e Adolescentes
+                    Saiba mais sobre a campanha Novembro Azul{' '}
+                    <ArrowRightIcon size={18} />
                 </Link>
             </div>
         </motion.div>
