@@ -1,6 +1,11 @@
 'use client'
 
+import {
+    ArrowUpRightIcon,
+    MapTrifoldIcon,
+} from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
@@ -8,13 +13,10 @@ import { css } from '../../../styled-system/css'
 
 import { HeroSearchBar } from './components/HeroSearchBar'
 import { SearchTags } from './components/SearchTags'
-import { Subheading } from '@/components/Typography/Subheading'
 import { Paragraph } from '@/components/Typography/Paragraph'
+import { Link as CustomLink } from '@/components/Link'
 
 import data from '@/utils/unidades.json'
-import { Link } from '@/components/Link'
-import { ArrowUpRightIcon } from '@phosphor-icons/react/dist/ssr'
-import { MapTrifoldIcon } from '@phosphor-icons/react'
 import { Divider } from '@/components/Divider'
 
 const FILTER_OPTIONS = {
@@ -117,12 +119,11 @@ export function HeroSearchContainer() {
                                 y: 30,
                             }}
                             transition={{ duration: 0.2 }}
+                            style={{ marginBottom: '1rem' }}
                         >
                             <Link
                                 title="Campanha Nacional de Vacinação"
                                 href={'/campanhas/N202510001'}
-                                variant="asChild"
-                                style={{ marginBottom: '1rem' }}
                             >
                                 <Image
                                     src={'/pictures/doodles/2025_november.png'}
@@ -209,7 +210,7 @@ export function HeroSearchContainer() {
                                                             establishmentItem
                                                         }
                                                     >
-                                                        <Link
+                                                        <CustomLink
                                                             variant="asChild"
                                                             href={`/estabelecimento/${establishment.cnes}`}
                                                         >
@@ -227,14 +228,14 @@ export function HeroSearchContainer() {
                                                                     establishment.city
                                                                 }
                                                             </span>
-                                                        </Link>
-                                                        <Link
+                                                        </CustomLink>
+                                                        <CustomLink
                                                             variant="textSubtle"
                                                             href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
                                                         >
                                                             <MapTrifoldIcon />{' '}
                                                             Ver no Mapa
-                                                        </Link>
+                                                        </CustomLink>
                                                     </div>
                                                     <Divider />
                                                 </div>
@@ -242,7 +243,7 @@ export function HeroSearchContainer() {
                                         )}
                                     </div>
                                     <footer>
-                                        <Link
+                                        <CustomLink
                                             href={
                                                 `/buscar?q=${searchValue}` +
                                                 (filteredEstablishments
@@ -254,7 +255,7 @@ export function HeroSearchContainer() {
                                         >
                                             Ver todos os resultados{' '}
                                             <ArrowUpRightIcon />
-                                        </Link>
+                                        </CustomLink>
                                     </footer>
                                 </motion.div>
                             )}
