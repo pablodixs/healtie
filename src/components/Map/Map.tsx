@@ -201,6 +201,7 @@ export function MapComponent() {
                                     }}
                                     showLabel={showLabels}
                                     delay={fromSearchPage}
+                                    mapZoom={viewState.zoom}
                                 />
                             ))}
                         {coords && (

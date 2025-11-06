@@ -26,6 +26,7 @@ interface TooltipProps {
     variant?: 'subtle' | 'default'
     group?: string // agrupar tooltips para compartilhar lógica de delay
     offset?: number // distância entre trigger e tooltip
+    isVisible?: boolean // controle externo de visibilidade (undefined = automático, true = forçar mostrar, false = forçar esconder)
 }
 
 // Estado global por grupo para controlar delay após primeiro abrir
@@ -48,6 +49,7 @@ export function Tooltip({
     variant = 'default',
     group = 'default',
     offset = 8,
+    isVisible,
 }: TooltipProps) {
     const [visible, setVisible] = useState(false)
     const [style, setStyle] = useState<React.CSSProperties>({})
@@ -55,6 +57,11 @@ export function Tooltip({
 
     const triggerRef = useRef<HTMLElement>(null)
     const tooltipRef = useRef<HTMLDivElement>(null)
+
+    // Determina se o tooltip deve ser exibido
+    // Se isVisible for undefined, usa o estado interno (visible)
+    // Se isVisible for definido (true/false), força esse valor
+    const shouldShowTooltip = isVisible !== undefined ? isVisible : visible
 
     // Cleanup quando o componente é desmontado
     useEffect(() => {
@@ -69,7 +76,8 @@ export function Tooltip({
     }, [timer, visible, group])
 
     const computePosition = useCallback(() => {
-        if (!visible || !triggerRef.current || !tooltipRef.current) return
+        if (!shouldShowTooltip || !triggerRef.current || !tooltipRef.current)
+            return
         const triggerRect = triggerRef.current.getBoundingClientRect()
         const tooltipRect = tooltipRef.current.getBoundingClientRect()
 
@@ -115,21 +123,21 @@ export function Tooltip({
         left = Math.min(Math.max(left, margin), vw - tooltipRect.width - margin)
 
         setStyle({ top: `${top}px`, left: `${left}px` })
-    }, [visible, placement, offset])
+    }, [shouldShowTooltip, placement, offset])
 
     useEffect(() => {
         computePosition()
     }, [computePosition])
 
     useEffect(() => {
-        if (!visible) return
+        if (!shouldShowTooltip) return
         window.addEventListener('scroll', computePosition, true)
         window.addEventListener('resize', computePosition)
         return () => {
             window.removeEventListener('scroll', computePosition, true)
             window.removeEventListener('resize', computePosition)
         }
-    }, [visible, computePosition])
+    }, [shouldShowTooltip, computePosition])
 
     const showTooltip = () => {
         const groupState = getGroupState(group)
@@ -204,7 +212,7 @@ export function Tooltip({
                 }
                 hideTooltip()
             }}
-            aria-describedby={visible ? tooltipId.current : undefined}
+            aria-describedby={shouldShowTooltip ? tooltipId.current : undefined}
         >
             {children}
         </span>
@@ -212,7 +220,7 @@ export function Tooltip({
 
     const tooltipNode = (
         <AnimatePresence>
-            {visible && (
+            {shouldShowTooltip && (
                 <motion.div
                     ref={tooltipRef}
                     role="tooltip"

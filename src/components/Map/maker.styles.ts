@@ -67,6 +67,30 @@ export const markerContainer = cva({
                 border: 'inherit',
             },
         },
+        compacted: {
+            true: {
+                width: '14px',
+                height: '14px',
+                transition: 'all 0.3s ease-in-out',
+
+                _hover: {
+                    width: '42px',
+                    height: '42px',
+                    transition: 'all 0.3s  cubic-bezier(0.47,0,0.1,1.42)',
+
+                    '& svg': {
+                        transition: 'all 0.3s  cubic-bezier(0.47,0,0.1,1.42)',
+                        scale: 1,
+                    },
+                },
+
+                '& svg': {
+                    transition: 'all 0.3s  cubic-bezier(0.47,0,0.1,1.42)',
+                    scale: 0,
+                },
+            },
+            false: {},
+        },
     },
 })
 

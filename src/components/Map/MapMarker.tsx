@@ -13,6 +13,7 @@ import { Establishment } from '@/interfaces/Establishment'
 
 import { labelStyles, markerContainer } from './maker.styles'
 import { useMapContext } from '@/context/MapContext'
+import { Tooltip } from '../Tooltip'
 
 interface MapMarkerProps {
     longitude: number
@@ -21,6 +22,7 @@ interface MapMarkerProps {
     showLabel?: boolean
     delay?: boolean
     expanded?: boolean
+    mapZoom: number
 }
 
 export function MapMarker({
@@ -30,6 +32,7 @@ export function MapMarker({
     showLabel = true,
     delay = false,
     expanded = false,
+    mapZoom,
 }: MapMarkerProps) {
     const router = useRouter()
     const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
@@ -100,40 +103,55 @@ export function MapMarker({
                         </AnimatePresence>
                     </div>
                 ) : (
-                    <motion.div
-                        initial={{ scale: 0, transformOrigin: 'bottom center' }}
-                        animate={{ scale: 1, transformOrigin: 'bottom center' }}
-                        exit={{ scale: 0, transformOrigin: 'bottom center' }}
-                        transition={{ duration: 0.3, type: 'spring' }}
-                        className={markerContainer({
-                            type: establishmentProps.abb as
-                                | 'HOSPITAL'
-                                | 'UBS'
-                                | 'UPA',
-                        })}
+                    <Tooltip
+                        content={establishmentProps.name}
+                        isVisible={mapZoom < 12 ? undefined : false}
                     >
-                        {establishmentProps.abb === 'HOSPITAL' && (
-                            <HospitalIcon weight="fill" />
-                        )}
-                        {establishmentProps.abb === 'UBS' && (
-                            <FirstAidIcon weight="fill" />
-                        )}
-                        {establishmentProps.abb === 'UPA' && (
-                            <AmbulanceIcon weight="fill" />
-                        )}
-                        <AnimatePresence>
-                            {showLabel && (
-                                <motion.span
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className={labelStyles}
-                                >
-                                    {establishmentProps.name}
-                                </motion.span>
+                        <motion.div
+                            initial={{
+                                scale: 0,
+                                transformOrigin: 'bottom center',
+                            }}
+                            animate={{
+                                scale: 1,
+                                transformOrigin: 'bottom center',
+                            }}
+                            exit={{
+                                scale: 0,
+                                transformOrigin: 'bottom center',
+                            }}
+                            transition={{ duration: 0.3, type: 'spring' }}
+                            className={markerContainer({
+                                type: establishmentProps.abb as
+                                    | 'HOSPITAL'
+                                    | 'UBS'
+                                    | 'UPA',
+                                compacted: mapZoom <= 12 ? true : false,
+                            })}
+                        >
+                            {establishmentProps.abb === 'HOSPITAL' && (
+                                <HospitalIcon weight="fill" />
                             )}
-                        </AnimatePresence>
-                    </motion.div>
+                            {establishmentProps.abb === 'UBS' && (
+                                <FirstAidIcon weight="fill" />
+                            )}
+                            {establishmentProps.abb === 'UPA' && (
+                                <AmbulanceIcon weight="fill" />
+                            )}
+                            <AnimatePresence>
+                                {mapZoom > 12 && (
+                                    <motion.span
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className={labelStyles}
+                                    >
+                                        {establishmentProps.name}
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    </Tooltip>
                 )}
             </AnimatePresence>
         </Marker>
