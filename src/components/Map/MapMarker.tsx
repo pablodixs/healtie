@@ -19,7 +19,6 @@ interface MapMarkerProps {
     longitude: number
     latitude: number
     establishmentProps?: Establishment
-    showLabel?: boolean
     delay?: boolean
     expanded?: boolean
     mapZoom: number
@@ -29,7 +28,6 @@ export function MapMarker({
     longitude,
     latitude,
     establishmentProps,
-    showLabel = true,
     delay = false,
     expanded = false,
     mapZoom,

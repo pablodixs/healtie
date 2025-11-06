@@ -199,7 +199,6 @@ export function MapComponent() {
                                             | 'hospital'
                                             | 'upa',
                                     }}
-                                    showLabel={showLabels}
                                     delay={fromSearchPage}
                                     mapZoom={viewState.zoom}
                                 />
