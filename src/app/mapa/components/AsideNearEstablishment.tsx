@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { Paragraph } from '@/components/Typography'
 import { Establishment } from '@/interfaces/Establishment'
 
 import { establishments } from '@/utils/unidades.json'
@@ -14,6 +13,7 @@ import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { Tooltip } from '@/components/Tooltip'
 import { Link } from '@/components/Link'
 import { useMapContext } from '@/context/MapContext'
+import { Paragraph } from '@/components/Typography'
 
 interface AsideNearEstablishmentsProps {
     location: string | null
@@ -23,7 +23,6 @@ interface AsideNearEstablishmentsProps {
 type NearbyEstablishment = Establishment & { distance: number }
 
 export function AsideNearEstablishments({
-    location,
     coords,
 }: AsideNearEstablishmentsProps) {
     const establishmentsWithDistance: NearbyEstablishment[] = useMemo(() => {
@@ -50,14 +49,34 @@ export function AsideNearEstablishments({
 
     return (
         <div>
-            {location && <Paragraph>{location}</Paragraph>}
-            {establishmentsWithDistance.length > 0 &&
-                establishmentsWithDistance.map((establishment) => (
-                    <EstablishmentItem
-                        key={establishment.cnes}
-                        {...establishment}
-                    />
-                ))}
+            <Link
+                href={`/buscar/proximos`}
+                variant="asChild"
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
+                <Paragraph marginCompact subtle>
+                    Estabelecimentos próximos
+                </Paragraph>
+            </Link>
+            <div
+                className={css({
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '.5rem',
+                })}
+            >
+                {establishmentsWithDistance.length > 0 &&
+                    establishmentsWithDistance.map((establishment) => (
+                        <EstablishmentItem
+                            key={establishment.cnes}
+                            {...establishment}
+                        />
+                    ))}
+            </div>
         </div>
     )
 }
@@ -71,8 +90,7 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
             variant="asChild"
             href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}`}
             className={css({
-                padding: '0.75rem',
-                backgroundColor: 'background',
+                paddingY: '0.5rem',
                 alignItems: 'center',
                 borderRadius: '12px',
                 display: 'flex',
@@ -97,24 +115,36 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
                     className={css({
                         fontWeight: 550,
                         color: 'primary',
+                        fontSize: '0.9375rem',
                     })}
                 >
                     {establishment.name}
                 </strong>
-                <span
+                <div
                     className={css({
                         fontSize: '0.875rem',
-                        fontWeight: 500,
                         lineHeight: '100%',
                         display: 'flex',
-                        gap: '0.25rem',
-                        color: 'green.600',
-                        width: 'fit-content',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        color: 'neutral.500',
                     })}
                 >
-                    <MapPinAreaIcon weight="bold" />{' '}
-                    {formatDistance(establishment.distance)}
-                </span>
+                    <span className={css({ color: 'green.600' })}>
+                        Aberto 24h
+                    </span>
+                    <span
+                        className={css({
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            width: 'fit-content',
+                        })}
+                    >
+                        <MapPinAreaIcon size={15} />{' '}
+                        {formatDistance(establishment.distance)}
+                    </span>
+                </div>
             </div>
         </Link>
     )
