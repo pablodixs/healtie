@@ -19,6 +19,7 @@ import { Tooltip } from '@/components/Tooltip'
 
 import { Establishment } from '@/interfaces/Establishment'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
+import { DotsThreeCircleIcon } from '@phosphor-icons/react/dist/ssr'
 
 interface ReportModalProps {
     isOpen: boolean
@@ -55,10 +56,12 @@ export function ReportModal({
             onClick={() => onOpenChange?.(false)}
         >
             <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.25, type: 'spring', bounce: 0 }}
+                initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                transition={{
+                    duration: 0.2,
+                }}
                 className={modalContainer}
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
@@ -106,35 +109,44 @@ export function ReportModal({
                     </section>
                     <section
                         className={css({
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: '1rem',
-                            mt: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '.5rem',
+                            mt: '.5rem',
                         })}
                     >
+                        <Paragraph bolder subtle marginCompact>
+                            O que você quer reportar?
+                        </Paragraph>
                         <button className={buttonStyles}>
                             <span>
-                                <ClockCountdownIcon size={32} />
+                                <ClockCountdownIcon />
                             </span>
                             Tempo de espera
                         </button>
                         <button className={buttonStyles}>
                             <span>
-                                <PillIcon size={32} />
+                                <PillIcon />
                             </span>
                             Falta de medicamentos
                         </button>
                         <button className={buttonStyles}>
                             <span>
-                                <ProhibitInsetIcon size={32} />
+                                <ProhibitInsetIcon />
                             </span>
                             Falta de serviços
                         </button>
                         <button className={buttonStyles}>
                             <span>
-                                <StethoscopeIcon size={32} />
+                                <StethoscopeIcon />
                             </span>
                             Sem médicos
+                        </button>
+                        <button className={buttonStyles}>
+                            <span>
+                                <DotsThreeCircleIcon />
+                            </span>
+                            Outro
                         </button>
                     </section>
                 </div>
@@ -153,7 +165,7 @@ export function ReportModal({
                             Cancelar
                         </Button>
                         <Button>
-                            Próximo <CaretRightIcon />
+                            Continuar <CaretRightIcon />
                         </Button>
                     </div>
                 </footer>
@@ -168,7 +180,7 @@ const modalContainer = css({
     borderRadius: '0.75rem',
     width: '100%',
     minW: '600px',
-    maxW: '800px',
+    maxW: '500px',
     maxHeight: '90vh',
     display: 'flex',
     flexDirection: 'column',
@@ -199,30 +211,28 @@ const headerStyles = css({
 
 const buttonStyles = css({
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: '.75rem',
+    gap: '.5rem',
     padding: '.5rem',
     fontWeight: 500,
     color: 'primary',
     cursor: 'pointer',
-    aspectRatio: '1/1',
     borderRadius: '0.75rem',
-    lineHeight: '120%',
 
     '& span': {
         display: 'block',
         width: 'fit-content',
-        padding: '0.5rem',
+        padding: '0.375rem',
         borderRadius: '50%',
-        background: 'linear-gradient(to bottom, #12b3eb 0%, #5460f9 100%)',
-        border: '2px solid white',
-        color: 'white',
+        background: 'neutral.100',
+
+        '& svg': {
+            fontSize: '1.25rem',
+        },
     },
 
     _hover: {
-        backgroundColor: 'background',
+        backgroundColor: 'neutral.50',
     },
 })
 
