@@ -1,6 +1,47 @@
 {
     "establishments": [
         {
+            "cnes": 2804247,
+            "name": "UBS 08 de Água Quente",
+            "full_name": "Unidade Básica de Saúde 08 de Água Quente",
+            "description": null,
+            "address": "DF 280 KM 03 QD 04",
+            "district": "Água Quente",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "72600100",
+            "abb": "UBS",
+            "type": "Unidade Básica de Saúde",
+            "phone": "6133596733",
+            "location": {
+                "longitude": -48.227714526835534,
+                "latitude": -15.93777211264163
+            },
+            "service_hours": {
+                "monday": { "open": "08:00", "close": "17:00" },
+                "tuesday": { "open": "08:00", "close": "17:00" },
+                "wednesday": { "open": "08:00", "close": "17:00" },
+                "thursday": { "open": "08:00", "close": "17:00" },
+                "friday": { "open": "08:00", "close": "17:00" },
+                "saturday": { "open": null, "close": null },
+                "sunday": { "open": null, "close": null }
+            },
+            "available_services": [
+                {
+                    "id": 101,
+                    "nome": "Vacinação",
+                    "disponivel": true,
+                    "ultimaAtualizacao": "2025-11-06T09:00:00Z"
+                },
+                {
+                    "id": 102,
+                    "nome": "Consulta Clínica Geral",
+                    "disponivel": false,
+                    "ultimaAtualizacao": "2025-11-06T09:00:00Z"
+                }
+            ]
+        },
+        {
             "cnes": 100,
             "name": "Centro Integrado Ambulatorial - UCB",
             "full_name": "Centro Integrado Ambulatorial da Universidade Católica de Brasília",
@@ -16,6 +57,26 @@
             "location": {
                 "longitude": -48.030660005299886,
                 "latitude": -15.866701312839304
+            }
+        },
+        {
+            "cnes": 2437627,
+            "name": "Hospital Dom Luiz Fernandes",
+            "full_name": "Hospital Municipal Dom Luiz Fernandes",
+            "address": "QUADRA 65 LOTES 02 A 05",
+            "district": "Centro",
+            "city": "Santo Antônio do Descoberto",
+            "state": "GO",
+            "zip_code": "72900970",
+            "abb": "HOSPITAL",
+            "type": "Hospital",
+            "phone": "6136262342",
+            "location": {
+                "longitude": -48.266528789027305,
+                "latitude": -15.94764440559412
+            },
+            "service_hours": {
+                "open_24_hours": true
             }
         },
         {
