@@ -3,9 +3,8 @@ import { cva } from '../../../styled-system/css'
 export const bannerStyles = cva({
     base: {
         minWidth: '100%',
-        margin: '1rem',
         padding: '1rem 1.5rem',
-        bgColor: 'background',
+        bgColor: 'neutral.100',
         borderRadius: 'lg',
         color: 'primary',
         display: 'flex',

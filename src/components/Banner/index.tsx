@@ -1,11 +1,11 @@
 'use client'
 
-import { JSX, ReactNode } from 'react'
+import { HTMLAttributes, JSX, ReactNode } from 'react'
 import { bannerStyles } from './styles'
 import { Button } from '../Button'
 import { XCircleIcon } from '@phosphor-icons/react/dist/ssr'
 
-interface BannerProps {
+interface BannerProps extends HTMLAttributes<HTMLDivElement> {
     title: string
     message?: JSX.Element | string
     actionLabel?: string
@@ -24,14 +24,15 @@ export function Banner({
     actionIcon,
     action,
     onClose,
+    ...props
 }: BannerProps) {
     return (
-        <div className={bannerStyles()}>
+        <div className={bannerStyles()} {...props}>
             <div>
                 {icon && <div>{icon}</div>}
                 <div>
                     <h2>{title}</h2>
-                    {message}
+                    <p>{message}</p>
                 </div>
             </div>
             <div>

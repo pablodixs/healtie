@@ -24,10 +24,10 @@ export function QuizNavigation({
                 width: '100%',
             })}
         >
-            <Button variant="text" onClick={onPrevious}>
+            <Button variant="bordered" onClick={onPrevious}>
                 <CaretLeftIcon /> Voltar pergunta
             </Button>
-            <Button variant="text" onClick={onRestart}>
+            <Button variant="subtle" onClick={onRestart}>
                 <ArrowClockwiseIcon /> Refazer questionário
             </Button>
         </div>

@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from 'motion/react'
 import { stack } from '../../../../../styled-system/patterns'
-import { Divider } from '@/components/Divider'
 import { QuizQuestion } from './QuizQuestion'
 import { QuizNavigation } from './QuizNavigation'
 import { QuizResult } from './QuizResult'
@@ -47,9 +46,6 @@ export function Quiz() {
                     />
                 </motion.div>
             </AnimatePresence>
-
-            <Divider />
-
             <QuizNavigation
                 onPrevious={handlePrevious}
                 onRestart={handleRestart}
