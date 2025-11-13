@@ -24,11 +24,13 @@ import { Link } from '@/components/Link'
 interface HeaderViewProps {
     establishment: Establishment
     setIsReportModalOpen: (isOpen: boolean) => void
+    setIsIAmHereModalOpen: (isOpen: boolean) => void
 }
 
 export function HeaderView({
     establishment,
     setIsReportModalOpen,
+    setIsIAmHereModalOpen,
 }: HeaderViewProps) {
     const { coords } = useUserGeolocation({
         immediate: true,
@@ -86,7 +88,10 @@ export function HeaderView({
                 </section>
             </div>
             <div className={toolbarContainer}>
-                <Button variant="secondary">
+                <Button
+                    onClick={() => setIsIAmHereModalOpen(true)}
+                    variant="secondary"
+                >
                     <MapPinAreaIcon weight="bold" size={20} /> Estou Aqui
                 </Button>
                 <Button

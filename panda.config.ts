@@ -46,6 +46,7 @@ export default defineConfig({
                     primary: { value: '#343433' },
                     cream: { value: '#f6f4ef' },
                     tint: { value: '#018DFF' },
+                    greenHightlight: { value: '#00CC00' },
                 },
                 sizes: {
                     header: { value: HEADER_SIZE },
