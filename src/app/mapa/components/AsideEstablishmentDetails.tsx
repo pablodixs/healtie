@@ -1,9 +1,6 @@
 import Image from 'next/image'
 import {
-    BuildingIcon,
     MapPinAreaIcon,
-    MapPinIcon,
-    PhoneIcon,
     WarningCircleIcon,
 } from '@phosphor-icons/react/dist/ssr'
 
@@ -21,10 +18,12 @@ import {
     titleStyles,
     locationParagraphStyles,
     actionsContainerStyles,
-    indicatorsContainerStyles,
     detailsContainerStyles,
-    detailParagraphStyles,
+    compactDetailsContainer,
 } from './styles'
+import { EstablishmentDistanceLabel } from '@/components/DistanceLabel'
+import { DetailItem } from '@/app/estabelecimento/[id]/components/DetailsAsideView'
+import { useEstablishmentDistance } from '@/hooks/geolocation/useEstablishmentDistance'
 
 interface AsideEstablishmentDetailsProps {
     selectedEstablishmentData: Establishment
@@ -33,6 +32,12 @@ interface AsideEstablishmentDetailsProps {
 export function AsideEstablishmentDetails({
     selectedEstablishmentData,
 }: AsideEstablishmentDetailsProps) {
+    const { distance, formattedDistance } = useEstablishmentDistance({
+        establishmentCoords: selectedEstablishmentData.location,
+    })
+
+    console.log({ distance, formattedDistance })
+
     return (
         <AnimatedMainContainer key="establishment-details">
             <AsideToolbar data={selectedEstablishmentData} />
@@ -48,18 +53,23 @@ export function AsideEstablishmentDetails({
             <h1 className={titleStyles}>
                 {selectedEstablishmentData.full_name}
             </h1>
-            <div>
+            <div className={compactDetailsContainer}>
                 <span className={locationParagraphStyles}>
                     {selectedEstablishmentData.district},{' '}
                     {selectedEstablishmentData.city} -{' '}
-                    {selectedEstablishmentData.state} &bull;{' '}
-                    <span className={'highlight'}>Aberto agora</span>
+                    {selectedEstablishmentData.state}
                 </span>
+                <EstablishmentDistanceLabel
+                    establishmentCoords={selectedEstablishmentData.location}
+                />
+                <span className={'highlight'}>Aberto agora</span>
             </div>
             <section className={actionsContainerStyles}>
-                <Button fullWidth>
-                    <MapPinAreaIcon /> Estou Aqui
-                </Button>
+                {distance !== null && distance < 0.15 && (
+                    <Button fullWidth>
+                        <MapPinAreaIcon /> Estou Aqui
+                    </Button>
+                )}
                 <Link
                     href={`/estabelecimento/${selectedEstablishmentData.cnes}`}
                     fullWidth
@@ -83,29 +93,25 @@ export function AsideEstablishmentDetails({
                     </Link>
                 </Tooltip>
             </section>
-            <section>
+            {/* <section>
                 <h2 className={indicatorsContainerStyles}>
                     Sem dados suficientes da Situação do Estabelecimento
                 </h2>
-            </section>
+            </section> */}
             <section className={detailsContainerStyles}>
                 <span>Dados do Estabelecimento</span>
-                <span className={detailParagraphStyles}>
-                    <PhoneIcon size={18} /> Telefone:{' '}
-                    {selectedEstablishmentData.phone}
-                </span>
-                <span className={detailParagraphStyles}>
-                    <MapPinIcon size={18} /> Endereço:{' '}
-                    {selectedEstablishmentData.address},{' '}
-                    {selectedEstablishmentData.district} -{' '}
-                    {selectedEstablishmentData.city},{' '}
-                    {selectedEstablishmentData.state}
-                </span>
-
-                <span className={detailParagraphStyles}>
-                    <BuildingIcon size={18} /> CNES:{' '}
-                    {selectedEstablishmentData.cnes}
-                </span>
+                <DetailItem
+                    title="Telefone"
+                    value={selectedEstablishmentData.phone}
+                />
+                <DetailItem
+                    title="Endereço"
+                    value={`${selectedEstablishmentData.address}`}
+                />
+                <DetailItem
+                    title="CNES"
+                    value={selectedEstablishmentData.cnes.toString()}
+                />
                 <div>
                     <Divider margin="compact" />
                     <Link href={'#'} variant="textSubtle" size="sm">

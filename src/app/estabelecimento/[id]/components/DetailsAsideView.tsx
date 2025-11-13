@@ -79,7 +79,13 @@ export function DetailsAsideView({
     )
 }
 
-const DetailItem = ({ title, value }: { title: string; value: string }) => {
+export const DetailItem = ({
+    title,
+    value,
+}: {
+    title: string
+    value: string
+}) => {
     return (
         <div className={detailItemContainer}>
             <Paragraph subtle size="caption">

@@ -18,15 +18,7 @@ export const titleStyles = css({
     letterSpacing: '-0.025em',
 })
 
-export const locationParagraphStyles = css({
-    color: 'gray.400',
-    fontSize: '0.875rem',
-
-    '& .highlight': {
-        color: 'green.600',
-        fontWeight: 450,
-    },
-})
+export const locationParagraphStyles = css({})
 
 export const actionsContainerStyles = css({
     marginY: '1rem',
@@ -44,10 +36,22 @@ export const indicatorsContainerStyles = css({
     textAlign: 'center',
 })
 
+export const compactDetailsContainer = css({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1ch',
+    fontSize: '0.875rem',
+    color: 'gray.400',
+
+    '& .highlight': {
+        color: 'green.600',
+        fontWeight: 450,
+    },
+})
+
 export const detailsContainerStyles = css({
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
     marginTop: '1rem',
     fontSize: '0.875rem',
 })
