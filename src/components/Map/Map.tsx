@@ -1,16 +1,11 @@
 'use client'
 
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import {
-    MapMarker,
-    AuxToolbar,
-    MapToolbar,
-    TokenMissingState,
-} from '@/components/Map'
+import { MapMarker, MapToolbar, TokenMissingState } from '@/components/Map'
 
 import { establishments } from '@/utils/unidades.json'
 import { useMapView } from '@/hooks/useMapView'
@@ -30,7 +25,6 @@ const INITIAL_VIEW_STATE = {
 export function MapComponent() {
     const param = useSearchParams()
     const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
-    const [showLabels, setShowLabels] = useState(true)
     const { selectedEstablishment, setSelectedEstablishment } = useMapContext()
     const { coords } = useUserGeolocation()
     const latitudeParam = param.get('lat')
@@ -153,10 +147,6 @@ export function MapComponent() {
                         height: '100%',
                     }}
                 >
-                    <AuxToolbar
-                        showLabels={showLabels}
-                        onToggleLabels={setShowLabels}
-                    />
                     <MapToolbar mapRef={mapRef} />
                     <Map
                         ref={mapRef}

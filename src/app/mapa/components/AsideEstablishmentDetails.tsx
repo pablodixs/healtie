@@ -32,11 +32,9 @@ interface AsideEstablishmentDetailsProps {
 export function AsideEstablishmentDetails({
     selectedEstablishmentData,
 }: AsideEstablishmentDetailsProps) {
-    const { distance, formattedDistance } = useEstablishmentDistance({
+    const { distance } = useEstablishmentDistance({
         establishmentCoords: selectedEstablishmentData.location,
     })
-
-    console.log({ distance, formattedDistance })
 
     return (
         <AnimatedMainContainer key="establishment-details">

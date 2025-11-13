@@ -42,6 +42,7 @@ export const compactDetailsContainer = css({
     gap: '1ch',
     fontSize: '0.875rem',
     color: 'gray.400',
+    mt: '.5rem',
 
     '& .highlight': {
         color: 'green.600',
