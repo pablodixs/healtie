@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { HTMLAttributes, useMemo } from 'react'
 
 import { Establishment } from '@/interfaces/Establishment'
 
@@ -73,7 +73,7 @@ export function AsideNearEstablishments({
                     establishmentsWithDistance.map((establishment) => (
                         <EstablishmentItem
                             key={establishment.cnes}
-                            {...establishment}
+                            establishment={establishment}
                         />
                     ))}
             </div>
@@ -81,12 +81,24 @@ export function AsideNearEstablishments({
     )
 }
 
-const EstablishmentItem = (establishment: NearbyEstablishment) => {
+export const EstablishmentItem = ({
+    establishment,
+    onClick,
+}: {
+    establishment: NearbyEstablishment
+} & HTMLAttributes<HTMLDivElement>) => {
     const { setSelectedEstablishment } = useMapContext()
+
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        setSelectedEstablishment(establishment)
+        if (onClick) {
+            onClick(e as unknown as React.MouseEvent<HTMLDivElement>)
+        }
+    }
 
     return (
         <Link
-            onClick={() => setSelectedEstablishment(establishment)}
+            onClick={handleClick}
             variant="asChild"
             href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}`}
             className={css({

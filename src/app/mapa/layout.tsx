@@ -2,16 +2,11 @@ import { Metadata } from 'next'
 
 import { Logo } from '@/components/Logo'
 import { MapComponent } from '../../components/Map/Map'
-import { MapSearchBar } from '@/components/Map'
 
-import {
-    errorStateContainer,
-    mainContainer,
-    searchBarContainer,
-} from './styles'
+import { errorStateContainer, mainContainer } from './styles'
 import { MapContextProvider } from '@/context/MapContext'
-import { ProgressiveBlur } from '@/components/ProgressiveBlur'
 import { css } from '../../../styled-system/css'
+import { AsideSearchBar } from './components/AsideSearchBar'
 
 export const metadata: Metadata = {
     title: 'Mapa - Healtie',
@@ -35,10 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         minHeight: '74px',
                     })}
                 >
-                    <section className={searchBarContainer}>
-                        <MapSearchBar />
-                        <ProgressiveBlur />
-                    </section>
+                    <AsideSearchBar />
                 </div>
                 {children}
                 <MapComponent />
