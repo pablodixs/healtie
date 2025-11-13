@@ -91,6 +91,17 @@ export const buttonStyles = cva({
                 color: 'rgba(0, 0, 0, 0.85)',
             },
         },
+        align: {
+            left: {
+                justifyContent: 'flex-start',
+            },
+            center: {
+                justifyContent: 'center',
+            },
+            right: {
+                justifyContent: 'flex-end',
+            },
+        },
         size: {
             small: {
                 fontSize: '0.75rem',

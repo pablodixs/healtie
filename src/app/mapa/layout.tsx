@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 
 import { Logo } from '@/components/Logo'
 import { MapComponent } from '../../components/Map/Map'
+import { MapSearchBar } from '@/components/Map'
 
 import {
     errorStateContainer,
@@ -9,7 +10,6 @@ import {
     searchBarContainer,
 } from './styles'
 import { MapContextProvider } from '@/context/MapContext'
-import { SearchBar } from '@/components/Navbar/SearchBar'
 import { ProgressiveBlur } from '@/components/ProgressiveBlur'
 import { css } from '../../../styled-system/css'
 
@@ -32,12 +32,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         zIndex: 5,
                         marginLeft: '1rem',
                         borderRadius: '32px',
-                        overflow: 'hidden',
                         minHeight: '74px',
                     })}
                 >
                     <section className={searchBarContainer}>
-                        <SearchBar placeholder="Buscar unidades de saúde" />
+                        <MapSearchBar />
                         <ProgressiveBlur />
                     </section>
                 </div>

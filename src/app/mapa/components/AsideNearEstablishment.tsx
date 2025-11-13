@@ -99,6 +99,7 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
         >
             <Tooltip content={establishment.type}>
                 <EstablishmentIcon
+                    animation={false}
                     decoration
                     size="small"
                     type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}

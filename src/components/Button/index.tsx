@@ -14,6 +14,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     size?: 'small' | 'medium' | 'large' | 'larger'
     iconButton?: boolean
     fullWidth?: boolean
+    align?: 'left' | 'center' | 'right'
 }
 
 export function Button({
@@ -22,11 +23,18 @@ export function Button({
     size,
     iconButton = false,
     fullWidth = false,
+    align,
     ...props
 }: ButtonProps) {
     return (
         <button
-            className={buttonStyles({ variant, size, iconButton, fullWidth })}
+            className={buttonStyles({
+                variant,
+                size,
+                iconButton,
+                fullWidth,
+                align,
+            })}
             {...props}
         >
             {children}

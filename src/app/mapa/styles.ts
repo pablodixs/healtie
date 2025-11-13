@@ -67,6 +67,8 @@ export const searchBarContainer = css({
         'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%)',
     display: 'flex',
     gap: '.5rem',
+    borderRadius: '32px',
+    overflow: 'hidden',
 })
 
 export const errorStateContainer = css({

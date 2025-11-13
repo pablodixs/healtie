@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import {
     MapPinAreaIcon,
@@ -24,6 +26,9 @@ import {
 import { EstablishmentDistanceLabel } from '@/components/DistanceLabel'
 import { DetailItem } from '@/app/estabelecimento/[id]/components/DetailsAsideView'
 import { useEstablishmentDistance } from '@/hooks/geolocation/useEstablishmentDistance'
+import { useState } from 'react'
+import { Portal } from '@/components/Portal'
+import { IAmHereDialog } from '@/components/IAmHererDialog'
 
 interface AsideEstablishmentDetailsProps {
     selectedEstablishmentData: Establishment
@@ -32,6 +37,7 @@ interface AsideEstablishmentDetailsProps {
 export function AsideEstablishmentDetails({
     selectedEstablishmentData,
 }: AsideEstablishmentDetailsProps) {
+    const [isIAmHereDialogOpen, setIsIAmHereDialogOpen] = useState(false)
     const { distance } = useEstablishmentDistance({
         establishmentCoords: selectedEstablishmentData.location,
     })
@@ -64,7 +70,10 @@ export function AsideEstablishmentDetails({
             </div>
             <section className={actionsContainerStyles}>
                 {distance !== null && distance < 0.15 && (
-                    <Button fullWidth>
+                    <Button
+                        fullWidth
+                        onClick={() => setIsIAmHereDialogOpen(true)}
+                    >
                         <MapPinAreaIcon /> Estou Aqui
                     </Button>
                 )}
@@ -117,6 +126,14 @@ export function AsideEstablishmentDetails({
                     </Link>
                 </div>
             </section>
+            <Portal>
+                {isIAmHereDialogOpen && (
+                    <IAmHereDialog
+                        establishment={selectedEstablishmentData}
+                        onOpenChange={setIsIAmHereDialogOpen}
+                    />
+                )}
+            </Portal>
         </AnimatedMainContainer>
     )
 }
