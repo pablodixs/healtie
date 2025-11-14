@@ -12,7 +12,8 @@ export const titleContainer = css({
     },
 
     '& strong': {
-        fontWeight: 600,
+        fontWeight: 550,
+        letterSpacing: '-0.0375em',
         fontSize: '1.5rem',
         textAlign: 'right',
         lineHeight: '100%',
@@ -35,8 +36,11 @@ export const descriptionContainer = css({
 })
 
 export const barFill = css({
+    position: 'absolute',
+    height: '100%',
     background: 'greenHightlight',
     borderRadius: '4px',
+    zIndex: 2,
 })
 
 export const barContainer = css({
@@ -48,7 +52,9 @@ export const barContainer = css({
 })
 
 export const barBackground = css({
-    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     backgroundImage:
         'repeating-linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 2px, transparent 2px, transparent 10.5px)',
 })

@@ -1,3 +1,5 @@
+'use client'
+import { motion } from 'motion/react'
 import { GaugeIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 import {
@@ -10,7 +12,14 @@ import {
 
 export function HealtieClassificationIndicator() {
     return (
-        <div>
+        <div
+            className={css({
+                padding: '1rem',
+                border: '1px solid',
+                borderColor: 'neutral.200',
+                borderRadius: '12px',
+            })}
+        >
             <header className={titleContainer}>
                 <div
                     className={css({
@@ -26,7 +35,16 @@ export function HealtieClassificationIndicator() {
                 <strong>90</strong>
             </header>
             <div className={barContainer}>
-                <div className={barFill} style={{ width: '90%' }} />
+                <motion.div
+                    initial={{ width: '0%' }}
+                    animate={{ width: '90%' }}
+                    transition={{
+                        delay: 0.3,
+                        duration: 0.4,
+                        ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                    className={barFill}
+                />
                 <div className={barBackground} />
             </div>
             <footer className={descriptionContainer}>

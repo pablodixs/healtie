@@ -18,6 +18,8 @@ import { Divider } from '@/components/Divider'
 import { IAmHereDialog } from '@/components/IAmHererDialog'
 import {
     HealtieClassificationIndicator,
+    OccupancyIndexIndicator,
+    ResolutionIndexIndicator,
     WaitTimeIndicator,
 } from '@/components/Indicators'
 import { Paragraph } from '@/components/Typography'
@@ -103,7 +105,22 @@ export default function Page() {
                                         alignItems: 'center',
                                     })}
                                 >
-                                    <Paragraph bolder>Indicadores</Paragraph>
+                                    <div>
+                                        <Paragraph
+                                            bolder
+                                            marginCompact
+                                            size="subheadline"
+                                        >
+                                            Indicadores
+                                        </Paragraph>
+                                        <Paragraph
+                                            marginCompact
+                                            size="caption"
+                                            subtle
+                                        >
+                                            Atualizado há 1 minuto
+                                        </Paragraph>
+                                    </div>
                                     <Button
                                         onClick={() =>
                                             setSelectedTab('indicators')
@@ -120,13 +137,39 @@ export default function Page() {
                                             base: '1fr',
                                             md: '1fr 1fr',
                                         },
-                                        gap: '5%',
+                                        gap: '1rem',
                                         mt: '1rem',
                                     })}
                                 >
                                     <HealtieClassificationIndicator />
                                     <WaitTimeIndicator />
+                                    <OccupancyIndexIndicator />
+                                    <ResolutionIndexIndicator />
                                 </div>
+                                <header
+                                    className={css({
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        my: '1rem',
+                                    })}
+                                >
+                                    <Paragraph
+                                        bolder
+                                        marginCompact
+                                        size="subheadline"
+                                    >
+                                        Serviços
+                                    </Paragraph>
+                                    <Button
+                                        onClick={() =>
+                                            setSelectedTab('services')
+                                        }
+                                        variant="text"
+                                    >
+                                        Ver mais
+                                    </Button>
+                                </header>
                             </div>
                             <DetailsAsideView establishment={establishment} />
                         </>
@@ -137,12 +180,14 @@ export default function Page() {
                                 className={css({
                                     display: 'flex',
                                     flexDir: 'column',
-                                    gap: '2rem',
+                                    gap: '1rem',
                                     mt: '1rem',
                                 })}
                             >
                                 <HealtieClassificationIndicator />
                                 <WaitTimeIndicator />
+                                <OccupancyIndexIndicator />
+                                <ResolutionIndexIndicator />
                             </div>
                             <div>
                                 <Paragraph bolder size="caption">

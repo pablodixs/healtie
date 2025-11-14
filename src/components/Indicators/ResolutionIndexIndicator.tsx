@@ -1,6 +1,7 @@
 'use client'
+
 import { motion } from 'motion/react'
-import { TimerIcon } from '@phosphor-icons/react/dist/ssr'
+import { CheckCircleIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 import {
     titleContainer,
@@ -10,7 +11,7 @@ import {
     descriptionContainer,
 } from './styles'
 
-export function WaitTimeIndicator() {
+export function ResolutionIndexIndicator() {
     return (
         <div
             className={css({
@@ -29,43 +30,28 @@ export function WaitTimeIndicator() {
                         fontWeight: 500,
                     })}
                 >
-                    <TimerIcon />
-                    <p>Tempo de Espera Médio</p>
+                    <CheckCircleIcon />
+                    <p>Índice de Resolução</p>
                 </div>
-                <div
-                    className={css({
-                        display: 'flex',
-                        flexDir: 'column',
-                        alignItems: 'flex-end',
-                    })}
-                >
-                    <strong>Alto</strong>
-                    <span
-                        className={css({
-                            fontSize: '0.875rem',
-                            color: 'neutral.500',
-                        })}
-                    >
-                        Cerca de 2 horas
-                    </span>
-                </div>
+                <strong>Sem dados</strong>
             </header>
             <div className={barContainer}>
                 <motion.div
-                    initial={{ width: '0%' }}
-                    animate={{ width: '80%' }}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
                         ease: [0.25, 0.1, 0.25, 1],
                     }}
                     className={barFill}
-                    style={{ background: '#e5383b' }}
+                    style={{ background: '#f48c06', width: '0%', left: '0%' }}
                 />
                 <div className={barBackground} />
             </div>
             <footer className={descriptionContainer}>
                 <span>Baixo</span>
+                <span>Médio</span>
                 <span>Alto</span>
             </footer>
         </div>
