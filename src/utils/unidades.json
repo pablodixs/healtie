@@ -79,6 +79,57 @@
             }
         },
         {
+            "cnes": 10456,
+            "name": "Hospital de Base do Distrito Federal",
+            "full_name": "Hospital de Base do Distrito Federal",
+            "address": "SMHS QUADRA 101 AREA ESPECIAL",
+            "district": "Asa Sul",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "70335900",
+            "abb": "HOSPITAL",
+            "type": "Hospital",
+            "phone": "6133151450",
+            "location": {
+                "longitude": -47.88905678943507,
+                "latitude": -15.79996648441987
+            }
+        },
+        {
+            "cnes": 10464,
+            "name": "Hospital Regional da Asa Norte",
+            "full_name": "Hospital Regional da Asa Norte",
+            "address": "SDN CNB - Conjunto A",
+            "district": "Asa Norte",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "70077900",
+            "abb": "HOSPITAL",
+            "type": "Hospital",
+            "phone": "6133254300",
+            "location": {
+                "longitude": -47.88312716564683,
+                "latitude": -15.791181635007987
+            }
+        },
+        {
+            "cnes": 10707,
+            "name": "UBS 01 da Asa Norte",
+            "full_name": "Unidade Básica de Saúde 01 da Asa Norte",
+            "address": "SGAN",
+            "district": "Asa Norte",
+            "city": "Brasília",
+            "state": "DF",
+            "zip_code": "70077900",
+            "abb": "UBS",
+            "type": "Unidade Básica de Saúde",
+            "phone": "6133254300",
+            "location": {
+                "longitude": -47.89261498116073,
+                "latitude": -15.772797252667713
+            }
+        },
+        {
             "cnes": 7771479,
             "name": "UBS 11 de Samambaia",
             "full_name": "Unidade Básica de Saúde 11 de Samambaia",
