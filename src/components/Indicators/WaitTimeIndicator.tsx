@@ -57,7 +57,8 @@ export function WaitTimeIndicator() {
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
-                        ease: [0.25, 0.1, 0.25, 1],
+                        type: 'spring',
+                        bounce: 0,
                     }}
                     className={barFill}
                     style={{ background: '#e5383b' }}
