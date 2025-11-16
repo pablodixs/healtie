@@ -16,3 +16,15 @@ export interface Establishment {
         latitude: number
     }
 }
+
+export interface EstablishmentPointResponse {
+    cnes: number
+    name: string
+    geolocation: Geolocation
+    type: string
+}
+
+interface Geolocation {
+    latitude: number
+    longitude: number
+}

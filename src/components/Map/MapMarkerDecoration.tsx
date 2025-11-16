@@ -9,29 +9,38 @@ import {
     HospitalIcon,
 } from '@phosphor-icons/react'
 
-import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import { Establishment } from '@/interfaces/Establishment'
 
 import { labelStyles, markerContainer } from './maker.styles'
 import { useMapContext } from '@/context/MapContext'
 import { Tooltip } from '../Tooltip'
-import { useState } from 'react'
 
 interface MapMarkerProps {
-    establishmentProps: EstablishmentPointResponse
+    longitude: number
+    latitude: number
+    establishmentProps?: Establishment
+    delay?: boolean
+    expanded?: boolean
     mapZoom: number
 }
 
-export function MapMarker({ establishmentProps, mapZoom }: MapMarkerProps) {
+export function MapMarkerDecoration({
+    longitude,
+    latitude,
+    establishmentProps,
+    delay = false,
+    expanded = false,
+    mapZoom,
+}: MapMarkerProps) {
     const router = useRouter()
-    const [expanded] = useState(false)
     const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
 
     if (!establishmentProps) return null
 
     return (
         <Marker
-            longitude={establishmentProps.geolocation.longitude}
-            latitude={establishmentProps.geolocation.latitude}
+            longitude={longitude}
+            latitude={latitude}
             anchor="center"
             onClick={() => {
                 router.push(`/mapa?establishment=${establishmentProps.cnes}`)
@@ -62,22 +71,21 @@ export function MapMarker({ establishmentProps, mapZoom }: MapMarkerProps) {
                             exit={{
                                 scale: 0,
                             }}
+                            transition={{ delay: delay ? 0.75 : 0 }}
                             className={markerContainer({
-                                type: establishmentProps.type as
-                                    | 'Hospital Geral'
-                                    | 'Unidade Básica de Saúde'
-                                    | 'Unidade de Pronto Atendimento',
+                                type: establishmentProps.abb as
+                                    | 'HOSPITAL'
+                                    | 'UBS'
+                                    | 'UPA',
                             })}
                         >
-                            {establishmentProps.type === 'Hospital Geral' && (
+                            {establishmentProps.abb === 'HOSPITAL' && (
                                 <HospitalIcon weight="fill" />
                             )}
-                            {establishmentProps.type ===
-                                'Unidade Básica de Saúde' && (
+                            {establishmentProps.abb === 'UBS' && (
                                 <FirstAidIcon weight="fill" />
                             )}
-                            {establishmentProps.type ===
-                                'Unidade de Pronto Atendimento' && (
+                            {establishmentProps.abb === 'UPA' && (
                                 <AmbulanceIcon weight="fill" />
                             )}
                         </motion.div>
@@ -112,22 +120,20 @@ export function MapMarker({ establishmentProps, mapZoom }: MapMarkerProps) {
                             }}
                             transition={{ duration: 0.3, type: 'spring' }}
                             className={markerContainer({
-                                type: establishmentProps.type as
-                                    | 'Hospital Geral'
-                                    | 'Unidade Básica de Saúde'
-                                    | 'Unidade de Pronto Atendimento',
+                                type: establishmentProps.abb as
+                                    | 'HOSPITAL'
+                                    | 'UBS'
+                                    | 'UPA',
                                 compacted: mapZoom <= 12 ? true : false,
                             })}
                         >
-                            {establishmentProps.type === 'Hospital Geral' && (
+                            {establishmentProps.abb === 'HOSPITAL' && (
                                 <HospitalIcon weight="fill" />
                             )}
-                            {establishmentProps.type ===
-                                'Unidade Básica de Saúde' && (
+                            {establishmentProps.abb === 'UBS' && (
                                 <FirstAidIcon weight="fill" />
                             )}
-                            {establishmentProps.type ===
-                                'Unidade de Pronto Atendimento' && (
+                            {establishmentProps.abb === 'UPA' && (
                                 <AmbulanceIcon weight="fill" />
                             )}
                             <AnimatePresence>

@@ -25,15 +25,15 @@ export const markerContainer = cva({
     },
     variants: {
         type: {
-            HOSPITAL: {
+            'Hospital Geral': {
                 background:
                     'linear-gradient(to bottom, #AE35FF 0%, #9900FF 100%)',
             },
-            UBS: {
+            'Unidade Básica de Saúde': {
                 background:
                     'linear-gradient(to bottom, #43ADFF 0%, #0090FF 100%)',
             },
-            UPA: {
+            'Unidade de Pronto Atendimento': {
                 background:
                     'linear-gradient(to bottom, #FF6A30 0%, #FF5310 100%)',
             },

@@ -2,12 +2,16 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
-import { Establishment } from '@/interfaces/Establishment'
+import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 
 interface MapContextType {
-    selectedEstablishment: Establishment | null
-    setSelectedEstablishment: (establishment: Establishment | null) => void
-    isEstablishmentSelected: (establishment: Establishment) => boolean
+    selectedEstablishment: EstablishmentPointResponse | null
+    setSelectedEstablishment: (
+        establishment: EstablishmentPointResponse | null
+    ) => void
+    isEstablishmentSelected: (
+        establishment: EstablishmentPointResponse
+    ) => boolean
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined)
@@ -28,10 +32,12 @@ export const MapContextProvider: React.FC<MapProviderProps> = ({
     children,
 }) => {
     const [selectedEstablishment, setSelectedEstablishment] =
-        useState<Establishment | null>(null)
+        useState<EstablishmentPointResponse | null>(null)
 
-    const isEstablishmentSelected = (establishment: Establishment): boolean => {
-        return selectedEstablishment?.cnes === establishment.cnes
+    const isEstablishmentSelected = (
+        establishment: EstablishmentPointResponse
+    ): boolean => {
+        return selectedEstablishment?.geolocation === establishment.geolocation
     }
 
     const value: MapContextType = {

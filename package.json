@@ -13,17 +13,21 @@
         "@phosphor-icons/react": "^2.1.10",
         "@types/mapbox-gl": "^3.4.1",
         "@vercel/analytics": "^1.5.0",
+        "axios": "^1.13.2",
+        "lodash": "^4.17.21",
         "lottie-react": "^2.4.1",
         "mapbox-gl": "^3.14.0",
         "motion": "^12.23.12",
         "next": "^16.0.1",
         "react": "19.1.0",
         "react-dom": "19.1.0",
-        "react-map-gl": "^8.0.4"
+        "react-map-gl": "^8.0.4",
+        "swr": "^2.3.6"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
         "@pandacss/dev": "^1.1.0",
+        "@types/lodash": "^4.17.20",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
