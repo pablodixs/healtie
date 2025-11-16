@@ -3,17 +3,12 @@
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
 import { useSearchParams } from 'next/navigation'
 import { styles } from './styles'
-import { establishments } from '@/utils/unidades.json'
 import { AsideEstablishmentDetails } from './components/AsideEstablishmentDetails'
 import { AsideDefault } from './components/AsideDefaultState'
 
 export default function Page() {
     const param = useSearchParams()
-
-    const data = establishments.find(
-        (establishment) =>
-            establishment.cnes === Number(param.get('establishment'))
-    )
+    const establishmentCnes = param.get('establishment')
 
     return (
         <LayoutGroup id="aside">
@@ -29,9 +24,9 @@ export default function Page() {
                 className={styles}
             >
                 <AnimatePresence mode="wait">
-                    {data ? (
+                    {establishmentCnes ? (
                         <AsideEstablishmentDetails
-                            selectedEstablishmentData={data}
+                            selectedEstablishmentCnes={establishmentCnes}
                         />
                     ) : (
                         <AsideDefault />

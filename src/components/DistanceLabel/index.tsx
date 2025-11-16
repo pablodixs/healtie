@@ -3,15 +3,15 @@
 import { useEstablishmentDistance } from '@/hooks/geolocation/useEstablishmentDistance'
 
 interface EstablishmentDistanceLabelProps {
-    establishmentCoords: {
-        latitude: number
-        longitude: number
-    }
+    latitude: number
+    longitude: number
 }
 
 export function EstablishmentDistanceLabel({
-    establishmentCoords,
+    latitude,
+    longitude,
 }: EstablishmentDistanceLabelProps) {
+    const establishmentCoords = { latitude, longitude }
     const { formattedDistance, hasUserLocation } = useEstablishmentDistance({
         establishmentCoords,
     })

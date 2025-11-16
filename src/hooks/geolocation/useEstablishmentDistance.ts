@@ -6,6 +6,7 @@ import {
     calculateDistance,
     formatDistance,
 } from '@/utils/functions/calculateDistance'
+import { Coordinates } from '@/interfaces/EstablishmentAPIResponse'
 
 interface EstablishmentCoords {
     latitude: number
@@ -16,7 +17,7 @@ interface UseEstablishmentDistanceOptions {
     /**
      * Coordenadas do estabelecimento
      */
-    establishmentCoords: EstablishmentCoords | null | undefined
+    establishmentCoords: Coordinates | null | undefined
     /**
      * Se true, retorna a distância formatada (ex: "1.5 km" ou "500 m")
      * Se false, retorna a distância em quilômetros como número
@@ -45,7 +46,7 @@ interface UseEstablishmentDistanceReturn {
     /**
      * Coordenadas do usuário
      */
-    userCoords: GeolocationCoordinates | null
+    userCoords: Coordinates | null
 }
 
 /**
@@ -68,7 +69,7 @@ interface UseEstablishmentDistanceReturn {
  * ```
  */
 export function useEstablishmentDistance({
-    establishmentCoords,
+    coordinates,
     formatted = true,
 }: UseEstablishmentDistanceOptions): UseEstablishmentDistanceReturn {
     const { coords, status } = useUserGeolocation()

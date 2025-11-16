@@ -8,10 +8,10 @@ import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 
 import { useMapContext } from '@/context/MapContext'
-import { Establishment } from '@/interfaces/Establishment'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface AsideToolbarProps {
-    data: Establishment
+    data: EstablishmentResponse
 }
 
 export function AsideToolbar({ data }: AsideToolbarProps) {

@@ -29,56 +29,66 @@ import { useEstablishmentDistance } from '@/hooks/geolocation/useEstablishmentDi
 import { useState } from 'react'
 import { Portal } from '@/components/Portal'
 import { IAmHereDialog } from '@/components/IAmHererDialog'
+import useSWR from 'swr'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { fetcher } from '@/lib/swrFetcher'
 
 interface AsideEstablishmentDetailsProps {
-    selectedEstablishmentData: Establishment
+    selectedEstablishmentCnes: number | string
 }
 
 export function AsideEstablishmentDetails({
-    selectedEstablishmentData,
+    selectedEstablishmentCnes,
 }: AsideEstablishmentDetailsProps) {
+    const { data } = useSWR<EstablishmentResponse>(``, fetcher)
+
     const [isIAmHereDialogOpen, setIsIAmHereDialogOpen] = useState(false)
-    const { distance } = useEstablishmentDistance({
-        establishmentCoords: selectedEstablishmentData.location,
-    })
+    // const { distance } = useEstablishmentDistance({
+    //     establishmentCoords: selectedEstablishmentCnes.location,
+    // })
+
+    if (!data)
+        return (
+            <div>
+                <p>Carregando...</p>
+            </div>
+        )
 
     return (
         <AnimatedMainContainer key="establishment-details">
-            <AsideToolbar data={selectedEstablishmentData} />
+            <AsideToolbar data={data} />
             <Image
                 src={'/pictures/establishment_ubs.png'}
-                alt={selectedEstablishmentData.full_name}
+                alt={data.name}
                 width={400}
                 height={100}
                 quality={100}
                 draggable={false}
                 className={featureImageStyles}
             />
-            <h1 className={titleStyles}>
-                {selectedEstablishmentData.full_name}
-            </h1>
+            <h1 className={titleStyles}>{data.name}</h1>
             <div className={compactDetailsContainer}>
                 <span className={locationParagraphStyles}>
-                    {selectedEstablishmentData.district},{' '}
-                    {selectedEstablishmentData.city} -{' '}
-                    {selectedEstablishmentData.state}
+                    {data.address?.district}, {data.address?.city} -{' '}
+                    {data.address?.state}
                 </span>
                 <EstablishmentDistanceLabel
-                    establishmentCoords={selectedEstablishmentData.location}
+                    latitude={data.coordinates.latitude}
+                    longitude={data.coordinates.longitude}
                 />
                 <span className={'highlight'}>Aberto agora</span>
             </div>
             <section className={actionsContainerStyles}>
-                {distance !== null && distance < 0.15 && (
+                {/* {distance !== null && distance < 0.15 && (
                     <Button
                         fullWidth
                         onClick={() => setIsIAmHereDialogOpen(true)}
                     >
                         <MapPinAreaIcon /> Estou Aqui
                     </Button>
-                )}
+                )} */}
                 <Link
-                    href={`/estabelecimento/${selectedEstablishmentData.cnes}`}
+                    href={`/estabelecimento/${data.cnes}`}
                     fullWidth
                     variant="subtle"
                 >
@@ -89,7 +99,7 @@ export function AsideEstablishmentDetails({
                         onlyIcon
                         variant="subtle"
                         target="_blank"
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${selectedEstablishmentData.location.latitude},${selectedEstablishmentData.location.longitude}`}
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${data.coordinates.latitude},${data.coordinates.longitude}`}
                     >
                         <Image
                             src={'/pictures/google_maps_icon.png'}
@@ -109,16 +119,10 @@ export function AsideEstablishmentDetails({
                 <span>Dados do Estabelecimento</span>
                 <DetailItem
                     title="Telefone"
-                    value={selectedEstablishmentData.phone}
+                    value={data.phone || 'Não informado'}
                 />
-                <DetailItem
-                    title="Endereço"
-                    value={`${selectedEstablishmentData.address}`}
-                />
-                <DetailItem
-                    title="CNES"
-                    value={selectedEstablishmentData.cnes.toString()}
-                />
+                <DetailItem title="Endereço" value={`${data.address}`} />
+                <DetailItem title="CNES" value={data.cnes.toString()} />
                 <div>
                     <Divider margin="compact" />
                     <Link href={'#'} variant="textSubtle" size="sm">
@@ -126,14 +130,14 @@ export function AsideEstablishmentDetails({
                     </Link>
                 </div>
             </section>
-            <Portal>
+            {/* <Portal>
                 {isIAmHereDialogOpen && (
                     <IAmHereDialog
-                        establishment={selectedEstablishmentData}
+                        establishment={data}
                         onOpenChange={setIsIAmHereDialogOpen}
                     />
                 )}
-            </Portal>
+            </Portal> */}
         </AnimatedMainContainer>
     )
 }
