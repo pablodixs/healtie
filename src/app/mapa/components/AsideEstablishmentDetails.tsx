@@ -13,8 +13,6 @@ import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 import { Divider } from '@/components/Divider'
 
-import { Establishment } from '@/interfaces/Establishment'
-
 import {
     featureImageStyles,
     titleStyles,
@@ -32,6 +30,7 @@ import { IAmHereDialog } from '@/components/IAmHererDialog'
 import useSWR from 'swr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { fetcher } from '@/lib/swrFetcher'
+import { ErrorState } from './states/ErrorState'
 
 interface AsideEstablishmentDetailsProps {
     selectedEstablishmentCnes: number | string
@@ -40,19 +39,20 @@ interface AsideEstablishmentDetailsProps {
 export function AsideEstablishmentDetails({
     selectedEstablishmentCnes,
 }: AsideEstablishmentDetailsProps) {
-    const { data } = useSWR<EstablishmentResponse>(``, fetcher)
+    const { data, isLoading } = useSWR<EstablishmentResponse>(
+        `http://localhost:8080/v1/establishment/${selectedEstablishmentCnes}`,
+        fetcher
+    )
 
     const [isIAmHereDialogOpen, setIsIAmHereDialogOpen] = useState(false)
-    // const { distance } = useEstablishmentDistance({
-    //     establishmentCoords: selectedEstablishmentCnes.location,
-    // })
 
-    if (!data)
-        return (
-            <div>
-                <p>Carregando...</p>
-            </div>
-        )
+    const { distance } = useEstablishmentDistance({
+        establishmentCoords: data?.coordinates,
+    })
+
+    if (isLoading) return null
+
+    if (!data) return <ErrorState />
 
     return (
         <AnimatedMainContainer key="establishment-details">
@@ -79,14 +79,14 @@ export function AsideEstablishmentDetails({
                 <span className={'highlight'}>Aberto agora</span>
             </div>
             <section className={actionsContainerStyles}>
-                {/* {distance !== null && distance < 0.15 && (
+                {distance !== null && distance < 0.15 && (
                     <Button
                         fullWidth
                         onClick={() => setIsIAmHereDialogOpen(true)}
                     >
                         <MapPinAreaIcon /> Estou Aqui
                     </Button>
-                )} */}
+                )}
                 <Link
                     href={`/estabelecimento/${data.cnes}`}
                     fullWidth
@@ -130,14 +130,14 @@ export function AsideEstablishmentDetails({
                     </Link>
                 </div>
             </section>
-            {/* <Portal>
+            <Portal>
                 {isIAmHereDialogOpen && (
                     <IAmHereDialog
                         establishment={data}
                         onOpenChange={setIsIAmHereDialogOpen}
                     />
                 )}
-            </Portal> */}
+            </Portal>
         </AnimatedMainContainer>
     )
 }

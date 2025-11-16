@@ -8,10 +8,11 @@ import { EstablishmentIcon } from '../EstablishmentIcon'
 import { Button } from '../Button'
 import { XIcon } from '@phosphor-icons/react'
 import { IAmHereForm } from './IAmHereForm'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface IAmHereDialogProps {
     onOpenChange: (open: boolean) => void
-    establishment: Establishment
+    establishment: EstablishmentResponse
 }
 
 export function IAmHereDialog({
@@ -62,9 +63,9 @@ export function IAmHereDialog({
                 >
                     <EstablishmentIcon
                         decoration
-                        type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
+                        type={establishment.type as 'HOSPITAL' | 'UBS' | 'UPA'}
                     />
-                    <Paragraph bolder>{establishment.full_name}</Paragraph>
+                    <Paragraph bolder>{establishment.name}</Paragraph>
                 </div>
 
                 <IAmHereForm />
