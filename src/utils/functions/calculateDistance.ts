@@ -44,3 +44,12 @@ export function formatDistance(distance: number): string {
     }
     return `${distance} km`
 }
+
+export function formatDistanceFromMeters(distance: number): string {
+    if (distance < 1000) {
+        return `${Math.round(distance)} m`
+    }
+
+    const km = distance / 1000
+    return `${km.toFixed(1)} km`
+}

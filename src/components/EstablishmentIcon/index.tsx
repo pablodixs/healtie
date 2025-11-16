@@ -10,7 +10,10 @@ import {
 import { markerContainer } from '../Map/maker.styles'
 
 interface EstablishmentIconProps {
-    type: 'HOSPITAL' | 'UBS' | 'UPA'
+    type:
+        | 'Hospital Geral'
+        | 'Unidade Básica de Saúde'
+        | 'Unidade de Pronto Atendimento'
     delay?: boolean
     size?: 'default' | 'small' | 'large'
     decoration?: boolean
@@ -43,14 +46,23 @@ export function EstablishmentIcon({
                     }}
                     transition={{ delay: delay ? 0.25 : 0 }}
                     className={markerContainer({
-                        type: type as 'HOSPITAL' | 'UBS' | 'UPA',
+                        type: type as
+                            | 'Hospital Geral'
+                            | 'Unidade Básica de Saúde'
+                            | 'Unidade de Pronto Atendimento',
                         size,
                         square,
                     })}
                 >
-                    {type === 'HOSPITAL' && <HospitalIcon weight="fill" />}
-                    {type === 'UBS' && <FirstAidIcon weight="fill" />}
-                    {type === 'UPA' && <AmbulanceIcon weight="fill" />}
+                    {type === 'Hospital Geral' && (
+                        <HospitalIcon weight="fill" />
+                    )}
+                    {type === 'Unidade Básica de Saúde' && (
+                        <FirstAidIcon weight="fill" />
+                    )}
+                    {type === 'Unidade de Pronto Atendimento' && (
+                        <AmbulanceIcon weight="fill" />
+                    )}
                 </motion.div>
             </AnimatePresence>
         )
@@ -81,14 +93,23 @@ export function EstablishmentIcon({
                     }}
                     transition={{ delay: delay ? 0.25 : 0 }}
                     className={markerContainer({
-                        type: type as 'HOSPITAL' | 'UBS' | 'UPA',
+                        type: type as
+                            | 'Hospital Geral'
+                            | 'Unidade Básica de Saúde'
+                            | 'Unidade de Pronto Atendimento',
                         size,
                         square,
                     })}
                 >
-                    {type === 'HOSPITAL' && <HospitalIcon weight="fill" />}
-                    {type === 'UBS' && <FirstAidIcon weight="fill" />}
-                    {type === 'UPA' && <AmbulanceIcon weight="fill" />}
+                    {type === 'Hospital Geral' && (
+                        <HospitalIcon weight="fill" />
+                    )}
+                    {type === 'Unidade Básica de Saúde' && (
+                        <FirstAidIcon weight="fill" />
+                    )}
+                    {type === 'Unidade de Pronto Atendimento' && (
+                        <AmbulanceIcon weight="fill" />
+                    )}
                 </motion.div>
             </div>
         </AnimatePresence>

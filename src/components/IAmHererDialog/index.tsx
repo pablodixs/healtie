@@ -3,7 +3,6 @@
 import { css } from '../../../styled-system/css'
 import { motion } from 'motion/react'
 import { Paragraph } from '../Typography'
-import { Establishment } from '@/interfaces/Establishment'
 import { EstablishmentIcon } from '../EstablishmentIcon'
 import { Button } from '../Button'
 import { XIcon } from '@phosphor-icons/react'

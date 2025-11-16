@@ -1,51 +1,34 @@
-import { HTMLAttributes, useMemo } from 'react'
+import { HTMLAttributes } from 'react'
 
-import { Establishment } from '@/interfaces/Establishment'
-
-import { establishments } from '@/utils/unidades.json'
-import {
-    calculateDistance,
-    formatDistance,
-} from '@/utils/functions/calculateDistance'
+import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
 import { MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { Tooltip } from '@/components/Tooltip'
 import { Link } from '@/components/Link'
-import { useMapContext } from '@/context/MapContext'
 import { Paragraph } from '@/components/Typography'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
 
 interface AsideNearEstablishmentsProps {
     location: string | null
     coords: GeolocationCoordinates
 }
 
-type NearbyEstablishment = Establishment & { distance: number }
+export interface NearbyEstablishmentsResponse {
+    cnes: number
+    name: string
+    type: string
+    distance: number
+}
 
 export function AsideNearEstablishments({
     coords,
 }: AsideNearEstablishmentsProps) {
-    const establishmentsWithDistance: NearbyEstablishment[] = useMemo(() => {
-        if (!coords) return []
-
-        return establishments
-            .map<NearbyEstablishment>((establishment) => {
-                const distance = calculateDistance(
-                    coords.latitude,
-                    coords.longitude,
-                    establishment.location.latitude,
-                    establishment.location.longitude
-                )
-
-                return {
-                    ...establishment,
-                    distance,
-                }
-            })
-            .filter((establishment) => establishment.distance <= 10)
-            .sort((a, b) => a.distance - b.distance)
-            .slice(0, 5)
-    }, [coords])
+    const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
+        `http://localhost:8080/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
+        fetcher
+    )
 
     return (
         <div>
@@ -69,13 +52,19 @@ export function AsideNearEstablishments({
                     gap: '.5rem',
                 })}
             >
-                {establishmentsWithDistance.length > 0 &&
-                    establishmentsWithDistance.map((establishment) => (
-                        <EstablishmentItem
-                            key={establishment.cnes}
-                            establishment={establishment}
-                        />
-                    ))}
+                {data &&
+                    data.map((establishment) => {
+                        return (
+                            <EstablishmentItem
+                                key={establishment.cnes}
+                                establishment={establishment}
+                            />
+                        )
+                    })}
+                {isLoading && <div>Carregando estabelecimentos...</div>}
+                {data?.length === 0 && (
+                    <div>Nenhum estabelecimento próximo encontrado.</div>
+                )}
             </div>
         </div>
     )
@@ -85,12 +74,12 @@ export const EstablishmentItem = ({
     establishment,
     onClick,
 }: {
-    establishment: NearbyEstablishment
+    establishment: NearbyEstablishmentsResponse
 } & HTMLAttributes<HTMLDivElement>) => {
-    const { setSelectedEstablishment } = useMapContext()
+    // const { setSelectedEstablishment } = useMapContext()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        setSelectedEstablishment(establishment)
+        // setSelectedEstablishment(establishment.cnes)
         if (onClick) {
             onClick(e as unknown as React.MouseEvent<HTMLDivElement>)
         }
@@ -100,7 +89,7 @@ export const EstablishmentItem = ({
         <Link
             onClick={handleClick}
             variant="asChild"
-            href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}`}
+            href={`/mapa?establishment=${establishment.cnes}`}
             className={css({
                 paddingY: '0.5rem',
                 alignItems: 'center',
@@ -114,7 +103,12 @@ export const EstablishmentItem = ({
                     animation={false}
                     decoration
                     size="small"
-                    type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
+                    type={
+                        establishment.type as
+                            | 'Hospital Geral'
+                            | 'Unidade Básica de Saúde'
+                            | 'Unidade de Pronto Atendimento'
+                    }
                 />
             </Tooltip>
             <div
@@ -155,7 +149,8 @@ export const EstablishmentItem = ({
                         })}
                     >
                         <MapPinAreaIcon size={15} />{' '}
-                        {formatDistance(establishment.distance)}
+                        {formatDistanceFromMeters(establishment.distance)} de
+                        distância
                     </span>
                 </div>
             </div>
