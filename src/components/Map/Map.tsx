@@ -1,7 +1,7 @@
 'use client'
 
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -16,19 +16,19 @@ import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 
-interface BoundingBox {
-    minLat: number
-    minLon: number
-    maxLat: number
-    maxLon: number
-}
-
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
 const INITIAL_VIEW_STATE = {
     longitude: -47.9292,
     latitude: -15.7801,
     zoom: 11,
+}
+
+interface BoundingBox {
+    minLat: number
+    minLon: number
+    maxLat: number
+    maxLon: number
 }
 
 export function MapComponent() {
@@ -47,7 +47,22 @@ export function MapComponent() {
         typeof parsedLon === 'number' &&
         !isNaN(parsedLon)
 
+    const initialView = useMemo(() => {
+        if (urlHasValidCoords) {
+            return {
+                latitude: parsedLat as number,
+                longitude: parsedLon as number,
+                zoom: 15,
+            }
+        }
+
+        return INITIAL_VIEW_STATE
+    }, [urlHasValidCoords, parsedLat, parsedLon])
+
     const [bbox, setBbox] = useState<BoundingBox | null>(null)
+    const [cachedEstablishments, setCachedEstablishments] = useState<
+        EstablishmentPointResponse[]
+    >([])
 
     const { data } = useSWR<EstablishmentPointResponse[]>(
         bbox
@@ -57,101 +72,77 @@ export function MapComponent() {
         { revalidateOnFocus: false }
     )
 
-    const updateDataWithBBox = useCallback(() => {
-        const newBBox = getBoundingBox(mapRef.current?.getMap())
+    const { viewState, setViewState } = useMapView(initialView)
+
+    const handleMove = useCallback(
+        (evt: {
+            viewState: { longitude: number; latitude: number; zoom: number }
+        }) => {
+            setViewState({
+                longitude: evt.viewState.longitude,
+                latitude: evt.viewState.latitude,
+                zoom: evt.viewState.zoom,
+            })
+        },
+        [setViewState]
+    )
+
+    const handleViewportSync = useCallback(() => {
+        const mapInstance = mapRef.current?.getMap?.()
+        if (!mapInstance) return
+
+        const newBBox = getBoundingBox(mapInstance)
         if (!newBBox) return
 
         setBbox(newBBox)
     }, [])
 
-    const initialView = urlHasValidCoords
-        ? {
-              latitude: parsedLat as number,
-              longitude: parsedLon as number,
-              zoom: 15,
-          }
-        : INITIAL_VIEW_STATE
+    useEffect(() => {
+        if (!bbox) return
 
-    const { viewState, setViewState } = useMapView(initialView)
+        setCachedEstablishments((previous) => {
+            const filtered = previous.filter((establishment) =>
+                establishment?.geolocation
+                    ? isInsideBoundingBox(establishment.geolocation, bbox)
+                    : false
+            )
 
-    // useEffect(() => {
-    //     if (!urlHasValidCoords) return
-    //     const newState = {
-    //         latitude: parsedLat as number,
-    //         longitude: parsedLon as number,
-    //         zoom: 15,
-    //     }
-    //     setViewState(newState)
-    //     if (mapRef.current) {
-    //         const map = mapRef.current.getMap()
-    //         map.once('load', () => {
-    //             map.flyTo({
-    //                 center: [newState.longitude, newState.latitude],
-    //                 zoom: newState.zoom,
-    //                 duration: 800,
-    //             })
-    //         })
-    //         if (map.isStyleLoaded()) {
-    //             map.flyTo({
-    //                 center: [newState.longitude, newState.latitude],
-    //                 zoom: newState.zoom,
-    //                 duration: 800,
-    //             })
-    //         }
-    //     }
+            if (!data) return filtered
 
-    //     if (setSelectedEstablishment) {
-    //         const targetLon = newState.longitude
-    //         const targetLat = newState.latitude
+            const deduped = new globalThis.Map<
+                number,
+                EstablishmentPointResponse
+            >(
+                filtered.map((establishment) => [
+                    establishment.cnes,
+                    establishment,
+                ])
+            )
 
-    //         const distance = (aLon: number, aLat: number) =>
-    //             Math.sqrt(
-    //                 Math.pow(aLon - targetLon, 2) +
-    //                     Math.pow(aLat - targetLat, 2)
-    //             )
+            data.forEach((establishment) => {
+                if (!establishment?.geolocation) return
+                if (!isInsideBoundingBox(establishment.geolocation, bbox))
+                    return
+                deduped.set(establishment.cnes, establishment)
+            })
 
-    //         let closest = null as (typeof establishments)[number] | null
-    //         let closestDist = Number.POSITIVE_INFINITY
-    //         for (const est of establishments) {
-    //             if (
-    //                 est.location &&
-    //                 typeof est.location.longitude === 'number' &&
-    //                 typeof est.location.latitude === 'number'
-    //             ) {
-    //                 const d = distance(
-    //                     est.location.longitude,
-    //                     est.location.latitude
-    //                 )
-    //                 if (d < closestDist) {
-    //                     closestDist = d
-    //                     closest = est
-    //                 }
-    //             }
-    //         }
-
-    //         if (closest && closestDist < 0.0007) {
-    //             setSelectedEstablishment({
-    //                 ...closest,
-    //                 type: closest.type as 'ubs' | 'hospital' | 'upa',
-    //             })
-    //         }
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
+            return Array.from(deduped.values())
+        })
+    }, [bbox, data])
 
     useEffect(() => {
-        if (selectedEstablishment && mapRef.current) {
-            const map = mapRef.current.getMap()
+        if (!selectedEstablishment?.geolocation || !mapRef.current) return
 
-            map.flyTo({
-                center: [
-                    selectedEstablishment.geolocation.longitude,
-                    selectedEstablishment.geolocation.latitude,
-                ],
-                zoom: 16,
-                duration: 1000,
-            })
-        }
+        const map = mapRef.current.getMap()
+
+        map.flyTo({
+            center: [
+                selectedEstablishment.geolocation.longitude,
+                selectedEstablishment.geolocation.latitude,
+            ],
+            zoom: 16,
+            duration: 1000,
+        })
     }, [selectedEstablishment])
 
     return (
@@ -176,61 +167,29 @@ export function MapComponent() {
                     <Map
                         ref={mapRef}
                         {...viewState}
-                        onMove={(evt) =>
-                            setViewState({
-                                longitude: evt.viewState.longitude,
-                                latitude: evt.viewState.latitude,
-                                zoom: evt.viewState.zoom,
-                            })
-                        }
+                        onMove={handleMove}
                         style={{
                             width: '100%',
                             height: '100%',
                             zIndex: 0,
                         }}
-                        onMoveEnd={updateDataWithBBox}
-                        onLoad={updateDataWithBBox}
+                        onMoveEnd={handleViewportSync}
+                        onLoad={handleViewportSync}
                         mapStyle="mapbox://styles/pablodixs/cmdrihemn00qs01s2dlgp3lp7"
                         mapboxAccessToken={MAPBOX_TOKEN}
                     >
-                        {data &&
-                            data.map((e: EstablishmentPointResponse) => {
-                                return (
-                                    <MapMarker
-                                        key={e.cnes}
-                                        establishmentProps={e}
-                                        mapZoom={viewState.zoom}
-                                    />
-                                )
-                            })}
-                        {/* {establishments
-                            .filter(
-                                (establishment) =>
-                                    establishment.location &&
-                                    typeof establishment.location.longitude ===
-                                        'number' &&
-                                    typeof establishment.location.latitude ===
-                                        'number' &&
-                                    !isNaN(establishment.location.longitude) &&
-                                    !isNaN(establishment.location.latitude)
-                            )
-                            .map((establishment) => (
-                                <MapMarker
-                                    key={establishment.cnes}
-                                    longitude={establishment.location.longitude}
-                                    latitude={establishment.location.latitude}
-                                    establishmentProps={{
-                                        ...establishment,
-                                        type: establishment.type as
-                                            | 'ubs'
-                                            | 'hospital'
-                                            | 'upa',
-                                    }}
-                                    delay={fromSearchPage}
-                                    mapZoom={viewState.zoom}
-                                />
-                            ))} */}
-
+                        {cachedEstablishments &&
+                            cachedEstablishments.map(
+                                (e: EstablishmentPointResponse) => {
+                                    return (
+                                        <MapMarker
+                                            key={e.cnes}
+                                            establishmentProps={e}
+                                            mapZoom={viewState.zoom}
+                                        />
+                                    )
+                                }
+                            )}
                         {coords && (
                             <MapUserMarker
                                 userLocation={{
@@ -260,4 +219,18 @@ function getBoundingBox(map: any): BoundingBox | null {
         maxLat: bounds.getNorth(),
         maxLon: bounds.getEast(),
     }
+}
+
+function isInsideBoundingBox(
+    point: { latitude: number; longitude: number },
+    bbox: BoundingBox
+): boolean {
+    const { minLon, minLat, maxLon, maxLat } = bbox
+
+    return (
+        point.longitude >= minLon &&
+        point.longitude <= maxLon &&
+        point.latitude >= minLat &&
+        point.latitude <= maxLat
+    )
 }
