@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react'
 
 import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
-import { MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
+import { CircleNotchIcon, MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { Tooltip } from '@/components/Tooltip'
 import { Link } from '@/components/Link'
@@ -66,9 +66,30 @@ export function AsideNearEstablishments({
                             />
                         )
                     })}
-                {isLoading && <div>Carregando estabelecimentos...</div>}
+                {isLoading && (
+                    <div
+                        className={css({
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                        })}
+                    >
+                        <CircleNotchIcon
+                            className={css({
+                                animation: 'spin',
+                                color: 'neutral.500',
+                            })}
+                            weight="bold"
+                            size={20}
+                        />{' '}
+                        Carregando estabelecimentos...
+                    </div>
+                )}
                 {data?.length === 0 && (
-                    <div>Nenhum estabelecimento próximo encontrado.</div>
+                    <div>
+                        Nenhum estabelecimento próximo. Tente buscar na barra de
+                        pesquisa.
+                    </div>
                 )}
             </div>
         </div>

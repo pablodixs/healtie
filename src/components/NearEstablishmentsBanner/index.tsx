@@ -2,21 +2,25 @@
 
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { AskLocationBanner } from '../AskLocationBanner'
-import { useMemo } from 'react'
 import { css } from '../../../styled-system/css'
 
-import { establishments } from '@/utils/unidades.json'
-import {
-    calculateDistance,
-    formatDistance,
-} from '@/utils/functions/calculateDistance'
+import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
 import type { Establishment } from '@/interfaces/Establishment'
 import { AnimatePresence, motion } from 'motion/react'
 import { Link } from '../Link'
-import { EstablishmentIcon } from '../EstablishmentIcon'
-import { CaretRightIcon, MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
-import { Tooltip } from '../Tooltip'
+import {
+    AmbulanceIcon,
+    CaretRightIcon,
+    CircleNotchIcon,
+    FirstAidIcon,
+    HospitalIcon,
+    MapPinAreaIcon,
+} from '@phosphor-icons/react/dist/ssr'
 import { SectionTitle } from './SectionTitle'
+import { NearbyEstablishmentsResponse } from '../Map/AsideNearEstablishment'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
+import { markerContainer } from '../Map/maker.styles'
 
 export type NearbyEstablishment = Establishment & { distance: number }
 
@@ -29,27 +33,16 @@ export function NearEstablishmentsBanner() {
         isLoadingLocation,
     } = useUserGeolocation()
 
-    const establishmentsWithDistance: NearbyEstablishment[] = useMemo(() => {
-        if (!coords) return []
-
-        return establishments
-            .map<NearbyEstablishment>((establishment) => {
-                const distance = calculateDistance(
-                    coords.latitude,
-                    coords.longitude,
-                    establishment.location.latitude,
-                    establishment.location.longitude
-                )
-
-                return {
-                    ...establishment,
-                    distance,
-                }
-            })
-            .filter((establishment) => establishment.distance <= 10)
-            .sort((a, b) => a.distance - b.distance)
-            .slice(0, 5)
-    }, [coords])
+    const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
+        coords
+            ? `http://localhost:8080/v1/establishment/nearby?latitude=${coords?.latitude}&longitude=${coords?.longitude}&radiusInKm=5000`
+            : null,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        }
+    )
 
     return (
         <div>
@@ -62,6 +55,8 @@ export function NearEstablishmentsBanner() {
                         padding: '1rem',
                         backgroundColor: 'background',
                         borderRadius: '22px',
+                        maxW: '800px',
+                        margin: '0 auto',
                     })}
                 >
                     <header
@@ -141,8 +136,29 @@ export function NearEstablishmentsBanner() {
                             mt: '.5rem',
                         })}
                     >
-                        {establishmentsWithDistance.length > 0 &&
-                            establishmentsWithDistance.map((establishment) => (
+                        {isLoading && (
+                            <div
+                                className={css({
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '1rem',
+                                    justifyContent: 'center',
+                                })}
+                            >
+                                <CircleNotchIcon
+                                    className={css({
+                                        animation: 'spin',
+                                        color: 'neutral.500',
+                                    })}
+                                    weight="bold"
+                                    size={20}
+                                />{' '}
+                                Carregando estabelecimentos...
+                            </div>
+                        )}
+                        {data &&
+                            data.length > 0 &&
+                            data.map((establishment) => (
                                 <EstablishmentItem
                                     key={establishment.cnes}
                                     {...establishment}
@@ -155,7 +171,7 @@ export function NearEstablishmentsBanner() {
     )
 }
 
-const EstablishmentItem = (establishment: NearbyEstablishment) => {
+const EstablishmentItem = (establishment: NearbyEstablishmentsResponse) => {
     return (
         <Link
             variant="asChild"
@@ -169,13 +185,24 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
                 gap: '.75rem',
             })}
         >
-            {/* <Tooltip content={establishment.type}>
-                <EstablishmentIcon
-                    decoration
-                    size="small"
-                    type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
-                />
-            </Tooltip> */}
+            <motion.div
+                className={markerContainer({
+                    type: establishment.type as
+                        | 'Hospital Geral'
+                        | 'Unidade Básica de Saúde'
+                        | 'Unidade de Pronto Atendimento',
+                })}
+            >
+                {establishment.type === 'Hospital Geral' && (
+                    <HospitalIcon weight="fill" />
+                )}
+                {establishment.type === 'Unidade Básica de Saúde' && (
+                    <FirstAidIcon weight="fill" />
+                )}
+                {establishment.type === 'Unidade de Pronto Atendimento' && (
+                    <AmbulanceIcon weight="fill" />
+                )}
+            </motion.div>
             <div
                 className={css({
                     display: 'flex',
@@ -203,7 +230,7 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
                     })}
                 >
                     <MapPinAreaIcon weight="bold" />{' '}
-                    {formatDistance(establishment.distance)}
+                    {formatDistanceFromMeters(establishment.distance)}
                 </span>
             </div>
         </Link>

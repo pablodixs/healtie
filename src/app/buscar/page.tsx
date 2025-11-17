@@ -232,7 +232,7 @@ export default function Page() {
                         exit={{ opacity: 0 }}
                         transition={{ delay: 1 }}
                         className={css({
-                            maxWidth: '800px',
+                            // maxWidth: '800px',
                             minWidth: '100%',
                             padding: {
                                 md: '0 1rem',
@@ -240,14 +240,7 @@ export default function Page() {
                             },
                         })}
                     >
-                        {/* <div>
-                            <SectionTitle
-                                title="Histórico"
-                                Icon={ClockCounterClockwiseIcon}
-                            />
-                        </div> */}
                         <NearEstablishmentsBanner />
-                        {/* <SearchEmptyState /> */}
                     </motion.div>
                 )}
             </AnimatePresence>
