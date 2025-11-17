@@ -18,5 +18,5 @@ export function EstablishmentDistanceLabel({
 
     if (!hasUserLocation || !formattedDistance) return null
 
-    return <p>{formattedDistance}</p>
+    return <p>A {formattedDistance}</p>
 }

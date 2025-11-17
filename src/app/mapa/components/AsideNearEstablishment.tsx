@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react'
 
 import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
-import { MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
+import { CircleNotchIcon, MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../styled-system/css'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { Tooltip } from '@/components/Tooltip'
@@ -9,6 +9,7 @@ import { Link } from '@/components/Link'
 import { Paragraph } from '@/components/Typography'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
+import { useMapContext } from '@/context/MapContext'
 
 interface AsideNearEstablishmentsProps {
     location: string | null
@@ -20,6 +21,10 @@ export interface NearbyEstablishmentsResponse {
     name: string
     type: string
     distance: number
+    geolocation: {
+        latitude: number
+        longitude: number
+    }
 }
 
 export function AsideNearEstablishments({
@@ -61,7 +66,28 @@ export function AsideNearEstablishments({
                             />
                         )
                     })}
-                {isLoading && <div>Carregando estabelecimentos...</div>}
+                {isLoading && (
+                    <div
+                        className={css({
+                            py: '1rem',
+                            color: 'neutral.500',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '.75rem',
+                        })}
+                    >
+                        <CircleNotchIcon
+                            className={css({
+                                animation: 'spin',
+                                color: 'neutral.300',
+                            })}
+                            weight="bold"
+                            size={20}
+                        />
+                        Carregando estabelecimentos...
+                    </div>
+                )}
                 {data?.length === 0 && (
                     <div>Nenhum estabelecimento próximo encontrado.</div>
                 )}
@@ -72,17 +98,13 @@ export function AsideNearEstablishments({
 
 export const EstablishmentItem = ({
     establishment,
-    onClick,
 }: {
     establishment: NearbyEstablishmentsResponse
 } & HTMLAttributes<HTMLDivElement>) => {
-    // const { setSelectedEstablishment } = useMapContext()
+    const { setSelectedEstablishment } = useMapContext()
 
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        // setSelectedEstablishment(establishment.cnes)
-        if (onClick) {
-            onClick(e as unknown as React.MouseEvent<HTMLDivElement>)
-        }
+    const handleClick = () => {
+        setSelectedEstablishment(establishment)
     }
 
     return (

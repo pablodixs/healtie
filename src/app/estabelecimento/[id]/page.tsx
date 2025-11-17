@@ -63,7 +63,7 @@ export default function Page() {
                     })}
                     weight="bold"
                     size={32}
-                />{' '}
+                />
             </div>
         )
 

@@ -31,6 +31,8 @@ import useSWR from 'swr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { fetcher } from '@/lib/swrFetcher'
 import { ErrorState } from './states/ErrorState'
+import { Paragraph } from '@/components/Typography'
+import { LoadingState } from './states/LoadingState'
 
 interface AsideEstablishmentDetailsProps {
     selectedEstablishmentCnes: number | string
@@ -50,9 +52,19 @@ export function AsideEstablishmentDetails({
         establishmentCoords: data?.coordinates,
     })
 
-    if (isLoading) return null
+    if (isLoading)
+        return (
+            <AnimatedMainContainer key={'loading'}>
+                <LoadingState />
+            </AnimatedMainContainer>
+        )
 
-    if (!data) return <ErrorState />
+    if (!data)
+        return (
+            <AnimatedMainContainer key={'error'}>
+                <ErrorState />
+            </AnimatedMainContainer>
+        )
 
     return (
         <AnimatedMainContainer key="establishment-details">
@@ -121,7 +133,7 @@ export function AsideEstablishmentDetails({
                     title="Telefone"
                     value={data.phone || 'Não informado'}
                 />
-                <DetailItem title="Endereço" value={`${data.address}`} />
+                <DetailItem title="Endereço" value={data.address?.address} />
                 <DetailItem title="CNES" value={data.cnes.toString()} />
                 <div>
                     <Divider margin="compact" />

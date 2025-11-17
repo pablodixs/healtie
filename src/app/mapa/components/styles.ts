@@ -18,12 +18,17 @@ export const titleStyles = css({
     letterSpacing: '-0.025em',
 })
 
-export const locationParagraphStyles = css({})
+export const locationParagraphStyles = css({
+    textWrap: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+})
 
 export const actionsContainerStyles = css({
     marginY: '1rem',
     display: 'flex',
     gap: '.5rem',
+    flexWrap: 'wrap',
 })
 
 export const indicatorsContainerStyles = css({
@@ -39,10 +44,14 @@ export const indicatorsContainerStyles = css({
 export const compactDetailsContainer = css({
     display: 'flex',
     alignItems: 'center',
-    gap: '1ch',
+    flexWrap: 'wrap',
+    gap: '.75rem',
     fontSize: '0.875rem',
     color: 'gray.400',
     mt: '.5rem',
+    textWrap: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
 
     '& .highlight': {
         color: 'green.600',
