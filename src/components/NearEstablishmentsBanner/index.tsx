@@ -169,13 +169,13 @@ const EstablishmentItem = (establishment: NearbyEstablishment) => {
                 gap: '.75rem',
             })}
         >
-            <Tooltip content={establishment.type}>
+            {/* <Tooltip content={establishment.type}>
                 <EstablishmentIcon
                     decoration
                     size="small"
                     type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
                 />
-            </Tooltip>
+            </Tooltip> */}
             <div
                 className={css({
                     display: 'flex',

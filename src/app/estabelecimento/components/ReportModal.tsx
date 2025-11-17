@@ -88,12 +88,12 @@ export function ReportModal({
                             mt: '3rem',
                         })}
                     >
-                        <EstablishmentIcon
+                        {/* <EstablishmentIcon
                             type={
                                 establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'
                             }
                             delay
-                        />
+                        /> */}
                         <h1
                             className={css({
                                 fontSize: '1.5rem',

@@ -42,10 +42,10 @@ export function MapMarkerDecoration({
             longitude={longitude}
             latitude={latitude}
             anchor="center"
-            onClick={() => {
-                router.push(`/mapa?establishment=${establishmentProps.cnes}`)
-                setSelectedEstablishment(establishmentProps)
-            }}
+            // onClick={() => {
+            //     router.push(`/mapa?establishment=${establishmentProps.cnes}`)
+            //     setSelectedEstablishment(establishmentProps)
+            // }}
         >
             <AnimatePresence mode="wait">
                 {selectedEstablishment?.cnes === establishmentProps.cnes ||
@@ -72,12 +72,12 @@ export function MapMarkerDecoration({
                                 scale: 0,
                             }}
                             transition={{ delay: delay ? 0.75 : 0 }}
-                            className={markerContainer({
-                                type: establishmentProps.abb as
-                                    | 'HOSPITAL'
-                                    | 'UBS'
-                                    | 'UPA',
-                            })}
+                            // className={markerContainer({
+                            //     type: establishmentProps.abb as
+                            //         | 'HOSPITAL'
+                            //         | 'UBS'
+                            //         | 'UPA',
+                            // })}
                         >
                             {establishmentProps.abb === 'HOSPITAL' && (
                                 <HospitalIcon weight="fill" />
@@ -119,13 +119,13 @@ export function MapMarkerDecoration({
                                 transformOrigin: 'bottom center',
                             }}
                             transition={{ duration: 0.3, type: 'spring' }}
-                            className={markerContainer({
-                                type: establishmentProps.abb as
-                                    | 'HOSPITAL'
-                                    | 'UBS'
-                                    | 'UPA',
-                                compacted: mapZoom <= 12 ? true : false,
-                            })}
+                            // className={markerContainer({
+                            //     type: establishmentProps.abb as
+                            //         | 'HOSPITAL'
+                            //         | 'UBS'
+                            //         | 'UPA',
+                            //     compacted: mapZoom <= 12 ? true : false,
+                            // })}
                         >
                             {establishmentProps.abb === 'HOSPITAL' && (
                                 <HospitalIcon weight="fill" />

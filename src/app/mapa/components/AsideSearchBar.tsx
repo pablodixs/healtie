@@ -47,14 +47,14 @@ export function AsideSearchBar() {
         })
     }, [searchTerm])
 
-    const handleSelectEstablishment = (establishment: Establishment) => {
-        setSelectedEstablishment({
-            ...establishment,
-            type: establishment.type as 'ubs' | 'hospital' | 'upa',
-        })
-        setSearchTerm(establishment.name)
-        setShowResults(false)
-    }
+    // const handleSelectEstablishment = (establishment: Establishment) => {
+    //     setSelectedEstablishment({
+    //         ...establishment,
+    //         type: establishment.type as 'ubs' | 'hospital' | 'upa',
+    //     })
+    //     setSearchTerm(establishment.name)
+    //     setShowResults(false)
+    // }
 
     return (
         <section>
@@ -86,11 +86,11 @@ export function AsideSearchBar() {
                                             ...establishment,
                                             distance: 0,
                                         }}
-                                        onClick={() =>
-                                            handleSelectEstablishment(
-                                                establishment
-                                            )
-                                        }
+                                        // onClick={() =>
+                                        //     handleSelectEstablishment(
+                                        //         establishment
+                                        //     )
+                                        // }
                                     />
                                 ))}
                             {filteredEstablishments.length > 8 && (

@@ -116,12 +116,12 @@ export default function Page() {
                         establishment={establishment as Establishment}
                     />
                 )}
-                {isIAmHereModalOpen && (
+                {/* {isIAmHereModalOpen && (
                     <IAmHereDialog
                         establishment={establishment}
                         onOpenChange={setIsIAmHereModalOpen}
                     />
-                )}
+                )} */}
             </Portal>
         </MapContextProvider>
     )

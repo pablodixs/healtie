@@ -50,12 +50,12 @@ export function HeaderView({
     return (
         <section>
             <div>
-                <EstablishmentIcon
+                {/* <EstablishmentIcon
                     decoration
                     size="large"
                     square
                     type={establishment.abb as 'HOSPITAL' | 'UPA' | 'UBS'}
-                />
+                /> */}
 
                 <Heading style={{ marginTop: '1rem' }}>
                     {establishment.name}

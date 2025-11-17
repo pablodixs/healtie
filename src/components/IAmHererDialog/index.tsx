@@ -60,10 +60,10 @@ export function IAmHereDialog({
                         alignItems: 'center',
                     })}
                 >
-                    <EstablishmentIcon
+                    {/* <EstablishmentIcon
                         decoration
                         type={establishment.type as 'HOSPITAL' | 'UBS' | 'UPA'}
-                    />
+                    /> */}
                     <Paragraph bolder>{establishment.name}</Paragraph>
                 </div>
 

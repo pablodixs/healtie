@@ -45,11 +45,11 @@ export function EstablishmentResultItem({
                         alignItems: 'center',
                     })}
                 >
-                    <EstablishmentIcon
+                    {/* <EstablishmentIcon
                         type={establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'}
                         decoration
                         animation={false}
-                    />
+                    /> */}
                     <div
                         className={css({
                             display: 'flex',
