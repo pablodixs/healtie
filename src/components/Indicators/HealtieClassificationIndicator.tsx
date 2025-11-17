@@ -10,7 +10,11 @@ import {
     descriptionContainer,
 } from './styles'
 
-export function HealtieClassificationIndicator() {
+export interface IndicatorsProps {
+    data: any | null
+}
+
+export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -32,12 +36,20 @@ export function HealtieClassificationIndicator() {
                     <GaugeIcon />
                     <p>Classificação do Healtie </p>
                 </div>
-                <strong>90</strong>
+                <strong
+                    className={css({
+                        color: data?.healtieClassification
+                            ? 'inherit'
+                            : 'neutral.400',
+                    })}
+                >
+                    {data?.healtieClassification || 'Sem dados'}
+                </strong>
             </header>
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: '90%' }}
+                    animate={{ width: `${data?.healtieClassification || 0}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,

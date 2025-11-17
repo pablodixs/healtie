@@ -33,14 +33,14 @@ export function ServicesTab({}: ServicesTabProps) {
                     serviceDescription="Consulta médica com um especialista."
                     serviceIcon={<StethoscopeIcon />}
                     showDescription={true}
-                    available={true}
+                    available={null}
                 />
                 <ServiceItem
                     serviceName="Dentista"
                     serviceDescription="Consulta médica com um especialista."
                     serviceIcon={<ToothIcon />}
                     showDescription={true}
-                    available={false}
+                    available={null}
                 />
                 <ServiceItem
                     serviceName="Pré-natal"

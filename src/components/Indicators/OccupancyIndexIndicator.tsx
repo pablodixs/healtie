@@ -10,8 +10,9 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
+import { IndicatorsProps } from './HealtieClassificationIndicator'
 
-export function OccupancyIndexIndicator() {
+export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -33,7 +34,13 @@ export function OccupancyIndexIndicator() {
                     <UsersFourIcon />
                     <p>Ocupação</p>
                 </div>
-                <strong>Cheio</strong>
+                <strong
+                    className={css({
+                        color: data?.occupancyIndex ? 'inherit' : 'neutral.400',
+                    })}
+                >
+                    {data?.occupancyIndex || 'Sem dados'}
+                </strong>
             </header>
             <div className={barContainer}>
                 <motion.div
@@ -46,7 +53,11 @@ export function OccupancyIndexIndicator() {
                         bounce: 0,
                     }}
                     className={barFill}
-                    style={{ background: '#f48c06', width: '20%', left: '70%' }}
+                    style={{
+                        background: '#f48c06',
+                        width: `${data?.occupancyIndex || 0}%`,
+                        left: '70%',
+                    }}
                 />
                 <div className={barBackground} />
             </div>

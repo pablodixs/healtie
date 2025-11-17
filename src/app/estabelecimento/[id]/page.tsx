@@ -36,13 +36,9 @@ export default function Page() {
     type TabType = 'overview' | 'indicators' | 'services' | 'comments'
     const [selectedTab, setSelectedTab] = useState<TabType>('overview')
 
-    const establishment = establishments.find((est) => est.cnes === Number(id))
-
     useEffect(() => {
-        document.title = establishment
-            ? `${establishment.name} | Healtie`
-            : 'Healtie'
-    }, [establishment])
+        document.title = data ? `${data.name} | Healtie` : 'Healtie'
+    }, [data])
 
     if (isLoading)
         return (
@@ -121,14 +117,13 @@ export default function Page() {
                         }}
                         title="Serviços"
                     />
-                    <NavigationTabItem
+                    {/* <NavigationTabItem
                         selectedTab={selectedTab === 'comments'}
                         onSelectedChange={() => {
                             setSelectedTab('comments')
                         }}
-                        title="Comentários"
-                        badge="1"
-                    />
+                        title="Comentários" */}
+                    {/* /> */}
                 </NavigationTabs>
                 <section className={contentContainer}>
                     {selectedTab === 'overview' && (
@@ -152,21 +147,21 @@ export default function Page() {
                 </section>
             </main>
             <Divider />
-            <Portal>
-                {isReportModalOpen && (
+            {/* <Portal> */}
+            {/* {isReportModalOpen && (
                     <ReportModal
                         isOpen={isReportModalOpen}
                         onOpenChange={setIsReportModalOpen}
                         establishment={establishment as Establishment}
                     />
-                )}
-                {/* {isIAmHereModalOpen && (
+                )} */}
+            {/* {isIAmHereModalOpen && (
                     <IAmHereDialog
                         establishment={establishment}
                         onOpenChange={setIsIAmHereModalOpen}
                     />
                 )} */}
-            </Portal>
+            {/* </Portal> */}
         </MapContextProvider>
     )
 }

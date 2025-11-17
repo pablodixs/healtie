@@ -10,8 +10,9 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
+import { IndicatorsProps } from './HealtieClassificationIndicator'
 
-export function ResolutionIndexIndicator() {
+export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -33,7 +34,15 @@ export function ResolutionIndexIndicator() {
                     <CheckCircleIcon />
                     <p>Índice de Resolução</p>
                 </div>
-                <strong>Sem dados</strong>
+                <strong
+                    className={css({
+                        color: data?.resolutionIndex
+                            ? 'inherit'
+                            : 'neutral.400',
+                    })}
+                >
+                    {data?.resolutionIndex || 'Sem dados'}
+                </strong>
             </header>
             <div className={barContainer}>
                 <motion.div
@@ -46,7 +55,11 @@ export function ResolutionIndexIndicator() {
                         bounce: 0,
                     }}
                     className={barFill}
-                    style={{ background: '#f48c06', width: '0%', left: '0%' }}
+                    style={{
+                        background: '#f48c06',
+                        width: `${data?.resolutionIndex || 0}%`,
+                        left: '0%',
+                    }}
                 />
                 <div className={barBackground} />
             </div>

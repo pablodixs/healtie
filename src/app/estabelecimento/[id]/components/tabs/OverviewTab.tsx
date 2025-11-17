@@ -64,10 +64,12 @@ export function OverviewTab({
                         mt: '1rem',
                     })}
                 >
-                    <HealtieClassificationIndicator />
-                    <WaitTimeIndicator />
-                    <OccupancyIndexIndicator />
-                    <ResolutionIndexIndicator />
+                    <HealtieClassificationIndicator
+                        data={establishment?.indices}
+                    />
+                    <WaitTimeIndicator data={establishment?.indices} />
+                    <OccupancyIndexIndicator data={establishment?.indices} />
+                    <ResolutionIndexIndicator data={establishment?.indices} />
                 </div>
                 <section
                     className={css({
@@ -107,14 +109,14 @@ export function OverviewTab({
                                 serviceDescription="Consulta médica com um especialista."
                                 serviceIcon={<StethoscopeIcon />}
                                 showDescription={false}
-                                available={true}
+                                available={null}
                             />
                             <ServiceItem
                                 serviceName="Dentista"
                                 serviceDescription="Consulta médica com um especialista."
                                 serviceIcon={<ToothIcon />}
                                 showDescription={false}
-                                available={false}
+                                available={null}
                             />
                             <ServiceItem
                                 serviceName="Pré-natal"

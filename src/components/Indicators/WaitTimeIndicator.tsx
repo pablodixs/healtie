@@ -9,8 +9,9 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
+import { IndicatorsProps } from './HealtieClassificationIndicator'
 
-export function WaitTimeIndicator() {
+export function WaitTimeIndicator({ data }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -39,21 +40,29 @@ export function WaitTimeIndicator() {
                         alignItems: 'flex-end',
                     })}
                 >
-                    <strong>Alto</strong>
-                    <span
+                    <strong
                         className={css({
-                            fontSize: '0.875rem',
-                            color: 'neutral.500',
+                            color: data?.waitTime ? 'inherit' : 'neutral.400',
                         })}
                     >
-                        Cerca de 2 horas
-                    </span>
+                        {data?.waitTime || 'Sem dados'}
+                    </strong>
+                    {data?.waitTime && (
+                        <span
+                            className={css({
+                                fontSize: '0.875rem',
+                                color: 'neutral.500',
+                            })}
+                        >
+                            Cerca de 2 horas
+                        </span>
+                    )}
                 </div>
             </header>
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: '80%' }}
+                    animate={{ width: `${data?.waitTime || 0}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
