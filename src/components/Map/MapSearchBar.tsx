@@ -9,6 +9,7 @@ interface MapSearchBarProps {
     setSearchTerm: (term: string) => void
     searchTerm: string
     setShowResults: (show: boolean) => void
+    isLoading?: boolean
 }
 
 export function MapSearchBar({
@@ -16,6 +17,7 @@ export function MapSearchBar({
     setSearchTerm,
     searchTerm,
     setShowResults,
+    isLoading,
 }: MapSearchBarProps) {
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -36,12 +38,12 @@ export function MapSearchBar({
                 placeholder="Buscar unidades de saúde"
                 value={searchTerm}
                 onChange={handleInputChange}
+                isLoading={isLoading}
                 onFocus={() => {
                     handleInputFocus()
                     onFocusChange?.(true)
                 }}
                 onBlur={() => {
-                    // Delay para permitir que o onClick seja executado antes
                     setTimeout(() => {
                         onFocusChange?.(false)
                     }, 200)

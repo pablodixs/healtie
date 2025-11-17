@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -10,8 +10,6 @@ import { HeroSearchBar } from '../ui/components/HeroSearchBar'
 
 import { Heading } from '@/components/Typography/Heading'
 
-import data from '@/utils/unidades.json'
-
 const allowedFilters = ['HOSPITAL', 'UPA', 'UBS'] as const
 type AllowedFilter = (typeof allowedFilters)[number]
 function isAllowedFilter(value: string | null): value is AllowedFilter {
@@ -19,15 +17,14 @@ function isAllowedFilter(value: string | null): value is AllowedFilter {
 }
 import { NoResultsEmptyState } from './components/NoResultsEmpytState'
 import { Paragraph } from '@/components/Typography/Paragraph'
-import {
-    NearbyEstablishment,
-    NearEstablishmentsBanner,
-} from '@/components/NearEstablishmentsBanner'
-import { calculateDistance } from '@/utils/functions/calculateDistance'
-import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
-import { EstablishmentResultItem } from './components/EstablishmentResultItem'
+import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
 import { Banner } from '@/components/Banner'
-import { QuestionIcon } from '@phosphor-icons/react/dist/ssr'
+import { CircleNotchIcon, QuestionIcon } from '@phosphor-icons/react/dist/ssr'
+import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
+import Link from 'next/link'
+import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
 
 export default function Page() {
     const router = useRouter()
@@ -36,48 +33,22 @@ export default function Page() {
         string | null
     >(null)
     const initialQuery = searchParams.get('q') || ''
+    const [debounced, setDebounced] = useState('')
     const [localQuery, setLocalQuery] = useState(initialQuery)
+
     const query = searchParams.get('q') || ''
     const rawFilterParam = searchParams.get('filter')
     const filterParam = isAllowedFilter(rawFilterParam) ? rawFilterParam : null
-    const { coords, userDidAllowLocation } = useUserGeolocation({
-        immediate: true,
-    })
 
     useEffect(() => {
         setLocalQuery(query)
     }, [query])
 
-    // Sincroniza o filtro vindo da URL (ex: compartilhamento de link)
     useEffect(() => {
-        if (filterParam !== establishmentFilter) {
-            setEstablishmentFilter(filterParam)
-        }
-    }, [filterParam, establishmentFilter])
-
-    // Debounce para atualizar a URL com query e filtro
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            const nextQuery = localQuery.trim()
-            const nextFilter = establishmentFilter
-
-            const isSameQuery = nextQuery === query
-            const isSameFilter = (nextFilter || '') === (filterParam || '')
-
-            if (isSameQuery && isSameFilter) return
-
-            const params = new URLSearchParams()
-            if (nextQuery) params.set('q', nextQuery)
-            if (isAllowedFilter(nextFilter)) params.set('filter', nextFilter)
-
-            const searchString = params.toString()
-            const nextUrl = searchString ? `/buscar?${searchString}` : '/buscar'
-
-            router.push(nextUrl, { scroll: false })
-        }, 300)
-
-        return () => clearTimeout(handler)
-    }, [localQuery, establishmentFilter, query, filterParam, router])
+        // Sincroniza somente quando o parâmetro da URL mudar,
+        // evitando sobrescrever a seleção local imediatamente após o clique
+        setEstablishmentFilter(filterParam)
+    }, [filterParam])
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,43 +71,41 @@ export default function Page() {
         []
     )
 
-    const activeFilter = establishmentFilter
+    const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
+        debounced && debounced.length >= 3
+            ? `http://localhost:8080/v1/establishment/search?q=${encodeURIComponent(
+                  debounced
+              )}${
+                  establishmentFilter
+                      ? `&t=${encodeURIComponent(establishmentFilter)}`
+                      : ''
+              }`
+            : null,
+        fetcher
+    )
 
-    const establishments = useMemo(() => {
-        // Filtra por filtro ativo e termo de busca
-        const filtered = data.establishments.filter((establishment) => {
-            if (activeFilter && establishment.abb !== activeFilter) return false
-            const searchTerm = localQuery.toLowerCase()
-            if (!searchTerm) return true
-            return (
-                establishment.name.toLowerCase().includes(searchTerm) ||
-                establishment.city.toLowerCase().includes(searchTerm) ||
-                establishment.district.toLowerCase().includes(searchTerm) ||
-                establishment.type.toLowerCase().includes(searchTerm) ||
-                establishment.abb.toLowerCase().includes(searchTerm)
-            )
-        })
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebounced(localQuery)
 
-        // Se não tem coordenadas, retorna filtrado sem distância
-        if (!userDidAllowLocation || !coords) return filtered
+            // Atualizar a URL do navegador
+            const params = new URLSearchParams()
+            if (localQuery) {
+                params.set('q', localQuery)
+            }
 
-        // Adiciona distância e ordena por proximidade
-        return filtered
-            .map<NearbyEstablishment>((establishment) => {
-                const distance = calculateDistance(
-                    coords.latitude,
-                    coords.longitude,
-                    establishment.location.latitude,
-                    establishment.location.longitude
-                )
+            if (establishmentFilter) {
+                params.set('filter', establishmentFilter)
+            }
 
-                return {
-                    ...establishment,
-                    distance,
-                }
-            })
-            .sort((a, b) => a.distance - b.distance)
-    }, [localQuery, activeFilter, coords, userDidAllowLocation])
+            const newUrl = params.toString()
+                ? `/buscar?${params.toString()}`
+                : '/buscar'
+
+            router.replace(newUrl, { scroll: false })
+        }, 300)
+        return () => clearTimeout(timer)
+    }, [localQuery, establishmentFilter, router])
 
     return (
         <main
@@ -166,8 +135,8 @@ export default function Page() {
                 value={localQuery}
                 onChange={handleChange}
             />
-            <AnimatePresence mode="wait">
-                {establishments.length > 0 && localQuery.length >= 2 ? (
+            <AnimatePresence mode="sync">
+                {data && data.length > 0 && localQuery.length >= 3 ? (
                     <motion.div
                         className={css({
                             width: '100%',
@@ -184,7 +153,7 @@ export default function Page() {
                         transition={{ duration: 0.2 }}
                     >
                         <Paragraph size="caption" subtle>
-                            {establishments.length} resultados{' '}
+                            {data.length} resultados{' '}
                         </Paragraph>
                         <div
                             className={css({
@@ -192,13 +161,43 @@ export default function Page() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: '100%',
+                                gap: '1rem',
                             })}
                         >
-                            {establishments.map((establishment) => (
-                                <EstablishmentResultItem
-                                    establishment={establishment}
+                            {data.map((establishment) => (
+                                <Link
+                                    href={`/estabelecimento/${establishment.cnes}`}
                                     key={establishment.cnes}
-                                />
+                                    className={css({
+                                        padding: '1rem',
+                                        width: '100%',
+                                        background: 'neutral.100',
+                                        borderRadius: '12px',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        gap: '.75rem',
+                                    })}
+                                >
+                                    <MapMarkerDecoration
+                                        establishmentType={
+                                            establishment.type as
+                                                | 'Unidade Básica de Saúde'
+                                                | 'Hospital Geral'
+                                                | 'Unidade de Pronto Atendimento'
+                                        }
+                                    />
+                                    <div className={css({ flex: 1 })}>
+                                        <b
+                                            className={css({
+                                                fontWeight: 500,
+                                                fontSize: '1.125rem',
+                                            })}
+                                        >
+                                            {establishment.name}
+                                        </b>
+                                    </div>
+                                </Link>
                             ))}
                             <Banner
                                 icon={<QuestionIcon />}
@@ -209,7 +208,7 @@ export default function Page() {
                             />
                         </div>
                     </motion.div>
-                ) : localQuery.length >= 2 ? (
+                ) : error ? (
                     <motion.div
                         key="no-results"
                         initial={{ opacity: 0, y: 20 }}
@@ -219,6 +218,23 @@ export default function Page() {
                     >
                         <NoResultsEmptyState query={localQuery} />
                     </motion.div>
+                ) : isLoading ? (
+                    <div
+                        className={css({
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        })}
+                    >
+                        <CircleNotchIcon
+                            className={css({
+                                animation: 'spin',
+                                color: 'neutral.300',
+                            })}
+                            weight="bold"
+                            size={32}
+                        />
+                    </div>
                 ) : (
                     <motion.div
                         initial={{ opacity: 0 }}

@@ -1,157 +1,55 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { Marker } from 'react-map-gl/mapbox'
-import { AnimatePresence, motion } from 'motion/react'
 import {
     AmbulanceIcon,
     FirstAidIcon,
     HospitalIcon,
-} from '@phosphor-icons/react'
+} from '@phosphor-icons/react/ssr'
 
 import { Establishment } from '@/interfaces/Establishment'
 
-import { labelStyles, markerContainer } from './maker.styles'
-import { useMapContext } from '@/context/MapContext'
-import { Tooltip } from '../Tooltip'
+import { markerContainer } from './maker.styles'
 
 interface MapMarkerProps {
-    longitude: number
-    latitude: number
+    longitude?: number
+    latitude?: number
     establishmentProps?: Establishment
+    establishmentType?:
+        | 'Hospital Geral'
+        | 'Unidade Básica de Saúde'
+        | 'Unidade de Pronto Atendimento'
     delay?: boolean
     expanded?: boolean
-    mapZoom: number
+    mapZoom?: number
 }
 
-export function MapMarkerDecoration({
-    longitude,
-    latitude,
-    establishmentProps,
-    delay = false,
-    expanded = false,
-    mapZoom,
-}: MapMarkerProps) {
-    const router = useRouter()
-    const { setSelectedEstablishment, selectedEstablishment } = useMapContext()
-
-    if (!establishmentProps) return null
-
+export function MapMarkerDecoration({ establishmentType }: MapMarkerProps) {
     return (
-        <Marker
-            longitude={longitude}
-            latitude={latitude}
-            anchor="center"
-            // onClick={() => {
-            //     router.push(`/mapa?establishment=${establishmentProps.cnes}`)
-            //     setSelectedEstablishment(establishmentProps)
-            // }}
+        <div
+            style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+            }}
         >
-            <AnimatePresence mode="wait">
-                {selectedEstablishment?.cnes === establishmentProps.cnes ||
-                expanded ? (
-                    <div
-                        style={{
-                            position: 'relative',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <motion.div
-                            initial={{
-                                scale: 0,
-                            }}
-                            animate={{
-                                scale: [0, 1.5],
-                                rotate: [0, 10, -10, 5, 0],
-                                transformOrigin: 'center bottom',
-                            }}
-                            exit={{
-                                scale: 0,
-                            }}
-                            transition={{ delay: delay ? 0.75 : 0 }}
-                            // className={markerContainer({
-                            //     type: establishmentProps.abb as
-                            //         | 'HOSPITAL'
-                            //         | 'UBS'
-                            //         | 'UPA',
-                            // })}
-                        >
-                            {establishmentProps.abb === 'HOSPITAL' && (
-                                <HospitalIcon weight="fill" />
-                            )}
-                            {establishmentProps.abb === 'UBS' && (
-                                <FirstAidIcon weight="fill" />
-                            )}
-                            {establishmentProps.abb === 'UPA' && (
-                                <AmbulanceIcon weight="fill" />
-                            )}
-                        </motion.div>
-                        <AnimatePresence>
-                            <motion.span
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className={labelStyles}
-                            >
-                                {establishmentProps.name}
-                            </motion.span>
-                        </AnimatePresence>
-                    </div>
-                ) : (
-                    <Tooltip
-                        content={establishmentProps.name}
-                        isVisible={mapZoom < 12 ? undefined : false}
-                    >
-                        <motion.div
-                            initial={{
-                                scale: 0,
-                                transformOrigin: 'bottom center',
-                            }}
-                            animate={{
-                                scale: 1,
-                                transformOrigin: 'bottom center',
-                            }}
-                            exit={{
-                                scale: 0,
-                                transformOrigin: 'bottom center',
-                            }}
-                            transition={{ duration: 0.3, type: 'spring' }}
-                            // className={markerContainer({
-                            //     type: establishmentProps.abb as
-                            //         | 'HOSPITAL'
-                            //         | 'UBS'
-                            //         | 'UPA',
-                            //     compacted: mapZoom <= 12 ? true : false,
-                            // })}
-                        >
-                            {establishmentProps.abb === 'HOSPITAL' && (
-                                <HospitalIcon weight="fill" />
-                            )}
-                            {establishmentProps.abb === 'UBS' && (
-                                <FirstAidIcon weight="fill" />
-                            )}
-                            {establishmentProps.abb === 'UPA' && (
-                                <AmbulanceIcon weight="fill" />
-                            )}
-                            <AnimatePresence>
-                                {mapZoom > 12 && (
-                                    <motion.span
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className={labelStyles}
-                                    >
-                                        {establishmentProps.name}
-                                    </motion.span>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    </Tooltip>
+            <div
+                className={markerContainer({
+                    type: establishmentType as
+                        | 'Hospital Geral'
+                        | 'Unidade Básica de Saúde'
+                        | 'Unidade de Pronto Atendimento',
+                })}
+            >
+                {establishmentType === 'Hospital Geral' && (
+                    <HospitalIcon weight="fill" />
                 )}
-            </AnimatePresence>
-        </Marker>
+                {establishmentType === 'Unidade Básica de Saúde' && (
+                    <FirstAidIcon weight="fill" />
+                )}
+                {establishmentType === 'Unidade de Pronto Atendimento' && (
+                    <AmbulanceIcon weight="fill" />
+                )}
+            </div>
+        </div>
     )
 }

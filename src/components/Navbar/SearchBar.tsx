@@ -1,13 +1,22 @@
+'use client'
+
 import { InputHTMLAttributes } from 'react'
-import { FadersIcon, MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
+import {
+    CircleNotchIcon,
+    FadersIcon,
+    MagnifyingGlassIcon,
+} from '@phosphor-icons/react/dist/ssr'
 
 import { css } from '../../../styled-system/css'
 
 import { Tooltip } from '../Tooltip'
+import { AnimatePresence, motion } from 'motion/react'
 
-type SearchBarProps = InputHTMLAttributes<HTMLInputElement>
+interface SearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
+    isLoading?: boolean
+}
 
-export function SearchBar({ ...props }: SearchBarProps) {
+export function SearchBar({ isLoading, ...props }: SearchBarProps) {
     return (
         <div className={searchBarContainer}>
             <Tooltip content="Buscar" placement="bottom">
@@ -16,9 +25,64 @@ export function SearchBar({ ...props }: SearchBarProps) {
                 </button>
             </Tooltip>
             <input {...props} type="search" autoComplete="false" />
-            <Tooltip content="Filtrar" placement="bottom">
+            <Tooltip
+                content={isLoading ? 'Carregando...' : 'Filtrar'}
+                placement="bottom"
+            >
                 <button>
-                    <FadersIcon />
+                    <AnimatePresence mode="popLayout" initial={false}>
+                        {isLoading ? (
+                            <motion.div
+                                key="loading"
+                                initial={{
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    filter: 'blur(2px)',
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    scale: 1,
+                                    filter: 'blur(0px)',
+                                }}
+                                exit={{
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    filter: 'blur(2px)',
+                                }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <CircleNotchIcon
+                                    className={css({
+                                        animation: 'spin',
+                                        color: 'neutral.500',
+                                    })}
+                                    size={18}
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="filter"
+                                initial={{
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    filter: 'blur(2px)',
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    scale: 1,
+                                    filter: 'blur(0px)',
+                                }}
+                                exit={{
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    filter: 'blur(2px)',
+                                }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <FadersIcon />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </button>
             </Tooltip>
         </div>
@@ -56,6 +120,7 @@ const searchBarContainer = css({
         borderRadius: 'full',
         color: 'primary',
         transition: 'all ease 0.2s',
+        aspectRatio: '1 / 1',
 
         '& svg': {
             fontSize: '1.125rem',
