@@ -16,7 +16,7 @@ interface IndicatorsTabProps {
     ) => void
 }
 
-export function IndicatorsTab({}: IndicatorsTabProps) {
+export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
     return (
         <>
             <div
@@ -27,10 +27,10 @@ export function IndicatorsTab({}: IndicatorsTabProps) {
                     mt: '1rem',
                 })}
             >
-                <HealtieClassificationIndicator />
-                <WaitTimeIndicator />
-                <OccupancyIndexIndicator />
-                <ResolutionIndexIndicator />
+                <HealtieClassificationIndicator data={establishment} />
+                <WaitTimeIndicator data={establishment} />
+                <OccupancyIndexIndicator data={establishment} />
+                <ResolutionIndexIndicator data={establishment} />
             </div>
             <div>
                 <Paragraph bolder size="caption">
