@@ -7,7 +7,6 @@ import {
     ResolutionIndexIndicator,
     WaitTimeIndicator,
 } from '@/components/Indicators'
-import { Establishment } from '@/interfaces/Establishment'
 import { DetailsAsideView } from '../DetailsAsideView'
 import { ServiceItem } from '@/components/ServiceItem'
 import {
@@ -16,9 +15,10 @@ import {
     StethoscopeIcon,
     ToothIcon,
 } from '@phosphor-icons/react/dist/ssr'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface OverviewTabProps {
-    establishment: Establishment
+    establishment: EstablishmentResponse | undefined
     setSelectedTab: (
         tab: 'overview' | 'indicators' | 'services' | 'comments'
     ) => void

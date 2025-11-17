@@ -12,35 +12,40 @@ import { Button } from '@/components/Button'
 import { Divider } from '@/components/Divider'
 import { Paragraph } from '@/components/Typography'
 
-import { Establishment } from '@/interfaces/Establishment'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 export function DetailsAsideView({
     establishment,
 }: {
-    establishment: Establishment
+    establishment: EstablishmentResponse | undefined
 }) {
+    if (!establishment) return null
+
     return (
         <aside>
             <Paragraph subtle bolder size="caption">
                 Informações do Estabelecimento
             </Paragraph>
-            <DetailItem title="Telefone" value={establishment.phone} />
-            <DetailItem title="Endereço" value={establishment.address} />
+            <DetailItem title="Telefone" value={establishment?.phone} />
+            <DetailItem
+                title="Endereço"
+                value={establishment?.address?.address}
+            />
             <DetailItem
                 title="Bairro/Distrito"
-                value={`${establishment.district}`}
+                value={`${establishment?.address?.district}`}
             />
             <Link
                 variant="asChild"
-                href={`/cidade/${establishment.city.toLowerCase}`}
+                href={`/cidade/${establishment?.address?.city?.toLowerCase()}`}
             >
                 <DetailItem
                     title="Cidade"
-                    value={`${establishment.city} - ${establishment.state}`}
+                    value={`${establishment?.address?.city} - ${establishment?.address?.state}`}
                 />
             </Link>
-            <DetailItem title="Tipo" value={establishment.type} />
-            <DetailItem title="CNES" value={establishment.cnes.toString()} />
+            <DetailItem title="Tipo" value={establishment?.type} />
+            <DetailItem title="CNES" value={establishment?.cnes.toString()} />
             <Divider margin="compact" />
 
             <Paragraph size="caption" subtle>
@@ -84,7 +89,7 @@ export const DetailItem = ({
     value,
 }: {
     title: string
-    value: string
+    value: string | undefined
 }) => {
     return (
         <div className={detailItemContainer}>

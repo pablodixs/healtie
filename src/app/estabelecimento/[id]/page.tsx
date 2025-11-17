@@ -17,12 +17,21 @@ import { Divider } from '@/components/Divider'
 import { IAmHereDialog } from '@/components/IAmHererDialog'
 import { IndicatorsTab, OverviewTab } from './components/tabs'
 import { ServicesTab } from './components/tabs/ServicesTab'
+import { fetcher } from '@/lib/swrFetcher'
+import useSWR from 'swr'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 
 export default function Page() {
     const path = usePathname()
     const id = path.split('/').pop()
     const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false)
     const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
+
+    const { data, isLoading, error } = useSWR<EstablishmentResponse>(
+        `http://localhost:8080/v1/establishment/${id}`,
+        fetcher
+    )
 
     type TabType = 'overview' | 'indicators' | 'services' | 'comments'
     const [selectedTab, setSelectedTab] = useState<TabType>('overview')
@@ -32,10 +41,45 @@ export default function Page() {
     useEffect(() => {
         document.title = establishment
             ? `${establishment.name} | Healtie`
-            : 'Estabelecimento não encontrado | Healtie'
+            : 'Healtie'
     }, [establishment])
 
-    if (!establishment) {
+    if (isLoading)
+        return (
+            <div
+                className={css({
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    justifyContent: 'center',
+                    height: '80dvh',
+                })}
+            >
+                <CircleNotchIcon
+                    className={css({
+                        animation: 'spin',
+                        color: 'neutral.300',
+                    })}
+                    weight="bold"
+                    size={32}
+                />{' '}
+            </div>
+        )
+
+    if (error) {
+        return (
+            <div
+                className={css({
+                    minHeight: '100dvh',
+                })}
+            >
+                <TokenMissingState />
+            </div>
+        )
+    }
+
+    if (!data) {
         return (
             <div
                 className={css({
@@ -51,7 +95,7 @@ export default function Page() {
         <MapContextProvider>
             <main className={mainContainer}>
                 <HeaderView
-                    establishment={establishment}
+                    establishment={data}
                     setIsReportModalOpen={setIsReportModalOpen}
                     setIsIAmHereModalOpen={setIsIAmHereModalOpen}
                 />
@@ -89,19 +133,19 @@ export default function Page() {
                 <section className={contentContainer}>
                     {selectedTab === 'overview' && (
                         <OverviewTab
-                            establishment={establishment}
+                            establishment={data}
                             setSelectedTab={setSelectedTab}
                         />
                     )}
                     {selectedTab === 'indicators' && (
                         <IndicatorsTab
-                            establishment={establishment}
+                            establishment={data}
                             setSelectedTab={setSelectedTab}
                         />
                     )}
                     {selectedTab === 'services' && (
                         <ServicesTab
-                            establishment={establishment}
+                            establishment={data}
                             setSelectedTab={setSelectedTab}
                         />
                     )}

@@ -6,11 +6,11 @@ import {
     ResolutionIndexIndicator,
     WaitTimeIndicator,
 } from '@/components/Indicators'
-import { Establishment } from '@/interfaces/Establishment'
 import { Link } from '@/components/Link'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface IndicatorsTabProps {
-    establishment: Establishment
+    establishment: EstablishmentResponse | undefined
     setSelectedTab: (
         tab: 'overview' | 'indicators' | 'services' | 'comments'
     ) => void

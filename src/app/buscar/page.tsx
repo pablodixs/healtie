@@ -138,12 +138,6 @@ export default function Page() {
             .sort((a, b) => a.distance - b.distance)
     }, [localQuery, activeFilter, coords, userDidAllowLocation])
 
-    console.log({
-        userDidAllowLocation,
-        coords,
-        establishmentsCount: establishments.length,
-    })
-
     return (
         <main
             className={css({

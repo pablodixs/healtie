@@ -17,12 +17,12 @@ import {
     calculateDistance,
     formatDistance,
 } from '@/utils/functions/calculateDistance'
-import { Establishment } from '@/interfaces/Establishment'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { Link } from '@/components/Link'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface HeaderViewProps {
-    establishment: Establishment
+    establishment: EstablishmentResponse | undefined
     setIsReportModalOpen: (isOpen: boolean) => void
     setIsIAmHereModalOpen: (isOpen: boolean) => void
 }
@@ -36,12 +36,12 @@ export function HeaderView({
         immediate: true,
     })
 
-    if (!establishment) return
+    if (!establishment) return null
 
     const distanceToEstablishment = coords
         ? calculateDistance(
-              establishment.location.latitude,
-              establishment.location.longitude,
+              establishment.coordinates.latitude,
+              establishment.coordinates.longitude,
               coords.latitude,
               coords.longitude
           )
@@ -50,13 +50,17 @@ export function HeaderView({
     return (
         <section>
             <div>
-                {/* <EstablishmentIcon
+                <EstablishmentIcon
                     decoration
                     size="large"
                     square
-                    type={establishment.abb as 'HOSPITAL' | 'UPA' | 'UBS'}
-                /> */}
-
+                    type={
+                        establishment.type as
+                            | 'Hospital Geral'
+                            | 'Unidade Básica de Saúde'
+                            | 'Unidade de Pronto Atendimento'
+                    }
+                />
                 <Heading style={{ marginTop: '1rem' }}>
                     {establishment.name}
                 </Heading>
@@ -67,8 +71,9 @@ export function HeaderView({
                 )}
                 <section className={establishmentInfoContainer}>
                     <span>
-                        {establishment.type} em {establishment.district},{' '}
-                        {establishment.city}
+                        {establishment.type} em{' '}
+                        {establishment.address?.district},{' '}
+                        {establishment.address?.city}
                     </span>
                     <span>&bull;</span>
                     <span className={openSpanStyle}>
@@ -109,7 +114,7 @@ export function HeaderView({
                 </Link>
                 <Link
                     target="_blank"
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${establishment.location.latitude},${establishment.location.longitude}`}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${establishment.coordinates?.latitude},${establishment.coordinates.longitude}`}
                     variant="bordered"
                     size="sm"
                 >

@@ -1,6 +1,5 @@
 import { Paragraph } from '@/components/Typography'
 import { css } from '../../../../../../styled-system/css'
-import { Establishment } from '@/interfaces/Establishment'
 import { Link } from '@/components/Link'
 import { ServiceItem } from '@/components/ServiceItem'
 import {
@@ -9,9 +8,10 @@ import {
     StethoscopeIcon,
     ToothIcon,
 } from '@phosphor-icons/react/dist/ssr'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 interface ServicesTabProps {
-    establishment: Establishment
+    establishment: EstablishmentResponse | undefined
     setSelectedTab: (
         tab: 'overview' | 'indicators' | 'services' | 'comments'
     ) => void
