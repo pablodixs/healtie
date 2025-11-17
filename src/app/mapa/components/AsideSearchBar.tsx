@@ -25,7 +25,7 @@ export function AsideSearchBar() {
 
     const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
         debounced
-            ? `http://localhost:8080/v1/establishment/search?q=${debounced}&limit=5`
+            ? `https://healtie.app/v1/establishment/search?q=${debounced}&limit=5`
             : null,
         fetcher
     )

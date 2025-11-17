@@ -29,7 +29,7 @@ export default function Page() {
     const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
 
     const { data, isLoading, error } = useSWR<EstablishmentResponse>(
-        `http://localhost:8080/v1/establishment/${id}`,
+        `https://healtie.app/v1/establishment/${id}`,
         fetcher
     )
 

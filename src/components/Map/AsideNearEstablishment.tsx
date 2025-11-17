@@ -26,7 +26,7 @@ export function AsideNearEstablishments({
     coords,
 }: AsideNearEstablishmentsProps) {
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
-        `http://localhost:8080/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
+        `https://healtie.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
         fetcher,
         {
             revalidateOnFocus: false,
