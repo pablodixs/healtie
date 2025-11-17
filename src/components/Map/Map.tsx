@@ -66,10 +66,10 @@ export function MapComponent() {
 
     const { data } = useSWR<EstablishmentPointResponse[]>(
         bbox
-            ? `http://localhost:8080/v1/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
+            ? `https://healtie.app/v1/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
             : null,
         fetcher,
-        { revalidateOnFocus: false }
+        { revalidateOnFocus: false, keepPreviousData: true }
     )
 
     const { viewState, setViewState } = useMapView(initialView)
