@@ -40,7 +40,7 @@ export function AsideEstablishmentDetails({
     selectedEstablishmentCnes,
 }: AsideEstablishmentDetailsProps) {
     const { data, isLoading } = useSWR<EstablishmentResponse>(
-        `https://healtie.app/v1/establishment/${selectedEstablishmentCnes}`,
+        `http://localhost:8080/v1/establishment/${selectedEstablishmentCnes}`,
         fetcher
     )
 

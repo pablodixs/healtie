@@ -2,7 +2,7 @@
 
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 import { MapMarker, MapToolbar, TokenMissingState } from '@/components/Map'
@@ -15,6 +15,11 @@ import { MapUserMarker } from './MapUserMarker'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import { css } from '../../../styled-system/css'
+import {
+    CircleNotchIcon,
+    MagnifyingGlassPlusIcon,
+} from '@phosphor-icons/react/dist/ssr'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -63,16 +68,18 @@ export function MapComponent() {
     const [cachedEstablishments, setCachedEstablishments] = useState<
         EstablishmentPointResponse[]
     >([])
+    const fetchedBboxesRef = useRef<Set<string>>(new Set())
+    const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-    const { data } = useSWR<EstablishmentPointResponse[]>(
-        bbox
-            ? `https://healtie.app/v1/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
+    const { viewState, setViewState } = useMapView(initialView)
+
+    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+        bbox && viewState.zoom >= 13
+            ? `http://localhost:8080/v1/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
             : null,
         fetcher,
         { revalidateOnFocus: false, keepPreviousData: true }
     )
-
-    const { viewState, setViewState } = useMapView(initialView)
 
     const handleMove = useCallback(
         (evt: {
@@ -88,13 +95,28 @@ export function MapComponent() {
     )
 
     const handleViewportSync = useCallback(() => {
-        const mapInstance = mapRef.current?.getMap?.()
-        if (!mapInstance) return
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current)
+        }
 
-        const newBBox = getBoundingBox(mapInstance)
-        if (!newBBox) return
+        debounceTimerRef.current = setTimeout(() => {
+            const mapInstance = mapRef.current?.getMap?.()
+            if (!mapInstance) return
 
-        setBbox(newBBox)
+            const newBBox = getBoundingBox(mapInstance)
+            if (!newBBox) return
+
+            // Cria uma chave única para o bbox arredondado (evita consultas muito próximas)
+            const bboxKey = `${newBBox.minLat.toFixed(3)},${newBBox.minLon.toFixed(3)},${newBBox.maxLat.toFixed(3)},${newBBox.maxLon.toFixed(3)}`
+
+            // Se já consultamos essa área (com margem de tolerância), não refaz a consulta
+            if (fetchedBboxesRef.current.has(bboxKey)) {
+                return
+            }
+
+            fetchedBboxesRef.current.add(bboxKey)
+            setBbox(newBBox)
+        }, 300) // Debounce de 300ms
     }, [])
 
     useEffect(() => {
@@ -148,6 +170,7 @@ export function MapComponent() {
     return (
         <motion.section
             style={{
+                position: 'relative',
                 width: '100%',
                 height: '100%',
             }}
@@ -155,6 +178,74 @@ export function MapComponent() {
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             transition={{ delay: 0.5 }}
         >
+            <AnimatePresence>
+                {viewState.zoom < 13 && (
+                    <motion.button
+                        initial={{ opacity: 0, filter: 'blur(2px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, filter: 'blur(2px)' }}
+                        onClick={() => mapRef.current?.getMap().zoomTo(14)}
+                        className={css({
+                            cursor: 'pointer',
+                            position: 'absolute',
+                            top: 'header',
+                            left: '50%',
+                            right: 'auto',
+                            transform: 'translateX(-50%)',
+                            padding: '.5rem 1rem',
+                            textAlign: 'center',
+                            backgroundColor: 'white',
+                            borderRadius: '9999px',
+                            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1)',
+                            zIndex: 10000,
+                            fontWeight: '500',
+                            fontSize: '0.875rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                        })}
+                    >
+                        <MagnifyingGlassPlusIcon size={18} />
+                        <span>Aproxime para carregar estabelecimentos</span>
+                    </motion.button>
+                )}
+                {isLoading && (
+                    <motion.div
+                        initial={{ opacity: 0, filter: 'blur(2px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, filter: 'blur(2px)' }}
+                        className={css({
+                            cursor: 'pointer',
+                            position: 'absolute',
+                            top: 'header',
+                            left: '50%',
+                            right: 'auto',
+                            transform: 'translateX(-50%)',
+                            padding: '.5rem 1rem',
+                            textAlign: 'center',
+                            backgroundColor: 'white',
+                            borderRadius: '9999px',
+                            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1)',
+                            zIndex: 10000,
+                            fontWeight: '500',
+                            fontSize: '0.875rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                        })}
+                    >
+                        <CircleNotchIcon
+                            className={css({
+                                animation: 'spin',
+                                color: 'neutral.500',
+                            })}
+                            weight="bold"
+                            size={18}
+                        />{' '}
+                        Carregando...
+                    </motion.div>
+                )}
+            </AnimatePresence>
             {MAPBOX_TOKEN ? (
                 <main
                     style={{
@@ -178,7 +269,8 @@ export function MapComponent() {
                         mapStyle="mapbox://styles/pablodixs/cmdrihemn00qs01s2dlgp3lp7"
                         mapboxAccessToken={MAPBOX_TOKEN}
                     >
-                        {cachedEstablishments &&
+                        {viewState.zoom >= 13 &&
+                            cachedEstablishments &&
                             cachedEstablishments.map(
                                 (e: EstablishmentPointResponse) => {
                                     return (

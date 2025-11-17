@@ -2,13 +2,13 @@ import { HTMLAttributes } from 'react'
 
 import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
 import { MapPinAreaIcon } from '@phosphor-icons/react/dist/ssr'
-import { css } from '../../../../styled-system/css'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { Tooltip } from '@/components/Tooltip'
 import { Link } from '@/components/Link'
 import { Paragraph } from '@/components/Typography'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
+import { css } from '../../../styled-system/css'
 
 interface AsideNearEstablishmentsProps {
     location: string | null
@@ -27,7 +27,12 @@ export function AsideNearEstablishments({
 }: AsideNearEstablishmentsProps) {
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         `http://localhost:8080/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
-        fetcher
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            revalidateOnMount: false,
+        }
     )
 
     return (
