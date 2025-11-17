@@ -19,12 +19,21 @@ import { NoResultsEmptyState } from './components/NoResultsEmpytState'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
 import { Banner } from '@/components/Banner'
-import { CircleNotchIcon, QuestionIcon } from '@phosphor-icons/react/dist/ssr'
+import {
+    CaretRightIcon,
+    CircleNotchIcon,
+    QuestionIcon,
+} from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import Link from 'next/link'
 import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
+import {
+    calculateDistance,
+    formatDistance,
+} from '@/utils/functions/calculateDistance'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 
 export default function Page() {
     const router = useRouter()
@@ -35,6 +44,7 @@ export default function Page() {
     const initialQuery = searchParams.get('q') || ''
     const [debounced, setDebounced] = useState('')
     const [localQuery, setLocalQuery] = useState(initialQuery)
+    const { coords } = useUserGeolocation()
 
     const query = searchParams.get('q') || ''
     const rawFilterParam = searchParams.get('filter')
@@ -45,8 +55,6 @@ export default function Page() {
     }, [query])
 
     useEffect(() => {
-        // Sincroniza somente quando o parâmetro da URL mudar,
-        // evitando sobrescrever a seleção local imediatamente após o clique
         setEstablishmentFilter(filterParam)
     }, [filterParam])
 
@@ -187,7 +195,13 @@ export default function Page() {
                                                 | 'Unidade de Pronto Atendimento'
                                         }
                                     />
-                                    <div className={css({ flex: 1 })}>
+                                    <div
+                                        className={css({
+                                            flex: 1,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                        })}
+                                    >
                                         <b
                                             className={css({
                                                 fontWeight: 500,
@@ -196,7 +210,36 @@ export default function Page() {
                                         >
                                             {establishment.name}
                                         </b>
+                                        {coords && (
+                                            <span
+                                                className={css({
+                                                    fontSize: '0.875rem',
+                                                    color: 'green.600',
+                                                })}
+                                            >
+                                                A{' '}
+                                                {formatDistance(
+                                                    calculateDistance(
+                                                        coords?.latitude,
+                                                        coords?.longitude,
+                                                        establishment
+                                                            .geolocation
+                                                            ?.latitude,
+                                                        establishment
+                                                            .geolocation
+                                                            ?.longitude
+                                                    )
+                                                )}{' '}
+                                                de distância
+                                            </span>
+                                        )}
                                     </div>
+                                    <CaretRightIcon
+                                        size={20}
+                                        className={css({
+                                            color: 'neutral.500',
+                                        })}
+                                    />
                                 </Link>
                             ))}
                             <Banner

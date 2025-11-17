@@ -2,11 +2,11 @@
 
 import {
     ArrowUpRightIcon,
+    CircleNotchIcon,
     MapTrifoldIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { css } from '../../../styled-system/css'
@@ -16,8 +16,11 @@ import { SearchTags } from './components/SearchTags'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Link as CustomLink } from '@/components/Link'
 
-import data from '@/utils/unidades.json'
-import { Divider } from '@/components/Divider'
+import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
+import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
+import { Subheading } from '@/components/Typography'
 
 const FILTER_OPTIONS = {
     HOSPITAL: { label: 'hospitais' },
@@ -27,59 +30,31 @@ const FILTER_OPTIONS = {
 }
 
 export function HeroSearchContainer() {
-    const router = useRouter()
-
+    const [debounced, setDebounced] = useState('')
     const [isSearchBarFocused, setIsSearchBarFocused] = useState(false)
     const [filterValue, setFilterValue] = useState<string | null>(null)
     const [searchValue, setSearchValue] = useState('')
-    const [filteredEstablishments, setFilteredEstablishments] = useState<
-        typeof data | null
-    >(null)
 
-    // Executar busca automaticamente quando searchValue ou filterValue mudar
+    const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
+        debounced && debounced.length >= 3
+            ? `http://localhost:8080/v1/establishment/search?q=${encodeURIComponent(
+                  debounced
+              )}${filterValue ? `&filter=${encodeURIComponent(filterValue)}` : ''}&limit=5`
+            : null,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+        }
+    )
+
     useEffect(() => {
-        const handleFilterEstablishments = () => {
-            const filtered = data.establishments.filter((establishment) => {
-                const matchesFilter =
-                    filterValue === null || establishment.abb === filterValue
-                const matchesSearch = establishment.name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                return matchesFilter && matchesSearch
-            })
-            setFilteredEstablishments({ establishments: filtered })
-        }
-
-        if (searchValue.length > 0 || filterValue !== null) {
-            handleFilterEstablishments()
-        } else {
-            setFilteredEstablishments(null)
-        }
+        const timer = setTimeout(() => {
+            setDebounced(searchValue)
+        }, 300)
+        return () => clearTimeout(timer)
     }, [searchValue, filterValue])
 
-    function handleSearchAction() {
-        router.push(
-            `/buscar?q=${searchValue}` +
-                (filterValue ? `&filter=${filterValue}` : '')
-        )
-    }
-
-    const handleFilterEstablishments = () => {
-        const filtered = data.establishments.filter((establishment) => {
-            const matchesFilter =
-                filterValue === null || establishment.abb === filterValue
-            const matchesSearch = establishment.name
-                .toLowerCase()
-                .includes(searchValue.toLowerCase())
-            return matchesFilter && matchesSearch
-        })
-        setFilteredEstablishments({ establishments: filtered })
-    }
-
     const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.key === 'Enter') {
-            handleFilterEstablishments()
-        }
         if (event.key === 'Escape') {
             setSearchValue('')
             setIsSearchBarFocused(false)
@@ -147,7 +122,6 @@ export function HeroSearchContainer() {
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    searchAction={handleSearchAction}
                 />
                 <AnimatePresence>
                     {(searchValue !== '' || isSearchBarFocused) && (
@@ -195,59 +169,88 @@ export function HeroSearchContainer() {
                                             }
                                         </Paragraph>
                                         <Paragraph subtle>
-                                            {filteredEstablishments
-                                                ?.establishments.length ||
-                                                0}{' '}
+                                            {(data && data.length) || 0}{' '}
                                             resultados
                                         </Paragraph>
                                     </header>
                                     <div className="results_list">
-                                        {filteredEstablishments?.establishments.map(
-                                            (establishment) => (
-                                                <div key={establishment.cnes}>
-                                                    <div
-                                                        className={
-                                                            establishmentItem
-                                                        }
+                                        {data?.map((establishment) => (
+                                            <Link
+                                                href={`/estabelecimento/${establishment.cnes}`}
+                                                key={establishment.cnes}
+                                                className={css({
+                                                    width: '100%',
+                                                    borderRadius: '12px',
+                                                    display: 'flex',
+                                                    justifyContent:
+                                                        'space-between',
+                                                    alignItems: 'center',
+                                                    gap: '.75rem',
+                                                    textAlign: 'left',
+                                                    mb: '.75rem',
+                                                    padding: '.75rem',
+                                                    _hover: {
+                                                        background:
+                                                            'neutral.100',
+                                                    },
+                                                })}
+                                            >
+                                                <MapMarkerDecoration
+                                                    establishmentType={
+                                                        establishment.type as
+                                                            | 'Unidade Básica de Saúde'
+                                                            | 'Hospital Geral'
+                                                            | 'Unidade de Pronto Atendimento'
+                                                    }
+                                                />
+                                                <div
+                                                    className={css({ flex: 1 })}
+                                                >
+                                                    <b
+                                                        className={css({
+                                                            fontWeight: 500,
+                                                        })}
                                                     >
-                                                        <CustomLink
-                                                            variant="asChild"
-                                                            href={`/estabelecimento/${establishment.cnes}`}
-                                                        >
-                                                            <h1>
-                                                                {
-                                                                    establishment.name
-                                                                }
-                                                            </h1>
-                                                            <span>
-                                                                {
-                                                                    establishment.district
-                                                                }
-                                                                ,{' '}
-                                                                {
-                                                                    establishment.city
-                                                                }
-                                                            </span>
-                                                        </CustomLink>
-                                                        <CustomLink
-                                                            variant="textSubtle"
-                                                            href={`/mapa?establishment=${establishment.cnes}&lat=${establishment.location.latitude}&long=${establishment.location.longitude}&from=search-page`}
-                                                        >
-                                                            <MapTrifoldIcon />{' '}
-                                                            Ver no Mapa
-                                                        </CustomLink>
-                                                    </div>
-                                                    <Divider />
+                                                        {establishment.name}
+                                                    </b>
                                                 </div>
-                                            )
+                                            </Link>
+                                        ))}
+                                        {isLoading && (
+                                            <div
+                                                className={css({
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                })}
+                                            >
+                                                <CircleNotchIcon
+                                                    className={css({
+                                                        animation: 'spin',
+                                                        color: 'neutral.300',
+                                                    })}
+                                                    weight="bold"
+                                                    size={32}
+                                                />
+                                            </div>
+                                        )}
+                                        {error && !isLoading && (
+                                            <div>
+                                                <Subheading>
+                                                    Não encontramos nada...
+                                                </Subheading>
+                                                <Paragraph subtle centered>
+                                                    Verifique os termos da
+                                                    pesquisa e tente novamente.
+                                                </Paragraph>
+                                            </div>
                                         )}
                                     </div>
                                     <footer>
                                         <CustomLink
                                             href={
                                                 `/buscar?q=${searchValue}` +
-                                                (filteredEstablishments
-                                                    ?.establishments.length
+                                                (filterValue
                                                     ? `&filter=${filterValue}`
                                                     : '')
                                             }
@@ -311,18 +314,5 @@ const resultsContainer = css({
     '& footer': {
         borderTop: '1px solid',
         borderColor: 'background',
-    },
-})
-
-const establishmentItem = css({
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    textAlign: 'left',
-
-    '& span': {
-        fontSize: '0.875rem',
-        color: 'gray.500',
     },
 })
