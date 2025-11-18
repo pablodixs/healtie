@@ -204,7 +204,7 @@ export function ReportModal({
                             </button>
                         </section>
                     )}
-                    {currentIndicator !== 'waitTime' && (
+                    {currentIndicator === 'waitTime' && (
                         <div>
                             <Paragraph bolder subtle marginCompact>
                                 Reportar tempo de espera
@@ -231,7 +231,7 @@ export function ReportModal({
                             />
                         </div>
                     )}
-                    {currentIndicator !== 'occupancy' && (
+                    {currentIndicator === 'occupancy' && (
                         <div>
                             <Paragraph bolder subtle marginCompact>
                                 Reportar Taxa de Ocupação
