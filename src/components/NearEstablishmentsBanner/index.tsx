@@ -35,7 +35,7 @@ export function NearEstablishmentsBanner() {
 
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
-            ? `https://healtie.app/v1/establishment/nearby?latitude=${coords?.latitude}&longitude=${coords?.longitude}&radiusInKm=5000`
+            ? `https://https://healtie-bh7zc.ondigitalocean.app//v1/establishment/nearby?latitude=${coords?.latitude}&longitude=${coords?.longitude}&radiusInKm=5000`
             : null,
         fetcher,
         {

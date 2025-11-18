@@ -81,7 +81,7 @@ export default function Page() {
 
     const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
         debounced && debounced.length >= 3
-            ? `https://healtie.app/v1/establishment/search?q=${encodeURIComponent(
+            ? `https://https://healtie-bh7zc.ondigitalocean.app//v1/establishment/search?q=${encodeURIComponent(
                   debounced
               )}${
                   establishmentFilter
