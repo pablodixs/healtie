@@ -60,7 +60,7 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                                 color: 'neutral.500',
                             })}
                         >
-                            Cerca de ${data.wait_time} min
+                            Cerca de {data.wait_time} min
                         </span>
                     )}
                 </div>
