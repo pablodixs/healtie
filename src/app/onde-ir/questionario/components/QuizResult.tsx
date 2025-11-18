@@ -311,7 +311,7 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
             {data && data.length > 0 && (
                 <div>
                     <Paragraph bolder size="subheadline">
-                        Hospitais próximos
+                        UPAs próximas
                     </Paragraph>
                     <div
                         className={css({
@@ -372,7 +372,7 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
             {data && data.length === 0 && (
                 <div>
                     <Paragraph centered bolder>
-                        Não encontramos nenhum hospital próximo de você.
+                        Não encontramos nenhuma UPA próxima de você.
                     </Paragraph>
                 </div>
             )}
@@ -461,7 +461,7 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
             {data && data.length > 0 && (
                 <div>
                     <Paragraph bolder size="subheadline">
-                        Hospitais próximos
+                        UBS próximas
                     </Paragraph>
                     <div
                         className={css({
@@ -522,7 +522,7 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
             {data && data.length === 0 && (
                 <div>
                     <Paragraph centered bolder>
-                        Não encontramos nenhum hospital próximo de você.
+                        Não encontramos nenhuma UBS próxima de você.
                     </Paragraph>
                 </div>
             )}
