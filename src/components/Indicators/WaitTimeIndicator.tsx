@@ -46,7 +46,11 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                         })}
                     >
                         {data?.wait_time
-                            ? `${data.wait_time} min`
+                            ? data.wait_time < 25
+                                ? 'Baixo'
+                                : data.wait_time < 50
+                                  ? 'Médio'
+                                  : 'Alto'
                             : 'Sem dados'}
                     </strong>
                     {data?.wait_time && (
@@ -56,7 +60,7 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                                 color: 'neutral.500',
                             })}
                         >
-                            Cerca de 2 horas
+                            Cerca de ${data.wait_time} min
                         </span>
                     )}
                 </div>
