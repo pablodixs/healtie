@@ -72,7 +72,15 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                         bounce: 0,
                     }}
                     className={barFill}
-                    style={{ background: '#e5383b' }}
+                    style={{
+                        background: data?.wait_time
+                            ? data?.wait_time < 30
+                                ? '#4caf50'
+                                : data?.wait_time < 60
+                                  ? '#f48c06'
+                                  : '#e5383b'
+                            : 'transparent',
+                    }}
                 />
                 <div className={barBackground} />
             </div>

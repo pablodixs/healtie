@@ -56,6 +56,15 @@ export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
                         bounce: 0,
                     }}
                     className={barFill}
+                    style={{
+                        background: data?.rating
+                            ? data?.rating < 30
+                                ? '#e5383b'
+                                : data?.rating < 60
+                                  ? '#f48c06'
+                                  : '#4caf50'
+                            : 'transparent',
+                    }}
                 />
                 <div className={barBackground} />
             </div>

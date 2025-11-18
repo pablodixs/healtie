@@ -62,9 +62,15 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: '#f48c06',
-                        width: `${data?.resolution_index || 0}%`,
-                        left: '0%',
+                        background: data?.resolution_index
+                            ? data?.resolution_index < 50
+                                ? '#e5383b'
+                                : data?.resolution_index < 75
+                                  ? '#f48c06'
+                                  : '#4caf50'
+                            : 'transparent',
+                        width: '20%',
+                        left: `${data?.resolution_index || 0}%`,
                     }}
                 />
                 <div className={barBackground} />

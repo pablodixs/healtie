@@ -60,7 +60,13 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: '#f48c06',
+                        background: data?.occupation
+                            ? data?.occupation < 30
+                                ? '#4caf50'
+                                : data?.occupation < 70
+                                  ? '#f48c06'
+                                  : '#e5383b'
+                            : 'transparent',
                         width: '20%',
                         left: `${data?.occupation || 0}%`,
                     }}
