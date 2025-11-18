@@ -16,6 +16,7 @@ export interface IndicatorsProps {
 }
 
 export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
+    console.log('HealtieClassificationIndicator data:', data)
     return (
         <div
             className={css({
@@ -48,7 +49,7 @@ export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: `${data?.rating || 0}%` }}
+                    animate={{ width: `${data?.rating}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
