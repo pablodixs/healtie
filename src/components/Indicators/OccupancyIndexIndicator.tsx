@@ -55,8 +55,8 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                     className={barFill}
                     style={{
                         background: '#f48c06',
-                        width: `${data?.occupation || 0}%`,
-                        left: '70%',
+                        width: '10%',
+                        left: `${data?.occupation || 0}%`,
                     }}
                 />
                 <div className={barBackground} />
