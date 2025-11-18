@@ -25,6 +25,7 @@ import {
     calculateDistance,
     formatDistance,
 } from '@/utils/functions/calculateDistance'
+import { CircleNotchIcon } from '@phosphor-icons/react'
 
 interface QuizResultProps {
     result: string
@@ -92,7 +93,7 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
     const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
         coords
-            ? `healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000&type=HOSPITAL`
+            ? `healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
             : null,
         fetcher
     )
@@ -139,6 +140,29 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                     • Não dirija sozinho se estiver passando mal
                 </Paragraph>
             </div>
+            {isLoading && (
+                <div
+                    className={css({
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem',
+                    })}
+                >
+                    <CircleNotchIcon
+                        className={css({
+                            animation: 'spin',
+                            color: 'neutral.300',
+                        })}
+                        weight="bold"
+                        size={20}
+                    />
+                    <Paragraph bolder centered>
+                        Estamos buscando hospitais próximos de você...
+                    </Paragraph>
+                </div>
+            )}
             {data && data.length > 0 && (
                 <div>
                     <Paragraph bolder size="subheadline">
@@ -196,6 +220,13 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                             )
                         })}
                     </div>
+                </div>
+            )}
+            {data && data.length === 0 && (
+                <div>
+                    <Paragraph centered bolder>
+                        Não encontramos nenhum hospital próximo de você.
+                    </Paragraph>
                 </div>
             )}
             <div className={buttonContainerStyles}>
