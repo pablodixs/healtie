@@ -20,8 +20,8 @@ interface IndicatorsTabProps {
 
 export interface IndicatorsData {
     rating: number | null
-    resolutionIndex: number | null
-    waitTime: number | null
+    resolution_index: number | null
+    wait_time: number | null
     occupation: number | null
 }
 

@@ -16,7 +16,6 @@ export interface IndicatorsProps {
 }
 
 export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
-    console.log('HealtieClassificationIndicator data:', data)
     return (
         <div
             className={css({
