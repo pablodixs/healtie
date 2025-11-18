@@ -66,7 +66,7 @@ export function ReportModal({
 
     const postIndicators = async () => {
         await axios.post(
-            `https://healtie-bh7zc.ondigitalocean.app/api/establishments/${establishment.id}/indicators`,
+            `https://healtie-bh7zc.ondigitalocean.app/api/establishments/${establishment.cnes}/indicators`,
             { indicators }
         )
     }
