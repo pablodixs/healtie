@@ -16,6 +16,9 @@ import {
     ToothIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { IndicatorsData } from './IndicatorsTab'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
 
 interface OverviewTabProps {
     establishment: EstablishmentResponse | undefined
@@ -28,6 +31,11 @@ export function OverviewTab({
     establishment,
     setSelectedTab,
 }: OverviewTabProps) {
+    const { data } = useSWR<IndicatorsData>(
+        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/indicators`,
+        fetcher
+    )
+
     return (
         <>
             <div>
@@ -64,12 +72,10 @@ export function OverviewTab({
                         mt: '1rem',
                     })}
                 >
-                    <HealtieClassificationIndicator
-                        data={establishment?.indices}
-                    />
-                    <WaitTimeIndicator data={establishment?.indices} />
-                    <OccupancyIndexIndicator data={establishment?.indices} />
-                    <ResolutionIndexIndicator data={establishment?.indices} />
+                    <HealtieClassificationIndicator data={data} />
+                    <WaitTimeIndicator data={data} />
+                    <OccupancyIndexIndicator data={data} />
+                    <ResolutionIndexIndicator data={data} />
                 </div>
                 <section
                     className={css({

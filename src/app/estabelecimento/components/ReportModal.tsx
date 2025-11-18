@@ -17,14 +17,14 @@ import { Paragraph } from '@/components/Typography'
 import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 
-import { Establishment } from '@/interfaces/Establishment'
-import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import { DotsThreeCircleIcon } from '@phosphor-icons/react/dist/ssr'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 
 interface ReportModalProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
-    establishment: Establishment
+    establishment: EstablishmentResponse
 }
 
 export function ReportModal({
@@ -88,12 +88,15 @@ export function ReportModal({
                             mt: '3rem',
                         })}
                     >
-                        {/* <EstablishmentIcon
+                        <EstablishmentIcon
                             type={
-                                establishment.abb as 'HOSPITAL' | 'UBS' | 'UPA'
+                                establishment.type as
+                                    | 'Hospital Geral'
+                                    | 'Unidade Básica de Saúde'
+                                    | 'Unidade de Pronto Atendimento'
                             }
                             delay
-                        /> */}
+                        />
                         <h1
                             className={css({
                                 fontSize: '1.5rem',

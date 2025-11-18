@@ -9,10 +9,10 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
+import { IndicatorsData } from '@/app/estabelecimento/[id]/components/tabs/IndicatorsTab'
 
 export interface IndicatorsProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: any | null
+    data: IndicatorsData | undefined
 }
 
 export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
@@ -39,18 +39,16 @@ export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
                 </div>
                 <strong
                     className={css({
-                        color: data?.healtieClassification
-                            ? 'inherit'
-                            : 'neutral.400',
+                        color: data?.rating ? 'inherit' : 'neutral.400',
                     })}
                 >
-                    {data?.healtieClassification || 'Sem dados'}
+                    {data?.rating || 'Sem dados'}
                 </strong>
             </header>
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: `${data?.healtieClassification || 0}%` }}
+                    animate={{ width: `${data?.rating || 0}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,

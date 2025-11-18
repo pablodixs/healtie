@@ -93,12 +93,12 @@ export function HeaderView({
                 </section>
             </div>
             <div className={toolbarContainer}>
-                <Button
+                {/* <Button
                     onClick={() => setIsIAmHereModalOpen(true)}
                     variant="secondary"
                 >
                     <MapPinAreaIcon weight="bold" size={20} /> Estou Aqui
-                </Button>
+                </Button> */}
                 <Button
                     variant="bordered"
                     onClick={() => setIsReportModalOpen(true)}

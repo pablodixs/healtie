@@ -36,10 +36,10 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                 </div>
                 <strong
                     className={css({
-                        color: data?.occupancyIndex ? 'inherit' : 'neutral.400',
+                        color: data?.occupation ? 'inherit' : 'neutral.400',
                     })}
                 >
-                    {data?.occupancyIndex || 'Sem dados'}
+                    {data?.occupation || 'Sem dados'}
                 </strong>
             </header>
             <div className={barContainer}>
@@ -55,7 +55,7 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                     className={barFill}
                     style={{
                         background: '#f48c06',
-                        width: `${data?.occupancyIndex || 0}%`,
+                        width: `${data?.occupation || 0}%`,
                         left: '70%',
                     }}
                 />

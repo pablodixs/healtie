@@ -8,6 +8,8 @@ import {
 } from '@/components/Indicators'
 import { Link } from '@/components/Link'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/swrFetcher'
 
 interface IndicatorsTabProps {
     establishment: EstablishmentResponse | undefined
@@ -16,7 +18,19 @@ interface IndicatorsTabProps {
     ) => void
 }
 
+export interface IndicatorsData {
+    rating: number | null
+    resolutionIndex: number | null
+    waitTime: number | null
+    occupation: number | null
+}
+
 export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
+    const { data } = useSWR<IndicatorsData>(
+        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/indicators`,
+        fetcher
+    )
+
     return (
         <>
             <div
@@ -27,10 +41,10 @@ export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
                     mt: '1rem',
                 })}
             >
-                <HealtieClassificationIndicator data={establishment} />
-                <WaitTimeIndicator data={establishment} />
-                <OccupancyIndexIndicator data={establishment} />
-                <ResolutionIndexIndicator data={establishment} />
+                <HealtieClassificationIndicator data={data} />
+                <WaitTimeIndicator data={data} />
+                <OccupancyIndexIndicator data={data} />
+                <ResolutionIndexIndicator data={data} />
             </div>
             <div>
                 <Paragraph bolder size="caption">

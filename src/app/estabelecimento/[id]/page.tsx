@@ -147,21 +147,21 @@ export default function Page() {
                 </section>
             </main>
             <Divider />
-            {/* <Portal> */}
-            {/* {isReportModalOpen && (
+            <Portal>
+                {isReportModalOpen && (
                     <ReportModal
                         isOpen={isReportModalOpen}
                         onOpenChange={setIsReportModalOpen}
-                        establishment={establishment as Establishment}
+                        establishment={data}
                     />
-                )} */}
-            {/* {isIAmHereModalOpen && (
+                )}
+                {/* {isIAmHereModalOpen && (
                     <IAmHereDialog
-                        establishment={establishment}
+                        establishment={data}
                         onOpenChange={setIsIAmHereModalOpen}
                     />
                 )} */}
-            {/* </Portal> */}
+            </Portal>
         </MapContextProvider>
     )
 }
