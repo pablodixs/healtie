@@ -62,7 +62,7 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: `${data?.waitTime || 0}%` }}
+                    animate={{ width: `${data?.wait_time || 0}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
