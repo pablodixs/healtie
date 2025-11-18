@@ -205,14 +205,17 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {formatDistance(
-                                                calculateDistance(
-                                                    e.geolocation.latitude,
-                                                    e.geolocation.longitude,
-                                                    coords!.latitude,
-                                                    coords!.longitude
-                                                )
-                                            )}{' '}
+                                            {coords &&
+                                                e.geolocation &&
+                                                formatDistance(
+                                                    calculateDistance(
+                                                        e.geolocation!.latitude,
+                                                        e.geolocation!
+                                                            .longitude,
+                                                        coords!.latitude,
+                                                        coords!.longitude
+                                                    )
+                                                )}{' '}
                                             de distância
                                         </span>
                                     </div>
@@ -351,14 +354,17 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {formatDistance(
-                                                calculateDistance(
-                                                    e.geolocation.latitude,
-                                                    e.geolocation.longitude,
-                                                    coords!.latitude,
-                                                    coords!.longitude
-                                                )
-                                            )}{' '}
+                                            {coords &&
+                                                e.geolocation &&
+                                                formatDistance(
+                                                    calculateDistance(
+                                                        e.geolocation!.latitude,
+                                                        e.geolocation!
+                                                            .longitude,
+                                                        coords!.latitude,
+                                                        coords!.longitude
+                                                    )
+                                                )}{' '}
                                             de distância
                                         </span>
                                     </div>
@@ -499,14 +505,17 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {formatDistance(
-                                                calculateDistance(
-                                                    e.geolocation.latitude,
-                                                    e.geolocation.longitude,
-                                                    coords!.latitude,
-                                                    coords!.longitude
-                                                )
-                                            )}{' '}
+                                            {coords &&
+                                                e.geolocation &&
+                                                formatDistance(
+                                                    calculateDistance(
+                                                        e.geolocation!.latitude,
+                                                        e.geolocation!
+                                                            .longitude,
+                                                        coords!.latitude,
+                                                        coords!.longitude
+                                                    )
+                                                )}{' '}
                                             de distância
                                         </span>
                                     </div>
