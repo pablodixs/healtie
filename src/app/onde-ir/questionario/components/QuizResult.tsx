@@ -16,16 +16,13 @@ import {
 import { css } from '../../../../../styled-system/css'
 import { stack } from '../../../../../styled-system/patterns'
 import useSWR from 'swr'
-import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 import { fetcher } from '@/lib/swrFetcher'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
 import Link from 'next/link'
-import {
-    calculateDistance,
-    formatDistance,
-} from '@/utils/functions/calculateDistance'
+import { formatDistanceFromMeters } from '@/utils/functions/calculateDistance'
 import { CircleNotchIcon } from '@phosphor-icons/react'
+import { NearbyEstablishmentsResponse } from '@/components/Map/AsideNearEstablishment'
 
 interface QuizResultProps {
     result: string
@@ -91,7 +88,7 @@ const infoBoxStyles = css({
 
 function HospitalResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
-    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
             ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
             : null,
@@ -170,9 +167,12 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                     </Paragraph>
                     <div
                         className={css({
-                            display: 'flex',
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                base: '1fr',
+                                md: 'repeat(4, 1fr)',
+                            },
                             gap: '1rem',
-                            alignItems: 'center',
                         })}
                     >
                         {data.map((e) => {
@@ -184,6 +184,10 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                                         display: 'flex',
                                         gap: '0.5rem',
                                         alignItems: 'center',
+                                        textAlign: 'left',
+                                        background: 'neutral.100',
+                                        padding: '0.75rem',
+                                        borderRadius: '0.75rem',
                                     })}
                                 >
                                     <MapMarkerDecoration
@@ -205,17 +209,9 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {coords &&
-                                                e.geolocation &&
-                                                formatDistance(
-                                                    calculateDistance(
-                                                        e.geolocation!.latitude,
-                                                        e.geolocation!
-                                                            .longitude,
-                                                        coords!.latitude,
-                                                        coords!.longitude
-                                                    )
-                                                )}{' '}
+                                            {formatDistanceFromMeters(
+                                                e.distance
+                                            )}{' '}
                                             de distância
                                         </span>
                                     </div>
@@ -243,7 +239,7 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
 
 function UpaResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
-    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
             ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UPA`
             : null,
@@ -319,9 +315,12 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
                     </Paragraph>
                     <div
                         className={css({
-                            display: 'flex',
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                base: '1fr',
+                                md: 'repeat(4, 1fr)',
+                            },
                             gap: '1rem',
-                            alignItems: 'center',
                         })}
                     >
                         {data.map((e) => {
@@ -333,6 +332,10 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
                                         display: 'flex',
                                         gap: '0.5rem',
                                         alignItems: 'center',
+                                        textAlign: 'left',
+                                        background: 'neutral.100',
+                                        padding: '0.75rem',
+                                        borderRadius: '0.75rem',
                                     })}
                                 >
                                     <MapMarkerDecoration
@@ -354,17 +357,9 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {coords &&
-                                                e.geolocation &&
-                                                formatDistance(
-                                                    calculateDistance(
-                                                        e.geolocation!.latitude,
-                                                        e.geolocation!
-                                                            .longitude,
-                                                        coords!.latitude,
-                                                        coords!.longitude
-                                                    )
-                                                )}{' '}
+                                            {formatDistanceFromMeters(
+                                                e.distance
+                                            )}{' '}
                                             de distância
                                         </span>
                                     </div>
@@ -392,7 +387,7 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
 
 function UbsResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
-    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
             ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UBS`
             : null,
@@ -470,9 +465,12 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
                     </Paragraph>
                     <div
                         className={css({
-                            display: 'flex',
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                base: '1fr',
+                                md: 'repeat(4, 1fr)',
+                            },
                             gap: '1rem',
-                            alignItems: 'center',
                         })}
                     >
                         {data.map((e) => {
@@ -484,6 +482,10 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
                                         display: 'flex',
                                         gap: '0.5rem',
                                         alignItems: 'center',
+                                        textAlign: 'left',
+                                        background: 'neutral.100',
+                                        padding: '0.75rem',
+                                        borderRadius: '0.75rem',
                                     })}
                                 >
                                     <MapMarkerDecoration
@@ -505,17 +507,9 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
                                             })}
                                         >
                                             A{' '}
-                                            {coords &&
-                                                e.geolocation &&
-                                                formatDistance(
-                                                    calculateDistance(
-                                                        e.geolocation!.latitude,
-                                                        e.geolocation!
-                                                            .longitude,
-                                                        coords!.latitude,
-                                                        coords!.longitude
-                                                    )
-                                                )}{' '}
+                                            {formatDistanceFromMeters(
+                                                e.distance
+                                            )}{' '}
                                             de distância
                                         </span>
                                     </div>
