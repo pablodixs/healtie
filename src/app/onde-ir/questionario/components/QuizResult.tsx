@@ -122,9 +122,6 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
             </div>
 
             <div className={buttonContainerStyles}>
-                <Button variant="primary">
-                    <PhoneIcon /> Chamar SAMU (192)
-                </Button>
                 <Button variant="secondary" onClick={onRestart}>
                     <ArrowClockwiseIcon /> Refazer Triagem
                 </Button>

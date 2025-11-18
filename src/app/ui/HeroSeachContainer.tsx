@@ -37,7 +37,7 @@ export function HeroSearchContainer() {
 
     const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
         debounced && debounced.length >= 3
-            ? `https://https://healtie-bh7zc.ondigitalocean.app//v1/establishment/search?q=${encodeURIComponent(
+            ? `https://https://healtie-bh7zc.ondigitalocean.app/v1/establishment/search?q=${encodeURIComponent(
                   debounced
               )}${filterValue ? `&filter=${encodeURIComponent(filterValue)}` : ''}&limit=5`
             : null,

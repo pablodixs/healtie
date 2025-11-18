@@ -42,7 +42,7 @@ export function AsideEstablishmentDetails({
     selectedEstablishmentCnes,
 }: AsideEstablishmentDetailsProps) {
     const { data, isLoading } = useSWR<EstablishmentResponse>(
-        `https://https://healtie-bh7zc.ondigitalocean.app//v1/establishment/${selectedEstablishmentCnes}`,
+        `https://https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${selectedEstablishmentCnes}`,
         fetcher
     )
 
