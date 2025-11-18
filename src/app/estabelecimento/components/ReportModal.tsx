@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import {
     CaretRightIcon,
@@ -17,9 +17,14 @@ import { Paragraph } from '@/components/Typography'
 import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 
-import { DotsThreeCircleIcon } from '@phosphor-icons/react/dist/ssr'
+import {
+    DotsThreeCircleIcon,
+    UsersFourIcon,
+} from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
+import axios from 'axios'
+import { Label } from '@/components/Form/Label'
 
 interface ReportModalProps {
     isOpen: boolean
@@ -27,11 +32,26 @@ interface ReportModalProps {
     establishment: EstablishmentResponse
 }
 
+interface IndicatorsRequestBody {
+    occupation?: number | null
+    wait_time?: number | null
+    resolution_index?: number | null
+}
+
 export function ReportModal({
     isOpen,
     onOpenChange,
     establishment,
 }: ReportModalProps) {
+    const [currentIndicator, setCurrentIndicator] = useState<string | null>(
+        null
+    )
+    const [indicators, setIndicators] = useState<IndicatorsRequestBody>({
+        occupation: null,
+        wait_time: null,
+        resolution_index: null,
+    })
+
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'
@@ -43,6 +63,17 @@ export function ReportModal({
             document.body.style.overflow = 'unset'
         }
     }, [isOpen])
+
+    const postIndicators = async () => {
+        await axios.post(
+            `https://healtie-bh7zc.ondigitalocean.app/api/establishments/${establishment.id}/indicators`,
+            { indicators }
+        )
+    }
+
+    const handleSubmit = () => {
+        postIndicators()
+    }
 
     if (!isOpen) return null
 
@@ -110,48 +141,123 @@ export function ReportModal({
                             {establishment.name}
                         </h1>
                     </section>
-                    <section
-                        className={css({
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '.5rem',
-                            mt: '.5rem',
-                        })}
-                    >
-                        <Paragraph bolder subtle marginCompact>
-                            O que você quer reportar?
-                        </Paragraph>
-                        <button className={buttonStyles}>
-                            <span>
-                                <ClockCountdownIcon />
-                            </span>
-                            Tempo de espera
-                        </button>
-                        <button className={buttonStyles}>
-                            <span>
-                                <PillIcon />
-                            </span>
-                            Falta de medicamentos
-                        </button>
-                        <button className={buttonStyles}>
-                            <span>
-                                <ProhibitInsetIcon />
-                            </span>
-                            Falta de serviços
-                        </button>
-                        <button className={buttonStyles}>
-                            <span>
-                                <StethoscopeIcon />
-                            </span>
-                            Sem médicos
-                        </button>
-                        <button className={buttonStyles}>
-                            <span>
-                                <DotsThreeCircleIcon />
-                            </span>
-                            Outro
-                        </button>
-                    </section>
+                    {currentIndicator === null && (
+                        <section
+                            className={css({
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '.5rem',
+                                mt: '.5rem',
+                            })}
+                        >
+                            <Paragraph bolder subtle marginCompact>
+                                O que você quer reportar?
+                            </Paragraph>
+                            <button
+                                onClick={() => setCurrentIndicator('waitTime')}
+                                className={buttonStyles}
+                            >
+                                <span>
+                                    <ClockCountdownIcon />
+                                </span>
+                                Tempo de espera
+                            </button>
+                            <button
+                                onClick={() =>
+                                    setCurrentIndicator('medicationShortage')
+                                }
+                                className={buttonStyles}
+                            >
+                                <span>
+                                    <PillIcon />
+                                </span>
+                                Falta de medicamentos
+                            </button>
+                            <button
+                                onClick={() => setCurrentIndicator('occupancy')}
+                                className={buttonStyles}
+                            >
+                                <span>
+                                    <UsersFourIcon />
+                                </span>
+                                Ocupação
+                            </button>
+                            <button
+                                onClick={() =>
+                                    setCurrentIndicator('serviceShortage')
+                                }
+                                className={buttonStyles}
+                            >
+                                <span>
+                                    <ProhibitInsetIcon />
+                                </span>
+                                Falta de serviços
+                            </button>
+                            <button
+                                onClick={() => setCurrentIndicator('noDoctors')}
+                                className={buttonStyles}
+                            >
+                                <span>
+                                    <StethoscopeIcon />
+                                </span>
+                                Sem médicos
+                            </button>
+                        </section>
+                    )}
+                    {currentIndicator !== 'waitTime' && (
+                        <div>
+                            <Paragraph bolder subtle marginCompact>
+                                Reportar tempo de espera
+                            </Paragraph>
+                            <Label htmlFor="waitTime">
+                                Tempo de espera (minutos)
+                            </Label>
+                            <input
+                                id="waitTime"
+                                className={css({
+                                    padding: '1rem',
+                                    borderRadius: '12px',
+                                    background: 'neutral.100',
+                                    width: '100%',
+                                })}
+                                type="number"
+                                value={indicators.wait_time ?? ''}
+                                onChange={(e) =>
+                                    setIndicators((prev) => ({
+                                        ...prev,
+                                        wait_time: Number(e.target.value),
+                                    }))
+                                }
+                            />
+                        </div>
+                    )}
+                    {currentIndicator !== 'occupancy' && (
+                        <div>
+                            <Paragraph bolder subtle marginCompact>
+                                Reportar Taxa de Ocupação
+                            </Paragraph>
+                            <Label htmlFor="occupancy">
+                                Taxa de Ocupação (%)
+                            </Label>
+                            <input
+                                id="occupancy"
+                                className={css({
+                                    padding: '1rem',
+                                    borderRadius: '12px',
+                                    background: 'neutral.100',
+                                    width: '100%',
+                                })}
+                                type="number"
+                                value={indicators.occupation ?? ''}
+                                onChange={(e) =>
+                                    setIndicators((prev) => ({
+                                        ...prev,
+                                        occupancy: Number(e.target.value),
+                                    }))
+                                }
+                            />
+                        </div>
+                    )}
                 </div>
                 <footer className={footerStyles}>
                     <div
@@ -167,9 +273,9 @@ export function ReportModal({
                         >
                             Cancelar
                         </Button>
-                        <Button>
-                            Continuar <CaretRightIcon />
-                        </Button>
+                        {currentIndicator !== null && (
+                            <Button onClick={handleSubmit}>Enviar</Button>
+                        )}
                     </div>
                 </footer>
             </motion.div>
