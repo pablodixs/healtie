@@ -93,7 +93,7 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
     const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
         coords
-            ? `healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
+            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
             : null,
         fetcher
     )
@@ -239,6 +239,14 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
 }
 
 function UpaResult({ onRestart }: { onRestart: () => void }) {
+    const { coords } = useUserGeolocation()
+    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+        coords
+            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UPA`
+            : null,
+        fetcher
+    )
+
     return (
         <motion.div
             initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
@@ -278,9 +286,96 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
                     <br />• Tempo de espera geralmente menor que hospitais
                 </Paragraph>
             </div>
-
+            {isLoading && (
+                <div
+                    className={css({
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem',
+                    })}
+                >
+                    <CircleNotchIcon
+                        className={css({
+                            animation: 'spin',
+                            color: 'neutral.300',
+                        })}
+                        weight="bold"
+                        size={20}
+                    />
+                    <Paragraph bolder centered>
+                        Estamos buscando hospitais próximos de você...
+                    </Paragraph>
+                </div>
+            )}
+            {data && data.length > 0 && (
+                <div>
+                    <Paragraph bolder size="subheadline">
+                        Hospitais próximos
+                    </Paragraph>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            gap: '1rem',
+                            alignItems: 'center',
+                        })}
+                    >
+                        {data.map((e) => {
+                            return (
+                                <Link
+                                    href={`/estabelecimento/${e.cnes}`}
+                                    key={e.cnes}
+                                    className={css({
+                                        display: 'flex',
+                                        gap: '0.5rem',
+                                        alignItems: 'center',
+                                    })}
+                                >
+                                    <MapMarkerDecoration
+                                        establishmentType={
+                                            e.type as
+                                                | 'Hospital Geral'
+                                                | 'Unidade Básica de Saúde'
+                                                | 'Unidade de Pronto Atendimento'
+                                        }
+                                    />
+                                    <div>
+                                        <Paragraph marginCompact bolder>
+                                            {e.name}
+                                        </Paragraph>
+                                        <span
+                                            className={css({
+                                                fontSize: '0.875rem',
+                                                color: 'green.600',
+                                            })}
+                                        >
+                                            A{' '}
+                                            {formatDistance(
+                                                calculateDistance(
+                                                    e.geolocation.latitude,
+                                                    e.geolocation.longitude,
+                                                    coords!.latitude,
+                                                    coords!.longitude
+                                                )
+                                            )}{' '}
+                                            de distância
+                                        </span>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
+            {data && data.length === 0 && (
+                <div>
+                    <Paragraph centered bolder>
+                        Não encontramos nenhum hospital próximo de você.
+                    </Paragraph>
+                </div>
+            )}
             <div className={buttonContainerStyles}>
-                <Button variant="primary">Encontrar UPA próxima</Button>
                 <Button variant="secondary" onClick={onRestart}>
                     <ArrowClockwiseIcon /> Refazer Triagem
                 </Button>
@@ -290,6 +385,14 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
 }
 
 function UbsResult({ onRestart }: { onRestart: () => void }) {
+    const { coords } = useUserGeolocation()
+    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+        coords
+            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UBS`
+            : null,
+        fetcher
+    )
+
     return (
         <motion.div
             initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
@@ -331,9 +434,96 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
                     <br />• Orientações sobre cuidados com a saúde
                 </Paragraph>
             </div>
-
+            {isLoading && (
+                <div
+                    className={css({
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem',
+                    })}
+                >
+                    <CircleNotchIcon
+                        className={css({
+                            animation: 'spin',
+                            color: 'neutral.300',
+                        })}
+                        weight="bold"
+                        size={20}
+                    />
+                    <Paragraph bolder centered>
+                        Estamos buscando hospitais próximos de você...
+                    </Paragraph>
+                </div>
+            )}
+            {data && data.length > 0 && (
+                <div>
+                    <Paragraph bolder size="subheadline">
+                        Hospitais próximos
+                    </Paragraph>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            gap: '1rem',
+                            alignItems: 'center',
+                        })}
+                    >
+                        {data.map((e) => {
+                            return (
+                                <Link
+                                    href={`/estabelecimento/${e.cnes}`}
+                                    key={e.cnes}
+                                    className={css({
+                                        display: 'flex',
+                                        gap: '0.5rem',
+                                        alignItems: 'center',
+                                    })}
+                                >
+                                    <MapMarkerDecoration
+                                        establishmentType={
+                                            e.type as
+                                                | 'Hospital Geral'
+                                                | 'Unidade Básica de Saúde'
+                                                | 'Unidade de Pronto Atendimento'
+                                        }
+                                    />
+                                    <div>
+                                        <Paragraph marginCompact bolder>
+                                            {e.name}
+                                        </Paragraph>
+                                        <span
+                                            className={css({
+                                                fontSize: '0.875rem',
+                                                color: 'green.600',
+                                            })}
+                                        >
+                                            A{' '}
+                                            {formatDistance(
+                                                calculateDistance(
+                                                    e.geolocation.latitude,
+                                                    e.geolocation.longitude,
+                                                    coords!.latitude,
+                                                    coords!.longitude
+                                                )
+                                            )}{' '}
+                                            de distância
+                                        </span>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
+            {data && data.length === 0 && (
+                <div>
+                    <Paragraph centered bolder>
+                        Não encontramos nenhum hospital próximo de você.
+                    </Paragraph>
+                </div>
+            )}
             <div className={buttonContainerStyles}>
-                <Button variant="primary">Encontrar UBS próxima</Button>
                 <Button variant="secondary" onClick={onRestart}>
                     <ArrowClockwiseIcon /> Refazer Triagem
                 </Button>
@@ -386,9 +576,6 @@ function AutoCareResult({ onRestart }: { onRestart: () => void }) {
             </div>
 
             <div className={buttonContainerStyles}>
-                <Button variant="primary">
-                    Encontrar UBS para consulta preventiva
-                </Button>
                 <Button variant="secondary" onClick={onRestart}>
                     <ArrowClockwiseIcon /> Refazer Triagem
                 </Button>
