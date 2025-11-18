@@ -45,7 +45,9 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                             color: data?.wait_time ? 'inherit' : 'neutral.400',
                         })}
                     >
-                        {data?.wait_time || 'Sem dados'}
+                        {data?.wait_time
+                            ? `${data.wait_time} min`
+                            : 'Sem dados'}
                     </strong>
                     {data?.wait_time && (
                         <span

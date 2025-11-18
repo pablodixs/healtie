@@ -41,7 +41,13 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                             : 'neutral.400',
                     })}
                 >
-                    {data?.resolution_index || 'Sem dados'}
+                    {data?.resolution_index
+                        ? data.resolution_index < 50
+                            ? 'Baixo'
+                            : data.resolution_index < 75
+                              ? 'Médio'
+                              : 'Alto'
+                        : 'Sem dados'}
                 </strong>
             </header>
             <div className={barContainer}>
