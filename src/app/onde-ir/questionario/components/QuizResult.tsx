@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'motion/react'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Typography/Heading'
@@ -10,10 +12,19 @@ import {
     CheckCircleIcon,
     ClockIcon,
     WarningCircleIcon,
-    PhoneIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../../../styled-system/css'
 import { stack } from '../../../../../styled-system/patterns'
+import useSWR from 'swr'
+import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import { fetcher } from '@/lib/swrFetcher'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
+import Link from 'next/link'
+import {
+    calculateDistance,
+    formatDistance,
+} from '@/utils/functions/calculateDistance'
 
 interface QuizResultProps {
     result: string
@@ -78,6 +89,14 @@ const infoBoxStyles = css({
 })
 
 function HospitalResult({ onRestart }: { onRestart: () => void }) {
+    const { coords } = useUserGeolocation()
+    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+        coords
+            ? `healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000&type=HOSPITAL`
+            : null,
+        fetcher
+    )
+
     return (
         <motion.div
             initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
@@ -120,7 +139,65 @@ function HospitalResult({ onRestart }: { onRestart: () => void }) {
                     • Não dirija sozinho se estiver passando mal
                 </Paragraph>
             </div>
-
+            {data && data.length > 0 && (
+                <div>
+                    <Paragraph bolder size="subheadline">
+                        Hospitais próximos
+                    </Paragraph>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            gap: '1rem',
+                            alignItems: 'center',
+                        })}
+                    >
+                        {data.map((e) => {
+                            return (
+                                <Link
+                                    href={`/estabelecimento/${e.cnes}`}
+                                    key={e.cnes}
+                                    className={css({
+                                        display: 'flex',
+                                        gap: '0.5rem',
+                                        alignItems: 'center',
+                                    })}
+                                >
+                                    <MapMarkerDecoration
+                                        establishmentType={
+                                            e.type as
+                                                | 'Hospital Geral'
+                                                | 'Unidade Básica de Saúde'
+                                                | 'Unidade de Pronto Atendimento'
+                                        }
+                                    />
+                                    <div>
+                                        <Paragraph marginCompact bolder>
+                                            {e.name}
+                                        </Paragraph>
+                                        <span
+                                            className={css({
+                                                fontSize: '0.875rem',
+                                                color: 'green.600',
+                                            })}
+                                        >
+                                            A{' '}
+                                            {formatDistance(
+                                                calculateDistance(
+                                                    e.geolocation.latitude,
+                                                    e.geolocation.longitude,
+                                                    coords!.latitude,
+                                                    coords!.longitude
+                                                )
+                                            )}{' '}
+                                            de distância
+                                        </span>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
             <div className={buttonContainerStyles}>
                 <Button variant="secondary" onClick={onRestart}>
                     <ArrowClockwiseIcon /> Refazer Triagem
