@@ -36,12 +36,12 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                 </div>
                 <strong
                     className={css({
-                        color: data?.resolutionIndex
+                        color: data?.resolution_index
                             ? 'inherit'
                             : 'neutral.400',
                     })}
                 >
-                    {data?.resolutionIndex || 'Sem dados'}
+                    {data?.resolution_index || 'Sem dados'}
                 </strong>
             </header>
             <div className={barContainer}>
@@ -57,7 +57,7 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                     className={barFill}
                     style={{
                         background: '#f48c06',
-                        width: `${data?.resolutionIndex || 0}%`,
+                        width: `${data?.resolution_index || 0}%`,
                         left: '0%',
                     }}
                 />

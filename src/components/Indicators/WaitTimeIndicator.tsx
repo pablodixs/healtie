@@ -42,12 +42,12 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                 >
                     <strong
                         className={css({
-                            color: data?.waitTime ? 'inherit' : 'neutral.400',
+                            color: data?.wait_time ? 'inherit' : 'neutral.400',
                         })}
                     >
-                        {data?.waitTime || 'Sem dados'}
+                        {data?.wait_time || 'Sem dados'}
                     </strong>
-                    {data?.waitTime && (
+                    {data?.wait_time && (
                         <span
                             className={css({
                                 fontSize: '0.875rem',
