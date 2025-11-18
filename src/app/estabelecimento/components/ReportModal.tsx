@@ -221,7 +221,6 @@ export function ReportModal({
                                     width: '100%',
                                 })}
                                 type="number"
-                                value={indicators.wait_time ?? ''}
                                 onChange={(e) =>
                                     setIndicators((prev) => ({
                                         ...prev,
@@ -248,7 +247,6 @@ export function ReportModal({
                                     width: '100%',
                                 })}
                                 type="number"
-                                value={indicators.occupation ?? ''}
                                 onChange={(e) =>
                                     setIndicators((prev) => ({
                                         ...prev,
