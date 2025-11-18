@@ -26,7 +26,7 @@ export function AsideNearEstablishments({
     coords,
 }: AsideNearEstablishmentsProps) {
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
-        `https://https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
+        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
         fetcher,
         {
             revalidateOnFocus: false,

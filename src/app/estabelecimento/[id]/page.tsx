@@ -29,7 +29,7 @@ export default function Page() {
     const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
 
     const { data, isLoading, error } = useSWR<EstablishmentResponse>(
-        `https://https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${id}`,
+        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${id}`,
         fetcher
     )
 
