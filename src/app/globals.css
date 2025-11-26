@@ -31,3 +31,38 @@ body {
 button {
     cursor: 'pointer';
 }
+
+@keyframes gradientBorderSlide {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-border {
+    display: inline-flex;
+    padding: 1px;
+    border-radius: 9999px;
+    background: linear-gradient(
+        90deg,
+        #845ec2,
+        #ff6f91,
+        #ff9671,
+        #ffc75f,
+        #f9f871,
+        #845ec2,
+        #fff
+    );
+    background-size: 300% 300%;
+    animation: gradientBorderSlide 8s linear;
+}
+
+.gradient-border > button {
+    border-radius: inherit;
+    position: relative;
+}

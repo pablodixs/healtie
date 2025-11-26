@@ -4,6 +4,7 @@ import { NearEstablishmentsHighlight } from './ui/NearEstablishmentsHighlight'
 import { HowHelpsHighlight } from './ui/HowHelpsHighlight'
 import { ContributeSection } from './ui/ContributeSection'
 import { Divider } from '@/components/Divider'
+import { AgentFloatButton } from '@/components/Agent'
 
 export default function Home() {
     return (
@@ -14,6 +15,7 @@ export default function Home() {
             <NearEstablishmentsHighlight />
             <HowHelpsHighlight />
             <ContributeSection />
+            <AgentFloatButton />
         </>
     )
 }
