@@ -2,7 +2,12 @@ import { Heading, Paragraph, Subheading } from '@/components/Typography'
 import { css } from '../../../styled-system/css'
 import { Divider } from '@/components/Divider'
 import { Link } from '@/components/Link'
-import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
+import {
+    ArrowRightIcon,
+    CompassIcon,
+    MagnifyingGlassIcon,
+    MapTrifoldIcon,
+} from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 
 export default function Page() {
@@ -121,6 +126,28 @@ export default function Page() {
                 <ArrowRightIcon weight="bold" />
             </Link>
             <Divider />
+            <Subheading centered>Começe agora mesmo</Subheading>
+            <section
+                className={css({
+                    display: 'flex',
+                    gap: '3rem',
+                    justifyContent: 'center',
+                    paddingY: '1rem',
+                })}
+            >
+                <Link variant="text" href={'/buscar'}>
+                    <MagnifyingGlassIcon weight="bold" />
+                    Buscar unidades de saúde
+                </Link>
+                <Link variant="text" href={'/buscar'}>
+                    <MapTrifoldIcon weight="bold" />
+                    Mapa
+                </Link>
+                <Link variant="text" href={'/buscar'}>
+                    <CompassIcon weight="bold" />
+                    Onde Ir
+                </Link>
+            </section>
             <Image
                 src={'/pictures/mascots.svg'}
                 alt="Mascotes"

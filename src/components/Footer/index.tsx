@@ -2,10 +2,33 @@ import { HeartIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 import Link from 'next/link'
 import { stack } from '../../../styled-system/patterns'
+import { Paragraph } from '../Typography'
+import { Divider } from '../Divider'
 
 export function Footer() {
     return (
         <div className={footerContainer}>
+            <Divider />
+            <Paragraph subtle bolder size="caption">
+                Informações importantes
+            </Paragraph>
+            <Paragraph subtle size="caption">
+                O Healtie ainda está em desenvolvimento e pode conter
+                informações desatualizadas ou imprecisas. Sempre confirme os
+                dados diretamente com o estabelecimento de saúde antes de tomar
+                qualquer decisão médica.
+            </Paragraph>
+            <Paragraph subtle size="caption">
+                O Healtie não substitui aconselhamento, diagnóstico ou
+                tratamento médico profissional. Em caso de emergência, procure
+                ajuda médica imediatamente.
+            </Paragraph>
+            <Paragraph subtle size="caption">
+                No momento, apenas os dados de estabelecimentos do Distrito
+                Federal estão disponíveis na plataforma. Estamos trabalhando
+                para expandir nosso alcance para outras regiões em breve.
+            </Paragraph>
+            <Divider />
             <section
                 className={stack({
                     justify: 'space-between',
