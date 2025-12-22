@@ -8,7 +8,36 @@ import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
     title: 'Healtie',
-    description: '',
+    description:
+        'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
+    keywords: [
+        'saúde',
+        'estabelecimentos',
+        'healtie',
+        'mapa',
+        'ubs',
+        'upa',
+        'hospital',
+        'tempo de espera',
+        'onde ir',
+    ],
+    openGraph: {
+        title: 'Sobre o Healtie',
+        description:
+            'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
+        url: 'https://healtie.app/',
+        siteName: 'Healtie',
+        images: [
+            {
+                url: 'https://healtie.app/pictures/og-image.png',
+                width: 1900,
+                height: 600,
+                alt: 'Healtie',
+            },
+        ],
+        locale: 'pt_BR',
+        type: 'website',
+    },
 }
 
 export default function RootLayout({

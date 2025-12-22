@@ -47,10 +47,7 @@ export function Footer() {
                     <span>Sobre</span>
                     <ul>
                         <li>
-                            <Link href="/">Quem somos</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Como o Healtie funciona</Link>
+                            <Link href="/sobre">Sobre</Link>
                         </li>
                         <li>
                             <Link href="/">Como obtemos os dados</Link>
