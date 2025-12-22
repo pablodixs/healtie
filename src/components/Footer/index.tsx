@@ -47,7 +47,7 @@ export function Footer() {
                     <span>Sobre</span>
                     <ul>
                         <li>
-                            <Link href="/sobre">Sobre</Link>
+                            <Link href="/sobre">Sobre o Healtie</Link>
                         </li>
                         <li>
                             <Link href="/">Como obtemos os dados</Link>

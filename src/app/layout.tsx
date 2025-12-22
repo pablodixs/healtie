@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         'onde ir',
     ],
     openGraph: {
-        title: 'Sobre o Healtie',
+        title: 'Healtie',
         description:
             'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
         url: 'https://healtie.app/',
