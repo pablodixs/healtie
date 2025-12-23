@@ -59,13 +59,13 @@ export function Header() {
                 <NavLogo scrollY={scrollY} />
                 <Navbar isCompacted={isCompacted} />
                 <div className="auth">
-                    <NavbarLink href="/auth/login">
+                    {/* <NavbarLink href="/auth/login">
                         Entrar{' '}
                         <UserCircleIcon
                             className={css({ marginLeft: '.5rem' })}
                             size={24}
                         />
-                    </NavbarLink>
+                    </NavbarLink> */}
                 </div>
                 <ProgressiveBlur />
             </motion.header>
