@@ -5,10 +5,12 @@ import { css } from '../../../../styled-system/css'
 import { Paragraph, Subheading } from '@/components/Typography'
 import { PostToolbar } from '../components/post-toolbar'
 import { PostImage } from '../components/post-image'
+import { Divider } from '@/components/Divider'
 
 const mdxComponents = {
     PostToolbar,
     PostImage,
+    Divider,
 }
 
 type Props = {
@@ -140,7 +142,7 @@ const article = css({
             base: '1.5rem',
         },
         color: '#151515',
-        fontWeight: 500,
+        fontWeight: 570,
         lineHeight: 'tight',
         letterSpacing: 'tight',
         textWrap: 'balance',
@@ -151,5 +153,10 @@ const article = css({
     '& img': {
         borderRadius: '12px',
         boxShadow: '0 0 0 -1px rgba(0, 0, 0, 0.1)',
+    },
+
+    '& ul': {
+        listStyleType: 'disc',
+        listStylePosition: 'inside',
     },
 })
