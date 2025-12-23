@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { UserCircleIcon } from '@phosphor-icons/react/dist/ssr'
 
-import { css } from '../../../styled-system/css'
 import { headerContainer } from './styles'
 
 import { useScroll } from '@/hooks/useScroll'
@@ -12,7 +10,6 @@ import { useScroll } from '@/hooks/useScroll'
 import Navbar from './Navbar'
 import { NavLogo } from './NavLogo'
 import { ProgressiveBlur } from '../ProgressiveBlur'
-import { NavbarLink } from '../Navbar/NavbarLink'
 
 const HEADER_SIZE = '3rem'
 const EXPANDED_HEADER_SIZE = '4rem'

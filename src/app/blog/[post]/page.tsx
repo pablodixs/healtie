@@ -12,29 +12,40 @@ const mdxComponents = {
 }
 
 type Props = {
-    params: {
-        slug: string
-    }
+    params: Promise<{
+        post: string
+    }>
 }
 
 export async function generateMetadata({ params }: Props) {
-    if (!params.slug) {
+    const resolvedParams = await params
+    if (!resolvedParams.post) {
         return {}
     }
 
-    const { data } = getPostBySlug(params.slug)
+    const { data } = getPostBySlug(resolvedParams.post)
 
     if (!data) {
         return {}
     }
 
     return {
-        title: data.title,
+        title: data.title + ' | Healtie',
         description: data.description,
         openGraph: {
-            title: data.title,
+            title: data.title + ' | Healtie',
             description: data.description,
             type: 'article',
+            images: [
+                {
+                    url:
+                        `https://healtie.app${data.ogImage}` ||
+                        `https://healtie.app/pictures/og-image.png`,
+                    width: 1900,
+                    height: 600,
+                    alt: 'Healtie',
+                },
+            ],
         },
     }
 }
@@ -48,10 +59,10 @@ export async function generateStaticParams() {
 export default async function BlogPost({
     params,
 }: {
-    params: Promise<{ post?: string; slug?: string }>
+    params: Promise<{ post: string }>
 }) {
     const resolvedParams = await params
-    const slug = resolvedParams.post ?? resolvedParams.slug
+    const slug = resolvedParams.post
 
     if (!slug) {
         return notFound()

@@ -29,6 +29,7 @@ export function PostLink({
                     backgroundColor: 'neutral.100',
                     mb: '1rem',
                     overflow: 'hidden',
+                    boxShadow: '0 0 0 -1px rgba(0, 0, 0, 0.1)',
                 })}
             >
                 {post.image && (
@@ -37,11 +38,18 @@ export function PostLink({
                         alt={post.title}
                         width={300}
                         height={300}
-                        style={{
+                        quality={100}
+                        className={css({
                             width: '100%',
                             height: '100%',
                             objectFit: 'cover',
-                        }}
+                            transition: 'transform 0.3s ease-in-out',
+                            willChange: 'transform',
+
+                            _hover: {
+                                transform: 'scale(1.05)',
+                            },
+                        })}
                     />
                 )}
             </div>
