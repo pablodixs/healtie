@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'motion/react'
 import { Paragraph, Subheading } from '@/components/Typography'
 import { css } from '../../../styled-system/css'
 import { Divider } from '@/components/Divider'
