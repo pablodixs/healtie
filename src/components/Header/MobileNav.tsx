@@ -35,7 +35,7 @@ const mobileNavContainer = css({
     width: '100%',
     zIndex: 1000,
     borderTop: '1px solid',
-    borderColor: 'neutral.200',
+    borderColor: 'neutral.100',
     justifyContent: 'space-between',
     alignItems: 'center',
 

@@ -4,11 +4,17 @@ import { cva } from '../../../styled-system/css'
 interface SubheadingProps extends HTMLAttributes<HTMLHeadingElement> {
     centered?: boolean
     children: ReactNode
+    size?: 'lg' | 'md' | 'sm' | 'xl'
 }
 
-export function Subheading({ children, centered, ...props }: SubheadingProps) {
+export function Subheading({
+    children,
+    centered,
+    size = 'md',
+    ...props
+}: SubheadingProps) {
     return (
-        <h1 className={subHeadingStyles({ centered })} {...props}>
+        <h1 className={subHeadingStyles({ centered, size })} {...props}>
             {children}
         </h1>
     )
@@ -22,7 +28,7 @@ const subHeadingStyles = cva({
             base: '1.5rem',
         },
         color: '#151515',
-        fontWeight: 550,
+        fontWeight: 570,
         lineHeight: 'tight',
         letterSpacing: 'tight',
         textWrap: 'balance',
@@ -31,6 +37,25 @@ const subHeadingStyles = cva({
         centered: {
             true: {
                 textAlign: 'center',
+            },
+        },
+        size: {
+            sm: {},
+            md: {},
+            lg: {
+                fontSize: {
+                    base: '2rem',
+                    md: '2.625rem',
+                },
+                lineHeight: '120%',
+                letterSpacing: '-0.075rem',
+                textWrap: 'balance',
+            },
+            xl: {
+                fontSize: {
+                    base: '2.5rem',
+                    md: '3rem',
+                },
             },
         },
     },

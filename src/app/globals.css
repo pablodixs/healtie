@@ -21,7 +21,7 @@
         sans-serif;
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
-    font-feature-settings: 'ss01', 'ss17', 'ss15', 'ss19';
+    font-feature-settings: 'ss01', 'ss17', 'ss15', 'ss19', 'ss06';
 }
 
 body {
