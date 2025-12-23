@@ -11,6 +11,8 @@ import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
 import { Portal } from '../Portal'
 
 import { useCookiesPreferences } from '@/hooks/useCookiesPreferences'
+import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
+import { css } from '../../../styled-system/css'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     const path = usePathname()
@@ -25,7 +27,29 @@ export function MainLayout({ children }: { children: ReactNode }) {
                     fullWidthPage: path === '/mapa',
                 })}
             >
-                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+                <Suspense
+                    fallback={
+                        <div
+                            className={css({
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: '80dvh',
+                            })}
+                        >
+                            <CircleNotchIcon
+                                className={css({
+                                    animation: 'spin',
+                                    color: 'neutral.500',
+                                })}
+                                weight="bold"
+                                size={18}
+                            />{' '}
+                        </div>
+                    }
+                >
+                    {children}
+                </Suspense>
                 {path !== '/mapa' && <Footer />}
             </section>
             <Portal>

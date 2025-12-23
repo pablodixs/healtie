@@ -26,7 +26,8 @@ export function FAQ() {
     return (
         <section
             className={css({
-                marginY: '10rem',
+                marginTop: '10rem',
+                marginBottom: '3rem',
             })}
         >
             <Subheading size="xl" centered style={{ paddingBottom: '4rem' }}>
