@@ -7,7 +7,14 @@ export default function Blog() {
     const posts = getAllPosts()
 
     return (
-        <div>
+        <div
+            className={css({
+                paddingX: {
+                    base: '2rem',
+                    md: '0',
+                },
+            })}
+        >
             <Heading>Últimas notícias</Heading>
             <section
                 className={css({
