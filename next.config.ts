@@ -1,9 +1,15 @@
 import type { NextConfig } from 'next'
+import createMDX from '@next/mdx'
+
+const withMDX = createMDX({
+    extension: /\.(md|mdx)$/,
+})
 
 const nextConfig: NextConfig = {
     images: {
         qualities: [25, 50, 75, 100],
     },
+    pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
 }
 
-export default nextConfig
+export default withMDX(nextConfig)

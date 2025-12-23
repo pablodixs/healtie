@@ -17,6 +17,7 @@ export const buttonStyles = cva({
         textWrap: 'nowrap',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        willChange: 'transform, background-color, box-shadow',
 
         padding: {
             lg: '0.625rem 1rem',

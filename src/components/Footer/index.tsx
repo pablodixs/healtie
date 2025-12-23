@@ -91,7 +91,7 @@ export function Footer() {
                             <Link href="/">Healtie e o Governo</Link>
                         </li>
                         <li>
-                            <Link href="/">Blog</Link>
+                            <Link href="/blog">Blog</Link>
                         </li>
                     </ul>
                 </div>
