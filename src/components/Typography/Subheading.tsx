@@ -49,12 +49,12 @@ const subHeadingStyles = cva({
                 },
                 lineHeight: '120%',
                 letterSpacing: '-0.075rem',
-                textWrap: 'balance',
             },
             xl: {
                 fontSize: {
                     base: '2.5rem',
                     md: '3rem',
+                    lineHeight: '110%',
                 },
             },
         },

@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'motion/react'
 import { Paragraph, Subheading } from '@/components/Typography'
 import { css } from '../../../styled-system/css'
 import { Divider } from '@/components/Divider'
@@ -13,9 +14,11 @@ import {
     UsersThreeIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
-import Lottie from 'lottie-react'
 
 import animation from '@/assets/lotties/icons_animation.json'
+import { ReliabilityAnimation } from './components/reliability-animation'
+import Lottie from 'lottie-react'
+import { FAQ } from './components/faq'
 
 export default function Page() {
     return (
@@ -27,7 +30,10 @@ export default function Page() {
             })}
         >
             <section>
-                <h1
+                <motion.h1
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.75 }}
                     className={css({
                         fontWeight: 500,
                         textAlign: 'center',
@@ -36,15 +42,42 @@ export default function Page() {
                     })}
                 >
                     Sobre o Healtie
-                </h1>
-                <Subheading size="xl" centered>
-                    Decisões mais seguras para cuidar da sua saúde
-                </Subheading>
-                <Paragraph centered size="subheadline">
-                    O Healtie é a plataforma que conecta você a informações
-                    atualizadas sobre unidades de saúde, unindo dados oficiais à
-                    experiência real de quem usa o sistema.
-                </Paragraph>
+                </motion.h1>
+                <section className={css({ overflow: 'hidden' })}>
+                    <motion.div
+                        initial={{ y: '100%' }}
+                        animate={{ y: 0 }}
+                        transition={{
+                            delay: 0.25,
+                            duration: 0.6,
+                            type: 'spring',
+                            bounce: 0,
+                        }}
+                    >
+                        <Subheading size="xl" centered>
+                            Decisões mais seguras para cuidar da sua saúde
+                        </Subheading>
+                    </motion.div>
+                </section>
+                <section className={css({ overflow: 'hidden' })}>
+                    <motion.div
+                        initial={{ y: '150%' }}
+                        animate={{ y: 0 }}
+                        transition={{
+                            delay: 0.5,
+                            duration: 0.6,
+                            type: 'spring',
+                            bounce: 0,
+                        }}
+                    >
+                        <Paragraph centered size="subheadline">
+                            O Healtie é a plataforma que conecta você a
+                            informações atualizadas sobre unidades de saúde,
+                            unindo dados oficiais à experiência real de quem usa
+                            o sistema.
+                        </Paragraph>
+                    </motion.div>
+                </section>
             </section>
             <Lottie
                 style={{
@@ -53,31 +86,59 @@ export default function Page() {
                     maxWidth: 1000,
                     boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.05)',
                     margin: '2rem 0',
+                    marginBottom: '10rem',
                 }}
                 loop={false}
                 animationData={animation}
             />
-            <Subheading size="lg">
-                Menos incerteza, <br /> mais cuidado
-            </Subheading>
-            <Paragraph size="subheadline">
-                Em momentos de busca por atendimento, a última coisa que você
-                precisa é lidar com informações desencontradas ou dar de cara
-                com portas fechadas.
-            </Paragraph>
-            <Paragraph size="subheadline">
-                O Healtie nasceu para preencher essa lacuna. Nós transformamos
-                dados complexos sobre estabelecimentos de saúde em informações
-                simples e acionáveis. Nosso objetivo é dar a você o poder de
-                escolher onde e quando buscar ajuda, com base na localização, no
-                status de funcionamento e na avaliação de outros pacientes.
-            </Paragraph>
-            <h2
+            <div className={css({ overflow: 'hidden' })}>
+                <motion.div
+                    initial={{ y: '100%' }}
+                    whileInView={{ y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                        delay: 0.2,
+                        duration: 0.6,
+                        type: 'spring',
+                        bounce: 0,
+                    }}
+                >
+                    <Subheading size="lg">
+                        Menos incerteza, <br /> mais cuidado
+                    </Subheading>
+                </motion.div>
+            </div>
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+            >
+                <Paragraph size="subheadline">
+                    Em momentos de busca por atendimento, a última coisa que
+                    você precisa é lidar com informações desencontradas ou dar
+                    de cara com portas fechadas.
+                </Paragraph>
+                <Paragraph size="subheadline">
+                    O Healtie nasceu para preencher essa lacuna. Nós
+                    transformamos dados complexos sobre estabelecimentos de
+                    saúde em informações simples e acionáveis. Nosso objetivo é
+                    dar a você o poder de escolher onde e quando buscar ajuda,
+                    com base na localização, no status de funcionamento e na
+                    avaliação de outros pacientes.
+                </Paragraph>
+            </motion.div>
+
+            <motion.h2
+                initial={{ opacity: 0, scale: 0.95, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.25, delay: 0.5 }}
                 className={css({
                     fontSize: '1.75rem',
                     textAlign: 'center',
                     fontWeight: '500',
-                    letterSpacing: 'tighter',
+                    letterSpacing: 'tight',
                     lineHeight: '130%',
                     p: '5rem 2rem',
                     backgroundColor: 'neutral.50',
@@ -88,15 +149,29 @@ export default function Page() {
                 Nossa missão é reunir dados de saúde e torná-los acessíveis para
                 ajudar você a encontrar estabelecimentos de saúde de forma
                 rápida e eficiente.
-            </h2>
+            </motion.h2>
             <section
                 className={css({
                     marginY: '10rem',
                 })}
             >
-                <Subheading size="lg">
-                    Como o Healtie <br /> funciona
-                </Subheading>
+                <div className={css({ overflow: 'hidden' })}>
+                    <motion.div
+                        initial={{ y: '100%' }}
+                        whileInView={{ y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                            delay: 0.2,
+                            duration: 0.6,
+                            type: 'spring',
+                            bounce: 0,
+                        }}
+                    >
+                        <Subheading size="lg">
+                            Como o Healtie <br /> funciona
+                        </Subheading>
+                    </motion.div>
+                </div>
                 <section
                     className={css({
                         display: {
@@ -160,46 +235,49 @@ export default function Page() {
             <section
                 className={css({
                     marginY: '10rem',
+                    display: {
+                        md: 'grid',
+                        base: 'flex',
+                    },
+                    flexDirection: 'column',
+                    gridTemplateColumns: '1fr auto',
+                    gap: '4rem',
                 })}
             >
-                <Subheading size="lg">
-                    Dados que geram <br /> confiança
-                </Subheading>
-                <Paragraph size="subheadline">
-                    Acreditamos que o acesso à informação de saúde é um direito.
-                    Por isso, agregamos dados de bases públicas e os mantemos
-                    vivos através da colaboração da nossa comunidade. O Healtie
-                    não é apenas um mapa; é uma ferramenta de cidadania que
-                    promove a transparência em todo o ecossistema de saúde.
-                </Paragraph>
-                <Link variant="text" href={'/'}>
-                    Saiba mais sobre como obtemos os dados{' '}
-                    <ArrowRightIcon weight="bold" />
-                </Link>
+                <div>
+                    <div className={css({ overflow: 'hidden' })}>
+                        <motion.div
+                            initial={{ y: '100%' }}
+                            whileInView={{ y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{
+                                delay: 0.2,
+                                duration: 0.6,
+                                type: 'spring',
+                                bounce: 0,
+                            }}
+                        >
+                            <Subheading size="lg">
+                                Dados que geram <br /> confiança
+                            </Subheading>
+                        </motion.div>
+                    </div>
+                    <Paragraph size="subheadline">
+                        Acreditamos que o acesso à informação de saúde é um
+                        direito. Por isso, agregamos dados de bases públicas e
+                        os mantemos vivos através da colaboração da nossa
+                        comunidade. O Healtie não é apenas um mapa; é uma
+                        ferramenta de cidadania que promove a transparência em
+                        todo o ecossistema de saúde.
+                    </Paragraph>
+                    <Link variant="text" href={'/'}>
+                        Saiba mais sobre como obtemos os dados{' '}
+                        <ArrowRightIcon weight="bold" />
+                    </Link>
+                </div>
+                <ReliabilityAnimation />
             </section>
-            <Divider />
-            <Subheading centered>Começe agora mesmo</Subheading>
-            <section
-                className={css({
-                    display: 'flex',
-                    gap: '3rem',
-                    justifyContent: 'center',
-                    paddingY: '1rem',
-                })}
-            >
-                <Link variant="text" href={'/buscar'}>
-                    <MagnifyingGlassIcon weight="bold" />
-                    Buscar unidades de saúde
-                </Link>
-                <Link variant="text" href={'/buscar'}>
-                    <MapTrifoldIcon weight="bold" />
-                    Mapa
-                </Link>
-                <Link variant="text" href={'/buscar'}>
-                    <CompassIcon weight="bold" />
-                    Onde Ir
-                </Link>
-            </section>
+            <FAQ />
             <Image
                 src={'/pictures/mascots.svg'}
                 alt="Mascotes"
