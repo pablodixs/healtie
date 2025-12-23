@@ -1,3 +1,5 @@
+'use client'
+
 import { Paragraph, Subheading } from '@/components/Typography'
 import { css } from '../../../styled-system/css'
 import { Divider } from '@/components/Divider'
