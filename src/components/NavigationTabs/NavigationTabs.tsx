@@ -14,5 +14,5 @@ const navigationTabsContainer = css({
     marginY: '1rem',
     gap: '2rem',
     borderBottom: '1px solid',
-    borderColor: 'neutral.100',
+    borderColor: 'gray.100',
 })
