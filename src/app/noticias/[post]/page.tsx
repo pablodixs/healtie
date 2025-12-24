@@ -188,6 +188,7 @@ const article = css({
     '& img': {
         borderRadius: '12px',
         boxShadow: '0 0 0 -1px rgba(0, 0, 0, 0.1)',
+        marginY: '3rem',
     },
 
     '& ul': {

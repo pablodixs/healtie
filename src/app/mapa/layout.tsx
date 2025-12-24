@@ -9,8 +9,36 @@ import { css } from '../../../styled-system/css'
 import { AsideSearchBar } from './components/AsideSearchBar'
 
 export const metadata: Metadata = {
-    title: 'Mapa - Healtie',
-    description: '',
+    title: 'Mapa | Healtie',
+    description:
+        'Explore e encontre estabelecimentos de saúde próximos a você no mapa do Healtie.',
+    keywords: [
+        'mapa',
+        'saúde',
+        'estabelecimentos de saúde',
+        'ubs',
+        'upa',
+        'hospital',
+        'localização',
+        'healtie',
+    ],
+    openGraph: {
+        title: 'Mapa do Healtie',
+        description:
+            'Explore e encontre estabelecimentos de saúde próximos a você no mapa do Healtie.',
+        url: 'https://healtie.app/mapa',
+        siteName: 'Healtie',
+        images: [
+            {
+                url: 'https://healtie.app/pictures/og-mapa.png',
+                width: 1900,
+                height: 600,
+                alt: 'Healtie',
+            },
+        ],
+        locale: 'pt_BR',
+        type: 'website',
+    },
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
