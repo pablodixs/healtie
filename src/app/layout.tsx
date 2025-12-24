@@ -7,7 +7,7 @@ import { MobileNav } from '@/components/Header/MobileNav'
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
-    title: 'Healtie',
+    title: 'Healtie — Seu guia de saúde pública',
     description:
         'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
     keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         'onde ir',
     ],
     openGraph: {
-        title: 'Healtie',
+        title: 'Healtie — Seu guia de saúde pública',
         description:
             'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
         url: 'https://healtie.app/',

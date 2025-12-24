@@ -82,16 +82,13 @@ export function Footer() {
                             <Link href="/">Como obtemos os dados</Link>
                         </li>
                         <li>
-                            <Link href="/">Soluções</Link>
-                        </li>
-                        <li>
                             <Link href="/">Healtie Data</Link>
                         </li>
                         <li>
-                            <Link href="/">Healtie e o Governo</Link>
+                            <Link href="/hoodles">Hoodles</Link>
                         </li>
                         <li>
-                            <Link href="/blog">Blog</Link>
+                            <Link href="/noticias">Newsroom</Link>
                         </li>
                     </ul>
                 </div>
@@ -161,6 +158,8 @@ const footerContainer = css({
     },
 
     '& a': {
+        textUnderlineOffset: '4px',
+
         _hover: {
             textDecoration: 'underline',
         },

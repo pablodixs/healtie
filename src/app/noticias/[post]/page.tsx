@@ -6,6 +6,8 @@ import { Paragraph, Subheading } from '@/components/Typography'
 import { PostToolbar } from '../components/post-toolbar'
 import { PostImage } from '../components/post-image'
 import { Divider } from '@/components/Divider'
+import { Link } from '@/components/Link'
+import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 const mdxComponents = {
     PostToolbar,
@@ -74,38 +76,57 @@ export default async function BlogPost({
 
     return (
         <div className={wrapper}>
-            <section
-                className={css({
-                    display: 'flex',
-                    gap: '2rem',
-                    justifyContent: 'center',
-                })}
-            >
-                <Paragraph size="caption" subtle>
-                    {new Date(post.date).toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                    })}
-                </Paragraph>
-                <Paragraph size="caption">{post.category}</Paragraph>
-            </section>
             <article>
-                <Subheading size="lg" centered style={{ margin: '2rem 0' }}>
-                    {post.title}
-                </Subheading>
-                <Paragraph
-                    centered
-                    size="subheadline"
-                    style={{ marginBottom: '2rem' }}
-                >
-                    {post.description}
-                </Paragraph>
+                <header>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            gap: '2rem',
+                            justifyContent: 'center',
+                        })}
+                    >
+                        <Paragraph size="caption" subtle>
+                            {new Date(post.date).toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
+                            })}
+                        </Paragraph>
+                        <Paragraph size="caption">{post.category}</Paragraph>
+                    </div>
+                    <Subheading size="lg" centered style={{ margin: '2rem 0' }}>
+                        {post.title}
+                    </Subheading>
+                    <Paragraph
+                        centered
+                        size="subheadline"
+                        style={{ marginBottom: '2rem' }}
+                    >
+                        {post.description}
+                    </Paragraph>
+                </header>
                 <section className={article}>
                     <MDXRemote source={content} components={mdxComponents} />
                 </section>
-                <PostToolbar />
             </article>
+            <PostToolbar />
+            <section
+                className={css({
+                    my: '3rem',
+                })}
+            >
+                <div
+                    className={css({
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    })}
+                >
+                    <Subheading>Outras notícias</Subheading>
+                    <Link href="/noticias" variant="text">
+                        Ver mais <ArrowRightIcon weight="bold" />
+                    </Link>
+                </div>
+            </section>
         </div>
     )
 }
@@ -114,7 +135,7 @@ const wrapper = css({
     maxWidth: '800px',
     marginX: 'auto',
     paddingX: {
-        base: '2rem',
+        base: '1rem',
         md: '0',
     },
 })
@@ -127,12 +148,26 @@ const article = css({
     '& p': {
         fontSize: '1rem',
         color: 'primary',
-        lineHeight: 'normal',
+        lineHeight: 'relaxed',
         margin: '.75rem 0',
         textWrap: 'pretty',
 
         '& strong': {
             fontWeight: 550,
+        },
+    },
+
+    '& a': {
+        fontWeight: 450,
+        color: '#202020',
+        textDecoration: 'underline',
+        textUnderlineOffset: '4px',
+        textDecorationThickness: '1.5px',
+        textDecorationColor: 'neutral.200',
+        transition: 'all 0.1s ease-in-out',
+
+        _hover: {
+            textDecorationColor: 'neutral.300',
         },
     },
 
@@ -156,7 +191,14 @@ const article = css({
     },
 
     '& ul': {
+        pt: '0.25rem',
         listStyleType: 'disc',
         listStylePosition: 'inside',
+        color: 'primary',
+        fontWeight: 450,
+    },
+
+    '& li': {
+        marginY: '0.75rem',
     },
 })

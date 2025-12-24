@@ -1,21 +1,14 @@
-import { Heading } from '@/components/Typography'
 import { getAllPosts } from '@/lib/mdx'
 import { PostLink } from './components/post-link'
 import { css } from '../../../styled-system/css'
+import { NewsroomHeader } from './components/newsroom-header'
 
 export default function Blog() {
     const posts = getAllPosts()
 
     return (
-        <div
-            className={css({
-                paddingX: {
-                    base: '2rem',
-                    md: '0',
-                },
-            })}
-        >
-            <Heading>Últimas notícias</Heading>
+        <>
+            <NewsroomHeader />
             <section
                 className={css({
                     marginY: '2rem',
@@ -36,6 +29,6 @@ export default function Blog() {
                     ))}
                 </ul>
             </section>
-        </div>
+        </>
     )
 }

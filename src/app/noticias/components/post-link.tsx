@@ -19,7 +19,7 @@ export function PostLink({
             className={css({
                 width: 'fit-content',
             })}
-            href={`/blog/${post.slug}`}
+            href={`/noticias/${post.slug}`}
         >
             <div
                 className={css({

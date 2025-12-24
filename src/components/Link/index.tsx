@@ -6,6 +6,7 @@ type LinkProps = ComponentProps<typeof NextLink> & {
     variant?:
         | 'text'
         | 'primary'
+        | 'secondary'
         | 'asChild'
         | 'subtle'
         | 'textSubtle'
@@ -53,6 +54,7 @@ const linkStyle = cva({
         color: 'white',
         gap: '.5rem',
         padding: '.5rem 1rem',
+        willChange: 'transform, background-color',
 
         '& svg': {
             fontSize: '1.125rem',
@@ -70,6 +72,10 @@ const linkStyle = cva({
         variant: {
             primary: {
                 backgroundColor: 'tint',
+            },
+            secondary: {
+                backgroundColor: 'primary',
+                color: 'white',
             },
             text: {
                 backgroundColor: 'transparent',
