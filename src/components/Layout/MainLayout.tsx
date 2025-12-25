@@ -5,19 +5,15 @@ import { usePathname } from 'next/navigation'
 
 import { Header } from '../Header'
 import { Footer } from '../Footer'
-import { CookiesDialog } from '../OneTimeDialogs/CookiesDialog'
 import { mainLayoutContainer, mainLayoutContentContainer } from './styles'
 
-import { Portal } from '../Portal'
-
-import { useCookiesPreferences } from '@/hooks/useCookiesPreferences'
 import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 
 export function MainLayout({ children }: { children: ReactNode }) {
     const path = usePathname()
-    const { hasSetPreference, allowCookies, isPreferenceReady } =
-        useCookiesPreferences()
+    // const { hasSetPreference, allowCookies, isPreferenceReady } =
+    //     useCookiesPreferences()
 
     return (
         <div className={mainLayoutContainer}>
@@ -52,11 +48,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 </Suspense>
                 {path !== '/mapa' && <Footer />}
             </section>
-            <Portal>
+            {/* <Portal>
                 {isPreferenceReady && !hasSetPreference && (
                     <CookiesDialog savePreference={allowCookies} />
                 )}
-            </Portal>
+            </Portal> */}
         </div>
     )
 }
