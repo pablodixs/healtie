@@ -1,91 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
-import { css } from '../../../../styled-system/css'
+import { useState } from 'react'
+
+import { MapContextProvider } from '@/context/MapContext'
+import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 
 import { Portal } from '@/components/Portal'
-import { HeaderView } from './components/HeaderView'
-import { ReportModal } from '../components/ReportModal'
-import { TokenMissingState } from '@/components/Map'
-import { MapContextProvider } from '@/context/MapContext'
+import { Divider } from '@/components/Divider'
+import { HeaderView } from '../components/HeaderView'
+import { ReportModal } from '../../components/ReportModal'
+import { ServicesTab } from '../components/tabs/ServicesTab'
+import { IndicatorsTab, OverviewTab } from '../components/tabs'
+import { contentContainer, mainContainer } from '../components/styles'
 import { NavigationTabItem, NavigationTabs } from '@/components/NavigationTabs'
 
-import { establishments } from '@/utils/unidades.json'
-import { Establishment } from '@/interfaces/Establishment'
-import { Divider } from '@/components/Divider'
-import { IAmHereDialog } from '@/components/IAmHererDialog'
-import { IndicatorsTab, OverviewTab } from './components/tabs'
-import { ServicesTab } from './components/tabs/ServicesTab'
-import { fetcher } from '@/lib/swrFetcher'
-import useSWR from 'swr'
-import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
-import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
+type Props = {
+    data: EstablishmentResponse
+}
 
-export default function Page() {
-    const path = usePathname()
-    const id = path.split('/').pop()
-    const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false)
+export default function EstablishmentView({ data }: Props) {
+    const [selectedTab, setSelectedTab] = useState<
+        'overview' | 'indicators' | 'services' | 'comments'
+    >('overview')
+
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false)
     const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
-
-    const { data, isLoading, error } = useSWR<EstablishmentResponse>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${id}`,
-        fetcher
-    )
-
-    type TabType = 'overview' | 'indicators' | 'services' | 'comments'
-    const [selectedTab, setSelectedTab] = useState<TabType>('overview')
-
-    useEffect(() => {
-        document.title = data ? `${data.name} | Healtie` : 'Healtie'
-    }, [data])
-
-    if (isLoading)
-        return (
-            <div
-                className={css({
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                    justifyContent: 'center',
-                    height: '80dvh',
-                })}
-            >
-                <CircleNotchIcon
-                    className={css({
-                        animation: 'spin',
-                        color: 'neutral.300',
-                    })}
-                    weight="bold"
-                    size={32}
-                />
-            </div>
-        )
-
-    if (error) {
-        return (
-            <div
-                className={css({
-                    minHeight: '100dvh',
-                })}
-            >
-                <TokenMissingState />
-            </div>
-        )
-    }
-
-    if (!data) {
-        return (
-            <div
-                className={css({
-                    minHeight: '100dvh',
-                })}
-            >
-                <TokenMissingState />
-            </div>
-        )
-    }
 
     return (
         <MapContextProvider>
@@ -165,20 +104,3 @@ export default function Page() {
         </MapContextProvider>
     )
 }
-
-const mainContainer = css({
-    minH: 'calc(100dvh - 4rem)',
-    paddingX: {
-        base: '1rem',
-        md: '0',
-    },
-})
-
-const contentContainer = css({
-    display: {
-        base: 'block',
-        md: 'grid',
-    },
-    gridTemplateColumns: '1fr 300px',
-    gap: '2rem',
-})

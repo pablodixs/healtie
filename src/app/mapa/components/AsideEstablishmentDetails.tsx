@@ -22,7 +22,7 @@ import {
     compactDetailsContainer,
 } from './styles'
 import { EstablishmentDistanceLabel } from '@/components/DistanceLabel'
-import { DetailItem } from '@/app/estabelecimento/[id]/components/DetailsAsideView'
+import { DetailItem } from '@/app/estabelecimento/[cnes]/components/DetailsAsideView'
 import { useEstablishmentDistance } from '@/hooks/geolocation/useEstablishmentDistance'
 import { useState } from 'react'
 import { Portal } from '@/components/Portal'

@@ -9,7 +9,7 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
-import { IndicatorsData } from '@/app/estabelecimento/[id]/components/tabs/IndicatorsTab'
+import { IndicatorsData } from '@/app/estabelecimento/[cnes]/components/tabs/IndicatorsTab'
 
 export interface IndicatorsProps {
     data: IndicatorsData | undefined
