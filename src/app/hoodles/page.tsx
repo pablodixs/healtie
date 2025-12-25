@@ -17,6 +17,12 @@ const hoodles = [
             'Conscientização sobre a saúde masculina e prevenção do câncer de próstata.',
         imageSrc: '/images/doodles/2025_november.png',
     },
+    {
+        title: 'Boas Festas 2025',
+        description:
+            'Celebrando as festas de fim de ano com saúde e alegria para todos.',
+        imageSrc: '/images/doodles/2026-new-year.png',
+    },
 ]
 
 export default function HoodlesPage() {

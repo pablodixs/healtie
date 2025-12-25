@@ -96,20 +96,21 @@ export function HeroSearchContainer() {
                             transition={{ duration: 0.2 }}
                             style={{ marginBottom: '1rem' }}
                         >
-                            <Link
+                            {/* <Link
                                 title="Campanha Nacional de Vacinação"
                                 href={'/campanhas/N202510001'}
-                            >
-                                <Image
-                                    src={'/images/doodles/2025_november.png'}
-                                    alt=""
-                                    width={800}
-                                    height={320}
-                                    quality={100}
-                                    draggable={false}
-                                    priority
-                                />
-                            </Link>
+                            > */}
+                            <Image
+                                src={'/images/doodles/2026-new-year.gif'}
+                                alt=""
+                                width={800}
+                                height={320}
+                                quality={100}
+                                draggable={false}
+                                priority
+                                title="Boas festas!"
+                            />
+                            {/* </Link> */}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -266,7 +267,7 @@ export function HeroSearchContainer() {
                     )}
                 </AnimatePresence>
             </div>
-            <SearchTags />
+            {/* <SearchTags /> */}
         </div>
     )
 }
