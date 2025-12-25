@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/mdx'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://healtie.com.br'
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://healtie.app'
 
     const posts = getAllPosts()
 
