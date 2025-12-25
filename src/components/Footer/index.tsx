@@ -10,7 +10,7 @@ export function Footer() {
         <div className={footerContainer}>
             <div
                 className={css({
-                    paddingX: { base: '2rem', md: '0' },
+                    paddingX: { base: '1rem', md: '0' },
                 })}
             >
                 <Divider />
@@ -41,7 +41,7 @@ export function Footer() {
                     direction: { base: 'column', md: 'row' },
                     gap: '1.5rem',
                     paddingRight: { base: '0', md: '1rem' },
-                    padding: { base: '2rem', md: '0' },
+                    padding: { base: '1rem', md: '0' },
                 })}
             >
                 <div className={listLinkContainer}>
