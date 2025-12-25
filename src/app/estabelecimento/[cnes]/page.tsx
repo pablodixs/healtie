@@ -44,34 +44,39 @@ export default async function Page({
 }) {
     const { cnes } = await params
 
-    const data = await getEstablishment(cnes)
+    try {
+        const data = await getEstablishment(cnes)
 
-    if (!data) return notFound()
+        if (!data) return notFound()
 
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': data.type || 'MedicalOrganization',
-        name: data.name,
-        address: {
-            '@type': 'PostalAddress',
-            streetAddress: data.address?.address,
-            addressLocality: data.address?.city,
-            addressRegion: data.address?.state,
-            addressCountry: 'BR',
-        },
-        identifier: data.cnes,
+        const jsonLd = {
+            '@context': 'https://schema.org',
+            '@type': data.type || 'MedicalOrganization',
+            name: data.name,
+            address: {
+                '@type': 'PostalAddress',
+                streetAddress: data.address?.address,
+                addressLocality: data.address?.city,
+                addressRegion: data.address?.state,
+                addressCountry: 'BR',
+            },
+            identifier: data.cnes,
+        }
+
+        return (
+            <>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(jsonLd),
+                    }}
+                />
+
+                <EstablishmentView data={data} />
+            </>
+        )
+    } catch (error) {
+        console.error(error)
+        return notFound()
     }
-
-    return (
-        <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(jsonLd),
-                }}
-            />
-
-            <EstablishmentView data={data} />
-        </>
-    )
 }

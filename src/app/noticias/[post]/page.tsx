@@ -134,10 +134,6 @@ export default async function BlogPost({
 const wrapper = css({
     maxWidth: '800px',
     marginX: 'auto',
-    paddingX: {
-        base: '1rem',
-        md: '0',
-    },
 })
 
 const article = css({

@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <main
             className={css({
                 paddingX: {
-                    base: '2rem',
+                    base: '1rem',
                     md: '0',
                 },
             })}

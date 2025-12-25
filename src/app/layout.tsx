@@ -4,6 +4,7 @@ import './globals.css'
 
 import { MainLayout } from '@/components/Layout'
 import { MobileNav } from '@/components/Header/MobileNav'
+import { HydrationFix } from '@/components/HydrationFix'
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
@@ -46,9 +47,10 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="pt-br">
+        <html lang="pt-br" suppressHydrationWarning>
             <Analytics />
-            <body>
+            <body suppressHydrationWarning>
+                <HydrationFix />
                 <div id="portal" />
                 <MobileNav />
                 <MainLayout>{children}</MainLayout>
