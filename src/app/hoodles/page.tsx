@@ -9,13 +9,13 @@ const hoodles = [
         title: 'Primeiro Hoodle',
         description:
             'O primeiro doodle do Healtie, celebrando a missão de promover a saúde.',
-        imageSrc: '/pictures/doodles/doodle.png',
+        imageSrc: '/images/doodles/doodle.png',
     },
     {
         title: 'Novembro Azul 2025',
         description:
             'Conscientização sobre a saúde masculina e prevenção do câncer de próstata.',
-        imageSrc: '/pictures/doodles/2025_november.png',
+        imageSrc: '/images/doodles/2025_november.png',
     },
 ]
 

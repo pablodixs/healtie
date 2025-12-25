@@ -101,7 +101,7 @@ export function HeroSearchContainer() {
                                 href={'/campanhas/N202510001'}
                             >
                                 <Image
-                                    src={'/pictures/doodles/2025_november.png'}
+                                    src={'/images/doodles/2025_november.png'}
                                     alt=""
                                     width={800}
                                     height={320}

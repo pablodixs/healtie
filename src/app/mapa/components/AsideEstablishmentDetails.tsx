@@ -70,7 +70,7 @@ export function AsideEstablishmentDetails({
         <AnimatedMainContainer key="establishment-details">
             <AsideToolbar data={data} />
             <Image
-                src={'/pictures/establishment_ubs.png'}
+                src={'/images/establishment_ubs.png'}
                 alt={data.name}
                 width={400}
                 height={100}
@@ -114,7 +114,7 @@ export function AsideEstablishmentDetails({
                         href={`https://www.google.com/maps/dir/?api=1&destination=${data.coordinates.latitude},${data.coordinates.longitude}`}
                     >
                         <Image
-                            src={'/pictures/google_maps_icon.png'}
+                            src={'/images/google_maps_icon.png'}
                             alt="Ícone do Google Maps "
                             width={14}
                             height={14}

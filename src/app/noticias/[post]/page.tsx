@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props) {
                 {
                     url:
                         `https://healtie.app${data.ogImage}` ||
-                        `https://healtie.app/pictures/og-image.png`,
+                        `https://healtie.app/images/og-image.png`,
                     width: 1900,
                     height: 600,
                     alt: 'Healtie',

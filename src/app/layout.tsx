@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         siteName: 'Healtie',
         images: [
             {
-                url: 'https://healtie.app/pictures/og-image.png',
+                url: 'https://healtie.app/images/og-image.png',
                 width: 1900,
                 height: 600,
                 alt: 'Healtie',

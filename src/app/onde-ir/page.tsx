@@ -184,7 +184,7 @@ export default function Page() {
                         flex: 1,
                         borderRadius: 12,
                     }}
-                    src={'/pictures/signs_illustration.svg'}
+                    src={'/images/signs_illustration.svg'}
                     alt=""
                     width={300}
                     height={200}

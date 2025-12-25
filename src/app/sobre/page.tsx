@@ -279,7 +279,7 @@ export default function Page() {
             </section>
             <FAQ />
             <Image
-                src={'/pictures/mascots.svg'}
+                src={'/images/mascots.svg'}
                 alt="Mascotes"
                 width={200}
                 height={100}

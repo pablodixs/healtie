@@ -77,7 +77,7 @@ export default function Page() {
                     })}
                 >
                     <Image
-                        src={'/pictures/establishment_ubs.png'}
+                        src={'/images/establishment_ubs.png'}
                         alt={''}
                         width={320}
                         height={200}
