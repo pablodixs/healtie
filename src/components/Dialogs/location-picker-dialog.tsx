@@ -183,7 +183,8 @@ const GeolocationPicker = ({
     onDismiss: () => void
     onCityChoose: () => void
 }) => {
-    const { status } = useUserGeolocation()
+    const { status, location } = useUserGeolocation()
+    const { setCity } = useSelectedCity()
 
     if (status === 'idle' || status === 'requesting')
         return (
@@ -256,16 +257,14 @@ const GeolocationPicker = ({
                         style={{ margin: '1rem 0' }}
                     />
                     <Subheading centered>Localizamos você</Subheading>
-                    <Paragraph centered>
-                        Encontramos sua localização como{' '}
-                        <strong>Brasília - DF</strong>. Caso esteja correto,
-                        você pode fechar este diálogo e explorar os
-                        estabelecimentos próximos a você.
-                    </Paragraph>
+                    <Paragraph centered>{location}</Paragraph>
                     <Button
                         style={{ margin: '1rem 0' }}
                         fullWidth
-                        onClick={onDismiss}
+                        onClick={() => {
+                            setCity(location)
+                            onDismiss()
+                        }}
                     >
                         Tudo certo!
                     </Button>
