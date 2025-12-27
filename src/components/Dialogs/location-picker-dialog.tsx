@@ -150,7 +150,7 @@ const LocationPicker = ({ onChange }: { onChange: () => void }) => {
 const CityPicker = ({ onChange }: { onChange: () => void }) => {
     const [selectedState, setSelectedState] = useState<string | null>(null)
     const [selectedCity, setSelectedCity] = useState<string | null>(null)
-    const { isReady, setCity } = useSelectedCity()
+    const { setCity } = useSelectedCity()
 
     return (
         <motion.div

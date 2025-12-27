@@ -8,7 +8,8 @@ import { useSelectedCity } from '@/hooks/useSelectedCity'
 import { Button } from '../Button'
 
 export function Footer() {
-    const { isReady, selectedCity, hasSelectedCity } = useSelectedCity()
+    const { isReady, selectedCity, hasSelectedCity, clearCity } =
+        useSelectedCity()
 
     return (
         <div className={footerContainer}>
@@ -39,9 +40,25 @@ export function Footer() {
                 </Paragraph>
                 <Divider />
                 {isReady && hasSelectedCity && (
-                    <Button variant="bordered">
+                    <span
+                        className={css({
+                            display: 'flex',
+                            gap: '1ch',
+                            alignItems: 'center',
+                            mb: '1rem',
+                            fontSize: '0.875rem',
+                            color: 'gray.500',
+                        })}
+                    >
                         <CityIcon /> {selectedCity}
-                    </Button>
+                        <Button
+                            onClick={clearCity}
+                            variant="bordered"
+                            size="small"
+                        >
+                            Mudar cidade
+                        </Button>
+                    </span>
                 )}
             </div>
             <section
@@ -88,10 +105,7 @@ export function Footer() {
                             <Link href="/sobre">Sobre o Healtie</Link>
                         </li>
                         <li>
-                            <Link href="/">Como obtemos os dados</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Healtie Data</Link>
+                            <Link href="/regioes">Disponibilidade</Link>
                         </li>
                         <li>
                             <Link href="/hoodles">Hoodles</Link>
