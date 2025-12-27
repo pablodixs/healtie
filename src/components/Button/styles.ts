@@ -17,7 +17,6 @@ export const buttonStyles = cva({
         textWrap: 'nowrap',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        willChange: 'transform, background-color, box-shadow',
 
         _disabled: {
             cursor: 'not-allowed',

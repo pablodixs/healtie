@@ -3,14 +3,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
     LockIcon,
     CrosshairIcon,
     CaretLeftIcon,
     ArrowRightIcon,
+    CircleNotchIcon,
+    XCircleIcon,
 } from '@phosphor-icons/react'
 
+import { css } from '../../../styled-system/css'
 import { Button } from '../Button'
 import { Paragraph, Subheading } from '../Typography'
 import {
@@ -21,8 +24,11 @@ import {
     privacyAdvice,
     selectionWrapper,
 } from './styles'
-import { css } from '../../../styled-system/css'
+
 import { useSelectedCity } from '@/hooks/useSelectedCity'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { Banner } from '../Banner'
+import { CheckCircleIcon } from '@phosphor-icons/react/dist/ssr'
 
 const availableStates = [
     { label: 'Distrito Federal', value: 'DF' },
@@ -47,11 +53,13 @@ interface LocationPickerDialogProps {
     value: boolean
 }
 
+type states = 'splashscreen' | 'city' | 'geolocation'
+
 export function LocationPickerDialog({
     onClose,
     value,
 }: LocationPickerDialogProps) {
-    const [viewType, setViewType] = useState<'location' | 'city'>('location')
+    const [viewType, setViewType] = useState<states>('splashscreen')
 
     useEffect(() => {
         if (value) {
@@ -91,14 +99,20 @@ export function LocationPickerDialog({
                 />
                 <div>
                     <AnimatePresence mode="wait">
-                        {viewType === 'location' && (
-                            <LocationPicker
-                                onChange={() => setViewType('city')}
-                            />
+                        {viewType === 'splashscreen' && (
+                            <Splashscreen setViewType={setViewType} />
                         )}
                         {viewType === 'city' && (
                             <CityPicker
-                                onChange={() => setViewType('location')}
+                                onChange={() => setViewType('splashscreen')}
+                                onDismiss={onClose}
+                            />
+                        )}
+                        {viewType === 'geolocation' && (
+                            <GeolocationPicker
+                                onDismiss={onClose}
+                                onChange={() => setViewType('splashscreen')}
+                                onCityChoose={() => setViewType('city')}
                             />
                         )}
                     </AnimatePresence>
@@ -120,7 +134,13 @@ export function LocationPickerDialog({
     )
 }
 
-const LocationPicker = ({ onChange }: { onChange: () => void }) => {
+const Splashscreen = ({
+    setViewType,
+}: {
+    setViewType: Dispatch<SetStateAction<states>>
+}) => {
+    const { requestLocation } = useUserGeolocation()
+
     return (
         <motion.div
             key={'location'}
@@ -135,11 +155,18 @@ const LocationPicker = ({ onChange }: { onChange: () => void }) => {
                 estabelecimentos próximos a você.
             </Paragraph>
             <div className={selectionWrapper}>
-                <Button size="large" fullWidth>
+                <Button
+                    onClick={() => {
+                        requestLocation()
+                        setViewType('geolocation')
+                    }}
+                    size="large"
+                    fullWidth
+                >
                     <CrosshairIcon weight="bold" size={18} /> Usar minha
                     localização
                 </Button>
-                <Button onClick={onChange} variant="text">
+                <Button onClick={() => setViewType('city')} variant="text">
                     Ou selecione a sua UF manualmente
                 </Button>
             </div>
@@ -147,10 +174,156 @@ const LocationPicker = ({ onChange }: { onChange: () => void }) => {
     )
 }
 
-const CityPicker = ({ onChange }: { onChange: () => void }) => {
+const GeolocationPicker = ({
+    onChange,
+    onDismiss,
+    onCityChoose,
+}: {
+    onChange: () => void
+    onDismiss: () => void
+    onCityChoose: () => void
+}) => {
+    const { status } = useUserGeolocation()
+
+    if (status === 'idle' || status === 'requesting')
+        return (
+            <div
+                className={css({
+                    display: 'flex',
+                    justifyContent: 'center',
+                    my: '2rem',
+                })}
+            >
+                <CircleNotchIcon
+                    className={css({
+                        animation: 'spin',
+                    })}
+                    weight="bold"
+                    size={24}
+                />
+            </div>
+        )
+
+    return (
+        <motion.div
+            key={'geolocation'}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+        >
+            <Button
+                iconButton
+                variant="subtle"
+                title="Voltar"
+                onClick={onChange}
+            >
+                <CaretLeftIcon weight="bold" />
+            </Button>
+            {status === 'prompt' && (
+                <>
+                    <Subheading centered>
+                        Permita uso da localização no seu navegador
+                    </Subheading>
+                    <div
+                        className={css({
+                            color: 'neutral.500',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '1ch',
+                            my: '2rem',
+                        })}
+                    >
+                        <CircleNotchIcon
+                            className={css({
+                                animation: 'spin',
+                            })}
+                            weight="bold"
+                            size={24}
+                        />
+                        Aguardando permissão...
+                    </div>
+                </>
+            )}
+            {status === 'granted' && (
+                <>
+                    <Banner
+                        size="sm"
+                        variant="success"
+                        title="Você autorizou acesso à sua localização."
+                        icon={<CheckCircleIcon weight="fill" />}
+                        style={{ margin: '1rem 0' }}
+                    />
+                    <Subheading centered>Localizamos você</Subheading>
+                    <Paragraph centered>
+                        Encontramos sua localização como{' '}
+                        <strong>Brasília - DF</strong>. Caso esteja correto,
+                        você pode fechar este diálogo e explorar os
+                        estabelecimentos próximos a você.
+                    </Paragraph>
+                    <Button
+                        style={{ margin: '1rem 0' }}
+                        fullWidth
+                        onClick={onDismiss}
+                    >
+                        Tudo certo!
+                    </Button>
+                </>
+            )}
+            {status === 'denied' && (
+                <>
+                    <Banner
+                        size="sm"
+                        variant="error"
+                        title="Você não autorizou acesso à sua localização."
+                        message={
+                            'Você pode alterar nas configurações do seu navegador.'
+                        }
+                        icon={<XCircleIcon weight="fill" />}
+                        style={{ margin: '1rem 0' }}
+                    />
+                    <div
+                        className={css({
+                            display: 'flex',
+                            gap: '1rem',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            my: '2rem',
+                        })}
+                    >
+                        <Button onClick={() => onCityChoose()} fullWidth>
+                            Inserir cidade manualmente
+                        </Button>
+                        <Button
+                            onClick={onDismiss}
+                            variant="bordered"
+                            fullWidth
+                        >
+                            Fechar
+                        </Button>
+                    </div>
+                </>
+            )}
+        </motion.div>
+    )
+}
+
+const CityPicker = ({
+    onChange,
+    onDismiss,
+}: {
+    onChange: () => void
+    onDismiss: () => void
+}) => {
     const [selectedState, setSelectedState] = useState<string | null>(null)
     const [selectedCity, setSelectedCity] = useState<string | null>(null)
     const { setCity } = useSelectedCity()
+
+    function handleSetCity(city: string | null) {
+        setCity(city)
+        onDismiss()
+    }
 
     return (
         <motion.div
@@ -273,7 +446,7 @@ const CityPicker = ({ onChange }: { onChange: () => void }) => {
                 })}
             >
                 <Button
-                    onClick={() => setCity(selectedCity)}
+                    onClick={() => handleSetCity(selectedCity)}
                     aria-disabled={!selectedState || !selectedCity}
                 >
                     Confirmar

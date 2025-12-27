@@ -11,12 +11,16 @@ interface BannerProps extends HTMLAttributes<HTMLDivElement> {
     actionLabel?: string
     actionIcon?: ReactNode
     secondaryAction?: ReactNode
+    variant?: 'info' | 'success' | 'error'
+    size?: 'sm' | 'md'
     icon?: ReactNode
     action?: () => void
     onClose?: () => void
 }
 
 export function Banner({
+    variant = 'info',
+    size = 'md',
     title,
     message,
     actionLabel,
@@ -27,7 +31,7 @@ export function Banner({
     ...props
 }: BannerProps) {
     return (
-        <div className={bannerStyles()} {...props}>
+        <div className={bannerStyles({ variant, size })} {...props}>
             <div>
                 {icon && <div>{icon}</div>}
                 <div>

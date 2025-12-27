@@ -3,7 +3,6 @@
 import {
     ArrowUpRightIcon,
     CircleNotchIcon,
-    MapTrifoldIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,7 +11,6 @@ import { AnimatePresence, motion } from 'motion/react'
 import { css } from '../../../styled-system/css'
 
 import { HeroSearchBar } from './components/HeroSearchBar'
-import { SearchTags } from './components/SearchTags'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Link as CustomLink } from '@/components/Link'
 

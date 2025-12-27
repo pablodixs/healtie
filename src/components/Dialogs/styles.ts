@@ -1,7 +1,6 @@
 import { css } from '../../../styled-system/css'
 
 export const dialogStyles = css({
-    willChange: 'transform',
     zIndex: 5001,
     padding: '1rem',
     borderRadius: '24px',

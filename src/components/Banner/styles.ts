@@ -36,4 +36,28 @@ export const bannerStyles = cva({
             gap: '1rem',
         },
     },
+    variants: {
+        variant: {
+            info: {},
+            success: {
+                bgColor: 'green.100',
+                color: 'green.700',
+            },
+            error: {
+                bgColor: 'red.100',
+                color: 'red.700',
+            },
+        },
+        size: {
+            sm: {
+                padding: '.5rem .75rem',
+                fontSize: '0.875rem',
+
+                '& p': {
+                    fontSize: '0.75rem',
+                },
+            },
+            md: {},
+        },
+    },
 })
