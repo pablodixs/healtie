@@ -1,11 +1,15 @@
-import { HeartIcon } from '@phosphor-icons/react/dist/ssr'
+import { CityIcon, HeartIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 import Link from 'next/link'
 import { stack } from '../../../styled-system/patterns'
 import { Paragraph } from '../Typography'
 import { Divider } from '../Divider'
+import { useSelectedCity } from '@/hooks/useSelectedCity'
+import { Button } from '../Button'
 
 export function Footer() {
+    const { isReady, selectedCity, hasSelectedCity } = useSelectedCity()
+
     return (
         <div className={footerContainer}>
             <div
@@ -34,6 +38,11 @@ export function Footer() {
                     para expandir nosso alcance para outras regiões em breve.
                 </Paragraph>
                 <Divider />
+                {isReady && hasSelectedCity && (
+                    <Button variant="bordered">
+                        <CityIcon /> {selectedCity}
+                    </Button>
+                )}
             </div>
             <section
                 className={stack({

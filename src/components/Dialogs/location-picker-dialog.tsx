@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
 import {
     LockIcon,
     CrosshairIcon,
-    ArrowLeftIcon,
     CaretLeftIcon,
+    ArrowRightIcon,
 } from '@phosphor-icons/react'
 
 import { Button } from '../Button'
@@ -22,6 +22,25 @@ import {
     selectionWrapper,
 } from './styles'
 import { css } from '../../../styled-system/css'
+import { useSelectedCity } from '@/hooks/useSelectedCity'
+
+const availableStates = [
+    { label: 'Distrito Federal', value: 'DF' },
+    { label: 'Goiás', value: 'GO' },
+]
+
+const availableCitiesByState: Record<
+    string,
+    { label: string; value: string }[]
+> = {
+    DF: [{ label: 'Brasília', value: 'Brasília' }],
+    GO: [
+        {
+            label: 'Santo Antônio do Descoberto',
+            value: 'Santo Antônio do Descoberto',
+        },
+    ],
+}
 
 interface LocationPickerDialogProps {
     onClose: () => void
@@ -129,6 +148,10 @@ const LocationPicker = ({ onChange }: { onChange: () => void }) => {
 }
 
 const CityPicker = ({ onChange }: { onChange: () => void }) => {
+    const [selectedState, setSelectedState] = useState<string | null>(null)
+    const [selectedCity, setSelectedCity] = useState<string | null>(null)
+    const { isReady, setCity } = useSelectedCity()
+
     return (
         <motion.div
             key={'city'}
@@ -169,40 +192,109 @@ const CityPicker = ({ onChange }: { onChange: () => void }) => {
                         fontWeight: 500,
                         color: 'primary',
                     })}
+                    onChange={(e) => setSelectedState(e.target.value)}
                 >
                     <option value="" disabled selected>
                         Selecione sua UF
                     </option>
-                    <option value="DF">Distrito Federal</option>
+                    {availableStates.map((state) => (
+                        <option key={state.value} value={state.value}>
+                            {state.label}
+                        </option>
+                    ))}
                 </select>
-                <label htmlFor="city-select">Município</label>
-                <select
-                    className={css({
-                        display: 'flex',
-                        justifyContent: 'center',
-                        mb: '1rem',
-                        backgroundColor: 'neutral.100',
-                        width: '100%',
-                        padding: '0.75rem 1rem',
-                        borderRadius: '9999px',
-                        fontWeight: 500,
-                        color: 'primary',
-                    })}
-                >
-                    <option value="" disabled selected>
-                        Selecione sua UF
-                    </option>
-                    <option value="DF">Distrito Federal</option>
-                </select>
+                <AnimatePresence>
+                    {selectedState && (
+                        <motion.div
+                            initial={{
+                                scale: 0.95,
+                                opacity: 0,
+                                filter: 'blur(10px)',
+                            }}
+                            animate={{
+                                scale: 1,
+                                opacity: 1,
+                                filter: 'blur(0px)',
+                            }}
+                            exit={{
+                                scale: 0.95,
+                                opacity: 0,
+                                filter: 'blur(10px)',
+                            }}
+                            transition={{
+                                type: 'spring',
+                                bounce: 0,
+                                duration: 0.4,
+                            }}
+                        >
+                            <label htmlFor="city-select">Município</label>
+                            <select
+                                className={css({
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    mb: '1rem',
+                                    backgroundColor: 'neutral.100',
+                                    width: '100%',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '9999px',
+                                    fontWeight: 500,
+                                    color: 'primary',
+                                })}
+                                onChange={(e) =>
+                                    setSelectedCity(e.target.value)
+                                }
+                            >
+                                <option value="" disabled selected>
+                                    Selecione o município
+                                </option>
+                                {availableCitiesByState[selectedState].map(
+                                    (city) => (
+                                        <option
+                                            key={city.value}
+                                            value={city.value}
+                                        >
+                                            {city.label}
+                                        </option>
+                                    )
+                                )}
+                            </select>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
             <div
                 className={css({
                     display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     justifyContent: 'center',
                     my: '1rem',
+                    gap: '1rem',
                 })}
             >
-                <Button aria-disabled={true}>Confirmar</Button>
+                <Button
+                    onClick={() => setCity(selectedCity)}
+                    aria-disabled={!selectedState || !selectedCity}
+                >
+                    Confirmar
+                </Button>
+                <Link
+                    className={css({
+                        display: 'flex',
+                        gap: '1ch',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        fontSize: '0.75rem',
+                        color: 'neutral.500',
+
+                        _hover: {
+                            color: 'tint',
+                        },
+                    })}
+                    href={'/regioes'}
+                >
+                    Ver cidades disponíveis <ArrowRightIcon size={14} />
+                </Link>
             </div>
         </motion.div>
     )
