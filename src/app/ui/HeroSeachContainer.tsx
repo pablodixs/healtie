@@ -21,6 +21,8 @@ import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
 import { Subheading } from '@/components/Typography'
+import { Portal } from '@/components/Portal'
+import { LocationPickerDialog } from '@/components/Dialogs/location-picker-dialog'
 
 const FILTER_OPTIONS = {
     HOSPITAL: { label: 'hospitais' },
@@ -34,6 +36,7 @@ export function HeroSearchContainer() {
     const [isSearchBarFocused, setIsSearchBarFocused] = useState(false)
     const [filterValue, setFilterValue] = useState<string | null>(null)
     const [searchValue, setSearchValue] = useState('')
+    const [isLocationDialogOpen, setIsLocationDialogOpen] = useState(true)
 
     const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
         debounced && debounced.length >= 3
@@ -268,6 +271,16 @@ export function HeroSearchContainer() {
                 </AnimatePresence>
             </div>
             {/* <SearchTags /> */}
+            <Portal>
+                <AnimatePresence>
+                    {isLocationDialogOpen && (
+                        <LocationPickerDialog
+                            value={isLocationDialogOpen}
+                            onClose={() => setIsLocationDialogOpen(false)}
+                        />
+                    )}
+                </AnimatePresence>
+            </Portal>
         </div>
     )
 }

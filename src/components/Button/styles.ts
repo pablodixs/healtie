@@ -19,6 +19,20 @@ export const buttonStyles = cva({
         whiteSpace: 'nowrap',
         willChange: 'transform, background-color, box-shadow',
 
+        _disabled: {
+            cursor: 'not-allowed',
+            backgroundColor: 'neutral.200',
+            color: 'neutral.700',
+
+            _active: {
+                scale: 1,
+            },
+
+            _hover: {
+                backgroundColor: 'neutral.200',
+            },
+        },
+
         padding: {
             lg: '0.625rem 1rem',
             base: '0.75rem 1rem',
