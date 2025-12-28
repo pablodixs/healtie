@@ -6,22 +6,13 @@ export interface EstablishmentResponse {
     description?: string
     type?: string
     phone?: string
-
     address?: EstablishmentAddress
-    indices?: EstablishmentIndicators
-
     coordinates: Coordinates
-
-    availableServices: EstablishmentServicesType[]
-
     openingHours: EstablishmentOpeningHour[]
-
     open24Hours: boolean
     active: boolean
-
-    createdAt: string // LocalDateTime → ISO string
+    createdAt: string
     updatedAt: string
-
     promoted?: boolean
     tags?: string[]
 }
@@ -29,8 +20,8 @@ export interface EstablishmentResponse {
 export interface EstablishmentAddress {
     address?: string
     district?: string
-    city?: string | number
-    state?: string | number
+    city?: string
+    state?: string
 }
 
 export interface EstablishmentIndicators {
@@ -47,12 +38,10 @@ export interface Coordinates {
 
 export interface EstablishmentOpeningHour {
     day: DayOfWeek
-
     closed: boolean
     twentyFourHours: boolean
-
-    openTime?: string // LocalTime -> "HH:mm:ss"
-    closeTime?: string // LocalTime -> "HH:mm:ss"
+    openTime?: string
+    closeTime?: string
 }
 
 export type EstablishmentServicesType =
