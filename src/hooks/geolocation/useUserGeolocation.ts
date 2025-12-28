@@ -279,11 +279,13 @@ export function useUserGeolocation(
                             JSON.parse(cached)
                         // Cache valid for 7 days
                         const isValid =
+                            timestamp &&
                             Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000
                         if (isValid) {
                             setLocation(cachedLocation)
                             return
                         }
+                        localStorage.removeItem(cacheKey)
                     }
                 } catch {
                     // Ignore localStorage errors
