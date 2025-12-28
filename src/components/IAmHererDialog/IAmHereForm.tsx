@@ -44,8 +44,6 @@ export function IAmHereForm() {
     }
 
     async function submit() {
-        console.log('payload', answers)
-
         // Exemplo de POST
         // await fetch("/api/estou-aqui", {
         //   method: "POST",

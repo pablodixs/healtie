@@ -19,7 +19,7 @@ import { Banner } from '@/components/Banner'
 import { XCircleIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
 
-interface apiResponse {
+interface ApiResponse {
     address: {
         address: string
         district: string
@@ -46,7 +46,7 @@ interface apiResponse {
 export default function Page() {
     const [cnesNumber, setCnesNumber] = useState<number | null>(null)
     const [isFetching, setIsFetching] = useState<boolean>(false)
-    const [response, setResponse] = useState<apiResponse | null>(null)
+    const [response, setResponse] = useState<ApiResponse | null>(null)
     const [error, setError] = useState<string | null>(null)
 
     const handleSubmit = (event: FormEvent) => {
@@ -82,7 +82,7 @@ export default function Page() {
                 className={css({
                     marginTop: '2rem',
                     display: { md: 'grid', base: 'block' },
-                    gridTemplateColumns: '400px 1fr',
+                    gridTemplateColumns: '2fr 1fr',
                     gap: '2rem',
                 })}
             >
