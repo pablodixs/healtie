@@ -29,8 +29,8 @@ export interface EstablishmentResponse {
 export interface EstablishmentAddress {
     address?: string
     district?: string
-    city?: string
-    state?: string
+    city?: string | number
+    state?: string | number
 }
 
 export interface EstablishmentIndicators {

@@ -37,7 +37,7 @@ export function DetailsAsideView({
             />
             <Link
                 variant="asChild"
-                href={`/cidade/${establishment?.address?.city?.toLowerCase()}`}
+                href={`/cidade/${establishment?.address?.city ? String(establishment.address.city).toLowerCase() : ''}`}
             >
                 <DetailItem
                     title="Cidade"

@@ -19,7 +19,7 @@ export async function generateMetadata({
             data.name,
             String(data.cnes),
             data.name,
-            data.address?.city || 'cidade',
+            data.address?.city ? String(data.address.city) : '',
             data.type || 'unidade de saúde',
         ],
         openGraph: {
