@@ -22,6 +22,13 @@ export const metadata: Metadata = {
         'tempo de espera',
         'onde ir',
     ],
+    metadataBase: new URL('https://healtie.app'),
+    alternates: {
+        canonical: '/',
+        languages: {
+            'pt-BR': '/pt-BR',
+        },
+    },
     openGraph: {
         title: 'Healtie — Seu guia de saúde pública',
         description:

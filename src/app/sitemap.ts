@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const postUrls = posts.map((post) => ({
         url: `${baseUrl}/noticias/${post.slug}`,
         lastModified: new Date(post.date),
-        changeFrequency: 'monthly' as const,
+        changeFrequency: 'weekly' as const,
         priority: 0.7,
     }))
 
