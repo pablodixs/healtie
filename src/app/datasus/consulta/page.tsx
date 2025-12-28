@@ -67,7 +67,8 @@ export default function Page() {
                 )
             })
             .then((response) => {
-                setResponse(response?.data)
+                if (response === undefined) return
+                setResponse(response.data)
             })
             .finally(() => {
                 setIsFetching(false)
