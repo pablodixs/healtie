@@ -1,17 +1,17 @@
 import { ReactNode } from 'react'
-import { css } from '../../../styled-system/css'
+import { css } from '../../../../styled-system/css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Healtie Hoodles - Os doodles do Healtie',
+    title: 'Consultar estabelecimento no DataSUS | Healtie',
     description:
-        'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
+        'Consulte informações de estabelecimentos de saúde no banco de dados do DataSUS através do Healtie.',
     keywords: ['saúde', 'doodle', 'hoodles', 'healtie', 'funcionamento'],
     openGraph: {
-        title: 'Hoodles | Healtie',
+        title: 'Consultar estabelecimento no DataSUS | Healtie',
         description:
-            'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
-        url: 'https://healtie.app/hoodles',
+            'Consulte informações de estabelecimentos de saúde no banco de dados do DataSUS através do Healtie.',
+        url: 'https://healtie.app/datasus/consulta',
         siteName: 'Healtie',
         images: [
             {
