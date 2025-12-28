@@ -71,16 +71,21 @@ export function Footer() {
                 })}
             >
                 <div className={listLinkContainer}>
-                    <span>Healtie</span>
+                    <span>Recursos</span>
                     <ul>
                         <li>
                             <Link href="/">Mapa</Link>
                         </li>
                         <li>
-                            <Link href="/">Onde Ir?</Link>
+                            <Link href="/">Onde Ir</Link>
                         </li>
                         <li>
                             <Link href="/">Estabelecimentos</Link>
+                        </li>
+                        <li>
+                            <Link href="/datasus/consulta">
+                                Consulta DataSUS
+                            </Link>
                         </li>
                     </ul>
                 </div>

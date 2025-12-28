@@ -45,7 +45,7 @@ export default defineConfig({
                     background: { value: '#f6f7f9' },
                     primary: { value: '#343433' },
                     cream: { value: '#f6f4ef' },
-                    tint: { value: '#018DFF' },
+                    tint: { value: 'oklch(0.643 0.196 252.7)' },
                     greenHightlight: { value: '#00CC00' },
                 },
                 sizes: {

@@ -1,25 +1,10 @@
-import { css } from '../../../styled-system/css'
+import { InputHTMLAttributes } from 'react'
+import { inputStyles } from './styles'
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>
-
-export function Input(props: InputProps) {
-    return <input {...props} className={inputStyles} />
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    fullWidth?: boolean
 }
 
-const inputStyles = css({
-    padding: '0.5rem 0.75rem',
-    borderRadius: '12px',
-    border: '1px solid',
-    borderColor: 'neutral.50',
-    fontSize: '1rem',
-    lineHeight: '1.5rem',
-    transition: 'all 0.2s ease-in-out',
-    marginBottom: '1rem',
-    backgroundColor: 'neutral.50',
-
-    _focus: {
-        borderColor: 'tint',
-        outline: 'none',
-        backgroundColor: 'white',
-    },
-})
+export function Input({ fullWidth, ...props }: InputProps) {
+    return <input {...props} className={inputStyles({ fullWidth })} />
+}

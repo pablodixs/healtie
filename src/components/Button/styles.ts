@@ -18,6 +18,15 @@ export const buttonStyles = cva({
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
 
+        padding: {
+            lg: '0.625rem 1rem',
+            base: '0.75rem 1rem',
+        },
+
+        '& svg': {
+            fontSize: '1.125rem',
+        },
+
         _disabled: {
             cursor: 'not-allowed',
             backgroundColor: 'neutral.200',
@@ -32,13 +41,10 @@ export const buttonStyles = cva({
             },
         },
 
-        padding: {
-            lg: '0.625rem 1rem',
-            base: '0.75rem 1rem',
-        },
-
-        '& svg': {
-            fontSize: '1.125rem',
+        _focus: {
+            outline: '2px solid',
+            outlineOffset: '2px',
+            outlineColor: 'oklch(0.796 0.105 252.7)',
         },
 
         _active: {
