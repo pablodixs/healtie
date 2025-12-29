@@ -14,9 +14,9 @@ export function Subheading({
     ...props
 }: SubheadingProps) {
     return (
-        <h1 className={subHeadingStyles({ centered, size })} {...props}>
+        <h2 className={subHeadingStyles({ centered, size })} {...props}>
             {children}
-        </h1>
+        </h2>
     )
 }
 
