@@ -155,7 +155,9 @@ export default function Page() {
                             <Button
                                 type="submit"
                                 disabled={
-                                    !formData.stateCode || !formData.cityCode
+                                    !formData.stateCode ||
+                                    !formData.cityCode ||
+                                    isLoading
                                 }
                             >
                                 <ArrowLineDownIcon weight="bold" /> Obter
