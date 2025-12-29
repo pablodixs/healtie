@@ -10,15 +10,20 @@ import {
 import { DetailsAsideView } from '../DetailsAsideView'
 import { ServiceItem } from '@/components/ServiceItem'
 import {
-    BabyCarriageIcon,
     BabyIcon,
+    BedIcon,
+    FirstAidIcon,
+    FlaskIcon,
+    FlowerIcon,
     StethoscopeIcon,
-    ToothIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { IndicatorsData } from './IndicatorsTab'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
+import { EstablishmentServices } from '@/interfaces/EstablishmentServices'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 interface OverviewTabProps {
     establishment: EstablishmentResponse | undefined
@@ -31,8 +36,12 @@ export function OverviewTab({
     establishment,
     setSelectedTab,
 }: OverviewTabProps) {
-    const { data } = useSWR<IndicatorsData>(
+    const { data: indicatorsData } = useSWR<IndicatorsData>(
         `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/indicators`,
+        fetcher
+    )
+    const { data: servicesData, isLoading } = useSWR<EstablishmentServices>(
+        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/services`,
         fetcher
     )
 
@@ -51,7 +60,15 @@ export function OverviewTab({
                             Indicadores
                         </Paragraph>
                         <Paragraph marginCompact size="caption" subtle>
-                            Atualizado há 1 minuto
+                            Atualizado{' '}
+                            {indicatorsData?.last_updated &&
+                                formatDistanceToNow(
+                                    new Date(indicatorsData.last_updated),
+                                    {
+                                        addSuffix: true,
+                                        locale: ptBR,
+                                    }
+                                )}
                         </Paragraph>
                     </div>
                     <Button
@@ -72,10 +89,10 @@ export function OverviewTab({
                         mt: '1rem',
                     })}
                 >
-                    <HealtieClassificationIndicator data={data} />
-                    <WaitTimeIndicator data={data} />
-                    <OccupancyIndexIndicator data={data} />
-                    <ResolutionIndexIndicator data={data} />
+                    <HealtieClassificationIndicator data={indicatorsData} />
+                    <WaitTimeIndicator data={indicatorsData} />
+                    <OccupancyIndexIndicator data={indicatorsData} />
+                    <ResolutionIndexIndicator data={indicatorsData} />
                 </div>
                 <section
                     className={css({
@@ -111,32 +128,70 @@ export function OverviewTab({
                             })}
                         >
                             <ServiceItem
-                                serviceName="Consulta Médica"
-                                serviceDescription="Consulta médica com um especialista."
+                                serviceName="Atendimento ambulatorial"
+                                serviceDescription="Consultas agendadas, exames de rotina e procedimentos simples que não exigem internação."
+                                serviceIcon={<FirstAidIcon />}
+                                showDescription={false}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_ambulatory_care
+                                }
+                            />
+                            <ServiceItem
+                                serviceName="Atendimento hospitalar"
+                                serviceDescription="Estrutura completa para internações, cuidados intensivos e monitoramento contínuo do paciente."
+                                serviceIcon={<BedIcon />}
+                                showDescription={false}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_hospital_care
+                                }
+                            />
+                            <ServiceItem
+                                serviceName="Centro cirúrgico"
+                                serviceDescription="Unidade equipada com tecnologia avançada para a realização de cirurgias programadas ou de emergência."
                                 serviceIcon={<StethoscopeIcon />}
                                 showDescription={false}
-                                available={null}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_surgical_center
+                                }
                             />
                             <ServiceItem
-                                serviceName="Dentista"
-                                serviceDescription="Consulta médica com um especialista."
-                                serviceIcon={<ToothIcon />}
-                                showDescription={false}
-                                available={null}
-                            />
-                            <ServiceItem
-                                serviceName="Pré-natal"
-                                serviceDescription="Consulta médica com um especialista."
-                                serviceIcon={<BabyCarriageIcon />}
-                                showDescription={false}
-                                available={null}
-                            />
-                            <ServiceItem
-                                serviceName="Pediatria"
-                                serviceDescription="Consulta médica com um especialista."
+                                serviceName="Centro neonatal"
+                                serviceDescription="Cuidados especializados para recém-nascidos que necessitam de atenção extra ou tratamento intensivo."
                                 serviceIcon={<BabyIcon />}
                                 showDescription={false}
-                                available={null}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_neonatal_center
+                                }
+                            />
+                            <ServiceItem
+                                serviceName="Centro obstétrico"
+                                serviceDescription="Espaço dedicado à assistência segura da gestante, desde o pré-parto até o nascimento do bebê."
+                                serviceIcon={<FlowerIcon />}
+                                showDescription={false}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_obstetric_center
+                                }
+                            />
+                            <ServiceItem
+                                serviceName="Serviços de apoio"
+                                serviceDescription="Suporte diagnóstico e terapêutico, como laboratórios, radiologia e serviços de nutrição ou fisioterapia."
+                                serviceIcon={<FlaskIcon />}
+                                showDescription={false}
+                                available={
+                                    isLoading
+                                        ? null
+                                        : servicesData?.has_support_service
+                                }
                             />
                         </div>
                     </div>

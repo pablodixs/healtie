@@ -29,7 +29,7 @@ export function DetailsAsideView({
             <DetailItem title="Telefone" value={establishment?.phone} />
             <DetailItem
                 title="Endereço"
-                value={establishment?.address?.address}
+                value={`${establishment?.address?.address}`}
             />
             <DetailItem
                 title="Bairro/Distrito"
@@ -37,13 +37,26 @@ export function DetailsAsideView({
             />
             <Link
                 variant="asChild"
-                href={`/cidade/${establishment?.address?.city ? String(establishment.address.city).toLowerCase() : ''}`}
+                href={`/regioes/${String(establishment?.address?.state)
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/ /g, '-')
+                    .toLowerCase()}/${
+                    establishment?.address?.city
+                        ? String(establishment.address.city)
+                              .normalize('NFD')
+                              .replace(/[\u0300-\u036f]/g, '')
+                              .replace(/ /g, '-')
+                              .toLowerCase()
+                        : ''
+                }`}
             >
                 <DetailItem
                     title="Cidade"
-                    value={`${establishment?.address?.city} - ${establishment?.address?.state}`}
+                    value={`${establishment?.address?.city}`}
                 />
             </Link>
+            <DetailItem title="UF" value={`${establishment?.address?.state}`} />
             <DetailItem title="Tipo" value={establishment?.type} />
             <DetailItem title="CNES" value={establishment?.cnes.toString()} />
             <Divider margin="compact" />

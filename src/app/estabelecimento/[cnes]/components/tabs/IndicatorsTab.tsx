@@ -23,6 +23,7 @@ export interface IndicatorsData {
     resolution_index: number | null
     wait_time: number | null
     occupation: number | null
+    last_updated: string | null
 }
 
 export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
@@ -53,8 +54,8 @@ export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
                 <Paragraph size="caption" subtle>
                     Os indicadores mostram, de forma simples e transparente,
                     como a unidade está performando no dia a dia. Eles reúnem
-                    dados reais de atendimento — como tempo de espera, qualidade
-                    percebida, eficiência e experiência do usuário — para ajudar
+                    dados reais de atendimento, como tempo de espera, qualidade
+                    percebida, eficiência e experiência do usuário, para ajudar
                     tanto os pacientes quanto a própria unidade a entender onde
                     estão os pontos fortes e o que ainda pode melhorar.
                     {/* Os indicadores foram

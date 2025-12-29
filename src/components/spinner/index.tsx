@@ -2,7 +2,7 @@ import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 
 interface SpinnerProps {
-    size: 'sm' | 'md' | 'lg'
+    size?: 'sm' | 'md' | 'lg'
     color?: 'default' | 'subtle'
 }
 

@@ -79,6 +79,7 @@ export default function EstablishmentView({ data }: Props) {
                     )}
                     {selectedTab === 'services' && (
                         <ServicesTab
+                            cnes={data.cnes}
                             establishment={data}
                             setSelectedTab={setSelectedTab}
                         />

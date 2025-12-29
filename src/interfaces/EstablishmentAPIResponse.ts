@@ -29,6 +29,7 @@ export interface EstablishmentIndicators {
     rating?: number
     occupation?: number
     resolutionIndex?: number
+    last_updated?: string
 }
 
 export interface Coordinates {
