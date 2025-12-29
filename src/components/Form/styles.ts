@@ -34,6 +34,14 @@ export const inputStyles = cva({
         fullWidth: {
             true: { width: '100%' },
         },
+        size: {
+            md: {},
+            lg: {
+                padding: '0.75rem 1.5rem',
+                fontSize: '1.125rem',
+                lineHeight: '1.75rem',
+            },
+        },
     },
 })
 

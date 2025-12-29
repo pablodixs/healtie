@@ -298,11 +298,10 @@ const heroContainer = css({
 
     '& img': {
         base: {
-            width: 'auto',
-            maxWidth: '600px',
+            width: '100%',
         },
         md: {
-            width: '800px',
+            width: '500px',
             height: 'auto',
         },
     },

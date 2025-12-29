@@ -19,6 +19,7 @@ import { Button } from '@/components/Button'
 import { css, cva } from '../../../../styled-system/css'
 import { XIcon } from '@phosphor-icons/react'
 import { Tooltip } from '@/components/Tooltip'
+import { Input } from '@/components/Form/Input'
 
 interface HeroSearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
     showFilterOptions?: boolean
@@ -146,6 +147,38 @@ export function HeroSearchBar({
                     </Tooltip>
                 </form>
             </motion.div>
+            <div
+                className={css({
+                    display: {
+                        md: 'none',
+                        base: 'flex',
+                    },
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+
+                    '& input': {
+                        minWidth: '100%',
+                    },
+
+                    '& button': {
+                        width: '3.25rem',
+                        height: '3.25rem',
+                    },
+                })}
+            >
+                <Input
+                    {...props}
+                    onFocus={() => onInputFocusChange?.(true)}
+                    onBlur={() => onInputFocusChange?.(false)}
+                    type="text"
+                    placeholder={placeholder}
+                    inputSize="lg"
+                />
+                <Button iconButton variant="secondary" aria-label="Buscar">
+                    <MagnifyingGlassIcon size={24} weight="bold" />
+                </Button>
+            </div>
             {/* OPTIONS */}
             <AnimatePresence>
                 {showFilterOptions && (
@@ -288,7 +321,7 @@ const searchBarContainer = css({
         md: '800px',
         base: '70%',
     },
-    display: 'flex',
+    display: { md: 'flex', base: 'none' },
     alignItems: 'center',
     gap: '0.5rem 1rem',
     backgroundColor: 'background',
