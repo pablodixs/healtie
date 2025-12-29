@@ -47,6 +47,10 @@ export const bannerStyles = cva({
                 bgColor: 'red.100',
                 color: 'red.700',
             },
+            warning: {
+                bgColor: 'orange.100',
+                color: 'orange.700',
+            },
         },
         size: {
             sm: {

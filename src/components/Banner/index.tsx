@@ -11,7 +11,7 @@ interface BannerProps extends HTMLAttributes<HTMLDivElement> {
     actionLabel?: string
     actionIcon?: ReactNode
     secondaryAction?: ReactNode
-    variant?: 'info' | 'success' | 'error'
+    variant?: 'info' | 'success' | 'error' | 'warning'
     size?: 'sm' | 'md'
     icon?: ReactNode
     action?: () => void

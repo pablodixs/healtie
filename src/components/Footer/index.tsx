@@ -63,9 +63,10 @@ export function Footer() {
             </div>
             <section
                 className={stack({
+                    width: '100%',
                     justify: 'space-between',
                     direction: { base: 'column', md: 'row' },
-                    gap: '1.5rem',
+                    gap: { base: '1.5rem' },
                     paddingRight: { base: '0', md: '1rem' },
                     padding: { base: '1rem', md: '0' },
                 })}
@@ -85,6 +86,11 @@ export function Footer() {
                         <li>
                             <Link href="/datasus/consulta">
                                 Consulta DataSUS
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/contribuir/estabelecimentos">
+                                Adicionar um estabelecimento
                             </Link>
                         </li>
                     </ul>
@@ -196,7 +202,8 @@ const footerContainer = css({
     '& section': {
         width: '100%',
         paddingTop: '1rem',
-        display: 'flex',
+        display: { base: 'flex', md: 'grid' },
+        gridTemplateColumns: { md: 'repeat(4, 1fr)' },
         justifyContent: 'space-between',
     },
 })

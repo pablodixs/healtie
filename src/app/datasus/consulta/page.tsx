@@ -18,6 +18,7 @@ import { Spinner } from '@/components/spinner'
 import { Banner } from '@/components/Banner'
 import { XCircleIcon } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { Divider } from '@/components/Divider'
 
 interface ApiResponse {
     address: {
@@ -77,12 +78,18 @@ export default function Page() {
 
     return (
         <main>
-            <Heading>Consultar estabelecimento no DataSUS</Heading>
+            <Heading centered>Consultar estabelecimento no DataSUS</Heading>
+            <Paragraph centered size="subheadline">
+                Acesse informações detalhadas sobre unidades de saúde integradas
+                ao Sistema Único de Saúde. Informe o número do CNES abaixo para
+                validar a regularidade no estabelecimento selecionado.
+            </Paragraph>
+            <Divider />
             <div
                 className={css({
                     marginTop: '2rem',
                     display: { md: 'grid', base: 'block' },
-                    gridTemplateColumns: '2fr 1fr',
+                    gridTemplateColumns: '1fr 2fr',
                     gap: '2rem',
                 })}
             >
@@ -112,7 +119,7 @@ export default function Page() {
                                 aria-required="true"
                                 type="number"
                                 id="cnes"
-                                placeholder="Insira o número do CNES"
+                                placeholder="Ex: 6708714"
                                 style={{ width: '100%' }}
                                 onChange={(e) =>
                                     setCnesNumber(Number(e.target.value))

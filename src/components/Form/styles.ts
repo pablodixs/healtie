@@ -21,6 +21,14 @@ export const inputStyles = cva({
             outlineColor: 'oklch(0.796 0.105 252.7)',
             backgroundColor: 'oklch(0.950 0.024 252.7)',
         },
+
+        _hover: {
+            '&:not(:focus)': {
+                outline: '2px solid',
+                outlineOffset: '2px',
+                outlineColor: 'oklch(0.950 0.024 252.7)',
+            },
+        },
     },
     variants: {
         fullWidth: {
@@ -49,6 +57,14 @@ export const selectStyles = css({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right 10px center',
     backgroundSize: '1.125rem',
+
+    _hover: {
+        '&:not(:focus)': {
+            outline: '2px solid',
+            outlineOffset: '2px',
+            outlineColor: 'oklch(0.950 0.024 252.7)',
+        },
+    },
 
     _focus: {
         outline: '2px solid',
