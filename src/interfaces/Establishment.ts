@@ -5,8 +5,8 @@ export interface Establishment {
     description?: string
     address: string
     district: string
-    city: string
-    state: string
+    city: string | number
+    state: string | number
     zip_code: string
     abb: string
     type: string

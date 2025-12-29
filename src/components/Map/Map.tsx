@@ -49,8 +49,12 @@ export function MapComponent() {
     const urlHasValidCoords =
         typeof parsedLat === 'number' &&
         !isNaN(parsedLat) &&
+        parsedLat >= -90 &&
+        parsedLat <= 90 &&
         typeof parsedLon === 'number' &&
-        !isNaN(parsedLon)
+        !isNaN(parsedLon) &&
+        parsedLon >= -180 &&
+        parsedLon <= 180
 
     const initialView = useMemo(() => {
         if (urlHasValidCoords) {
@@ -167,13 +171,21 @@ export function MapComponent() {
         })
     }, [selectedEstablishment])
 
+    useEffect(() => {
+        return () => {
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current)
+            }
+        }
+    }, [])
+
     return (
         <motion.section
-            style={{
+            className={css({
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-            }}
+            })}
             initial={{ opacity: 0, filter: 'blur(2px)' }}
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             transition={{ delay: 0.5 }}
