@@ -97,7 +97,7 @@ export function HeroSearchContainer() {
                                 y: 30,
                             }}
                             transition={{ duration: 0.2 }}
-                            style={{ marginBottom: '1rem' }}
+                            className={css({ marginBottom: '1rem' })}
                         >
                             {/* <Link
                                 title="Campanha Nacional de Vacinação"
@@ -105,7 +105,7 @@ export function HeroSearchContainer() {
                             > */}
                             <Image
                                 src={'/images/doodles/2026-new-year.gif'}
-                                alt=""
+                                alt="Healtie Hoodle"
                                 width={800}
                                 height={320}
                                 quality={100}
