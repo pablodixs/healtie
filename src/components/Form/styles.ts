@@ -72,6 +72,12 @@ export const selectStyles = css({
             outlineOffset: '2px',
             outlineColor: 'oklch(0.950 0.024 252.7)',
         },
+
+        _disabled: {
+            outline: '0',
+            outlineOffset: '0',
+            outlineColor: 'transparent',
+        },
     },
 
     _focus: {
@@ -79,5 +85,15 @@ export const selectStyles = css({
         outlineOffset: '2px',
         outlineColor: 'oklch(0.796 0.105 252.7)',
         backgroundColor: 'oklch(0.950 0.024 252.7)',
+    },
+
+    _disabled: {
+        cursor: 'not-allowed',
+        backgroundColor: 'neutral.200',
+        color: 'neutral.700',
+
+        _active: {
+            scale: 1,
+        },
     },
 })

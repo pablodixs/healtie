@@ -83,12 +83,16 @@ const linkStyle = cva({
                 padding: 'inherit',
                 gap: '.25rem',
                 borderRadius: 0,
+                textDecoration: 'none',
+                textDecorationColor: 'oklch(0.950 0.024 252.7)',
 
                 _hover: {
                     scale: 1,
                     backgroundColor: 'transparent',
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
+                    textDecorationThickness: '2px',
+                    textDecorationColor: 'oklch(0.950 0.024 252.7)',
                 },
 
                 _active: {

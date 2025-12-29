@@ -9,7 +9,7 @@ export function BackButton() {
     const router = useRouter()
 
     return (
-        <Tooltip content="Voltar">
+        <Tooltip content="Voltar" placement="right">
             <Button
                 aria-label="Voltar"
                 variant="subtle"
