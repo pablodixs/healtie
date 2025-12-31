@@ -15,7 +15,7 @@ interface EstablishmentIconProps {
         | 'Unidade Básica de Saúde'
         | 'Unidade de Pronto Atendimento'
     delay?: boolean
-    size?: 'default' | 'small' | 'large'
+    size?: 'default' | 'small' | 'large' | 'xs'
     decoration?: boolean
     animation?: boolean
     square?: boolean

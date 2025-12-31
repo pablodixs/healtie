@@ -40,6 +40,15 @@ export const markerContainer = cva({
         },
         size: {
             default: {},
+            xs: {
+                width: '1.125rem',
+                height: '1.125rem',
+                border: '1px solid white',
+
+                '& svg': {
+                    fontSize: '0.75rem',
+                },
+            },
             small: {
                 width: '36px',
                 height: '36px',

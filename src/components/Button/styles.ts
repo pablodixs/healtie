@@ -17,6 +17,9 @@ export const buttonStyles = cva({
         textWrap: 'nowrap',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        outline: '2px solid',
+        outlineColor: 'transparent',
+        outlineOffset: '2px',
 
         padding: {
             lg: '0.625rem 1rem',
@@ -41,7 +44,7 @@ export const buttonStyles = cva({
             },
         },
 
-        _focus: {
+        _focusVisible: {
             outline: '2px solid',
             outlineOffset: '2px',
             outlineColor: 'oklch(0.796 0.105 252.7)',

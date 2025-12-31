@@ -22,6 +22,7 @@ import { Banner } from '@/components/Banner'
 import {
     CaretRightIcon,
     CircleNotchIcon,
+    MapPinIcon,
     QuestionIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentPointResponse } from '@/interfaces/Establishment'
@@ -34,6 +35,15 @@ import {
     formatDistance,
 } from '@/utils/functions/calculateDistance'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
+import {
+    AmbulanceIcon,
+    FirstAidIcon,
+    HospitalIcon,
+    MapTrifoldIcon,
+} from '@phosphor-icons/react'
+import { markerContainer } from '@/components/Map/maker.styles'
+import { Button } from '@/components/Button'
 
 export default function Page() {
     const router = useRouter()
@@ -92,28 +102,40 @@ export default function Page() {
         fetcher
     )
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setDebounced(localQuery)
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setDebounced(localQuery)
 
-            // Atualizar a URL do navegador
-            const params = new URLSearchParams()
-            if (localQuery) {
-                params.set('q', localQuery)
-            }
+    //         // Atualizar a URL do navegador
+    //         const params = new URLSearchParams()
+    //         if (localQuery) {
+    //             params.set('q', localQuery)
+    //         }
 
-            if (establishmentFilter) {
-                params.set('filter', establishmentFilter)
-            }
+    //         if (establishmentFilter) {
+    //             params.set('filter', establishmentFilter)
+    //         }
 
-            const newUrl = params.toString()
-                ? `/buscar?${params.toString()}`
-                : '/buscar'
+    //         const newUrl = params.toString()
+    //             ? `/buscar?${params.toString()}`
+    //             : '/buscar'
 
-            router.replace(newUrl, { scroll: false })
-        }, 300)
-        return () => clearTimeout(timer)
-    }, [localQuery, establishmentFilter, router])
+    //         router.replace(newUrl, { scroll: false })
+    //     }, 300)
+    //     return () => clearTimeout(timer)
+    // }, [localQuery, establishmentFilter, router])
+
+    const handleSearch = () => {
+        router.replace(
+            `/buscar?q=${encodeURIComponent(localQuery)}${
+                establishmentFilter
+                    ? `&filter=${encodeURIComponent(establishmentFilter)}`
+                    : ''
+            }`,
+            { scroll: false }
+        )
+        setDebounced(localQuery)
+    }
 
     return (
         <main
@@ -128,7 +150,7 @@ export default function Page() {
         >
             <div
                 className={css({
-                    display: 'flex',
+                    display: 'none',
                     alignItems: 'center',
                     gap: '1ch',
                 })}
@@ -141,14 +163,15 @@ export default function Page() {
                 onFilterChange={handleFilterChange}
                 autoFocus
                 value={localQuery}
-                onChange={handleChange}
+                onChange={(e) => setLocalQuery(e.target.value)}
+                searchAction={handleSearch}
             />
             <AnimatePresence mode="sync">
-                {data && data.length > 0 && localQuery.length >= 3 ? (
+                {data && data.length > 0 ? (
                     <motion.div
                         className={css({
                             width: '100%',
-                            maxWidth: '1000px',
+                            maxWidth: '1280px',
                             padding: {
                                 md: '0 1rem',
                                 base: '1rem',
@@ -172,74 +195,181 @@ export default function Page() {
                                 gap: '1rem',
                             })}
                         >
-                            {data.map((establishment) => (
+                            {data.map((establishment, index) => (
                                 <Link
                                     href={`/estabelecimento/${establishment.cnes}`}
                                     key={establishment.cnes}
                                     className={css({
-                                        padding: '1rem',
+                                        paddingY: '1rem',
                                         width: '100%',
-                                        background: 'neutral.100',
-                                        borderRadius: '12px',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        gap: '.75rem',
+                                        gap: '.25rem',
+                                        borderBottom: '1px solid',
+                                        borderColor: 'neutral.50',
+
+                                        _hover: {
+                                            '& b': {
+                                                color: 'oklch(0.543 0.196 252.7)',
+                                                textDecoration: 'underline',
+                                                textDecorationColor:
+                                                    'oklch(0.950 0.024 252.7)',
+                                                textDecorationThickness: '2px',
+                                                textUnderlineOffset: '3px',
+                                            },
+                                        },
                                     })}
                                 >
-                                    <MapMarkerDecoration
-                                        establishmentType={
-                                            establishment.type as
-                                                | 'Unidade Básica de Saúde'
-                                                | 'Hospital Geral'
-                                                | 'Unidade de Pronto Atendimento'
-                                        }
-                                    />
                                     <div
                                         className={css({
-                                            flex: 1,
                                             display: 'flex',
-                                            flexDirection: 'column',
+                                            gap: '0.75rem',
+                                            alignItems: 'center',
                                         })}
                                     >
-                                        <b
+                                        <span
                                             className={css({
-                                                fontWeight: 500,
-                                                fontSize: '1.125rem',
+                                                display: 'flex',
+                                                gap: '0.5rem',
+                                                alignItems: 'center',
+                                                marginBottom: '0.25rem',
                                             })}
                                         >
-                                            {establishment.name}
-                                        </b>
-                                        {coords && (
-                                            <span
-                                                className={css({
-                                                    fontSize: '0.875rem',
-                                                    color: 'green.600',
+                                            <div
+                                                className={markerContainer({
+                                                    type: establishment.type as
+                                                        | 'Hospital Geral'
+                                                        | 'Unidade Básica de Saúde'
+                                                        | 'Unidade de Pronto Atendimento',
+                                                    size: 'xs',
+                                                    square: true,
                                                 })}
                                             >
-                                                A{' '}
-                                                {formatDistance(
-                                                    calculateDistance(
-                                                        coords?.latitude,
-                                                        coords?.longitude,
-                                                        establishment
-                                                            .geolocation
-                                                            ?.latitude,
-                                                        establishment
-                                                            .geolocation
-                                                            ?.longitude
-                                                    )
-                                                )}{' '}
-                                                de distância
-                                            </span>
-                                        )}
+                                                {establishment.type ===
+                                                    'Hospital Geral' && (
+                                                    <HospitalIcon weight="fill" />
+                                                )}
+                                                {establishment.type ===
+                                                    'Unidade Básica de Saúde' && (
+                                                    <FirstAidIcon weight="fill" />
+                                                )}
+                                                {establishment.type ===
+                                                    'Unidade de Pronto Atendimento' && (
+                                                    <AmbulanceIcon weight="fill" />
+                                                )}
+                                            </div>
+                                            <Paragraph
+                                                size="caption"
+                                                marginCompact
+                                            >
+                                                {establishment.type}
+                                            </Paragraph>
+                                        </span>
                                     </div>
-                                    <CaretRightIcon
-                                        size={20}
+                                    <div
                                         className={css({
-                                            color: 'neutral.500',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
                                         })}
-                                    />
+                                    >
+                                        <div
+                                            className={css({
+                                                flex: 1,
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                            })}
+                                        >
+                                            <b
+                                                className={css({
+                                                    fontWeight: 500,
+                                                    fontSize: '1.125rem',
+                                                    color: 'oklch(0.643 0.196 252.7)',
+                                                })}
+                                            >
+                                                {establishment.name}
+                                            </b>
+                                            {coords && (
+                                                <div
+                                                    className={css({
+                                                        display: 'flex',
+                                                        gap: '0.25rem',
+                                                        alignItems: 'center',
+                                                        marginTop: '0.25rem',
+                                                    })}
+                                                >
+                                                    <span
+                                                        className={css({
+                                                            fontSize:
+                                                                '0.875rem',
+                                                            color: 'green.600',
+                                                        })}
+                                                    >
+                                                        A{' '}
+                                                        {formatDistance(
+                                                            calculateDistance(
+                                                                coords?.latitude,
+                                                                coords?.longitude,
+                                                                establishment
+                                                                    .geolocation
+                                                                    ?.latitude,
+                                                                establishment
+                                                                    .geolocation
+                                                                    ?.longitude
+                                                            )
+                                                        )}{' '}
+                                                        de distância
+                                                    </span>
+                                                    {index === 0 && (
+                                                        <div
+                                                            className={css({
+                                                                padding:
+                                                                    '4px 8px',
+                                                                backgroundColor:
+                                                                    'green.50',
+                                                                fontSize:
+                                                                    '0.875rem',
+                                                                lineHeight: '1',
+                                                                marginY:
+                                                                    '0.25rem',
+                                                                borderRadius:
+                                                                    '9999px',
+                                                                color: 'green.700',
+                                                                fontWeight: 500,
+                                                                display: 'flex',
+                                                                alignItems:
+                                                                    'center',
+                                                                gap: '0.25rem',
+                                                            })}
+                                                        >
+                                                            <MapPinIcon weight="bold" />
+                                                            <p>
+                                                                Mais próximo de
+                                                                você
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div
+                                            className={css({
+                                                display: 'flex',
+                                                gap: '1rem',
+                                                alignItems: 'center',
+                                            })}
+                                        >
+                                            <Button
+                                                variant="bordered"
+                                                iconButton
+                                            >
+                                                <MapTrifoldIcon />
+                                            </Button>
+                                            <Button
+                                                variant="bordered"
+                                                iconButton
+                                            >
+                                                <CaretRightIcon />
+                                            </Button>
+                                        </div>
+                                    </div>
                                 </Link>
                             ))}
                             <Banner

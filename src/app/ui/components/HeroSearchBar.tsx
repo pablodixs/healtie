@@ -121,6 +121,7 @@ export function HeroSearchBar({
                     />
                     {props.value && (
                         <Button
+                            type="reset"
                             iconButton
                             variant="textSubtle"
                             aria-label="Limpar campo de busca"
@@ -138,6 +139,7 @@ export function HeroSearchBar({
                     )}
                     <Tooltip content="Buscar">
                         <Button
+                            type="submit"
                             iconButton
                             variant="secondary"
                             aria-label="Buscar"

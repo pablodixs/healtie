@@ -7,8 +7,9 @@ import {
 import { Establishment } from '@/interfaces/Establishment'
 
 import { markerContainer } from './maker.styles'
+import { HTMLAttributes } from 'react'
 
-interface MapMarkerProps {
+interface MapMarkerProps extends HTMLAttributes<HTMLDivElement> {
     longitude?: number
     latitude?: number
     establishmentProps?: Establishment
