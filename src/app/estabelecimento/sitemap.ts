@@ -11,14 +11,18 @@ async function getAllEstablishmentIds() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const establishments = await getAllEstablishmentIds()
+    let establishments = await getAllEstablishmentIds()
     const baseUrl = 'https://healtie.app'
 
-    const urls = establishments.map(
+    if (!Array.isArray(establishments)) {
+        establishments = establishments?.data || establishments?.results || []
+    }
+
+    const urls = (Array.isArray(establishments) ? establishments : []).map(
         (item: { cnes: number; updatedAt: string }) => ({
             url: `${baseUrl}/estabelecimento/${item.cnes}`,
             lastModified: new Date(item.updatedAt || new Date()),
-            changeFrequency: 'weekly',
+            changeFrequency: 'weekly' as const,
             priority: 0.8,
         })
     )
