@@ -8,20 +8,17 @@ import { HydrationFix } from '@/components/HydrationFix'
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
-    title: 'Healtie — Seu guia de saúde pública',
+    title: {
+        default: 'Healtie - Seu guia de saúde pública',
+        template: '%s | Healtie',
+    },
     description:
-        'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
-    keywords: [
-        'saúde',
-        'estabelecimentos',
-        'healtie',
-        'mapa',
-        'ubs',
-        'upa',
-        'hospital',
-        'tempo de espera',
-        'onde ir',
-    ],
+        'Encontre estabelecimentos de saúde próximos a você com o Healtie. Acesse informações sobre UBS, UPA, hospitais e tempo de espera.',
+    icons: {
+        shortcut: '/favicon.ico',
+        icon: '/favicon.ico',
+        apple: '/meta/icons/apple-touch-icon.png',
+    },
     metadataBase: new URL('https://healtie.app'),
     alternates: {
         canonical: '/',
@@ -30,7 +27,7 @@ export const metadata: Metadata = {
         },
     },
     openGraph: {
-        title: 'Healtie — Seu guia de saúde pública',
+        title: 'Healtie',
         description:
             'Encontre estabelecimentos de saúde próximos a você com o Healtie.',
         url: 'https://healtie.app/',
