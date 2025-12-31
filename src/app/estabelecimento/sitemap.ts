@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://healtie.app'
 
     const urls = establishments.map(
-        (item: { cnes: string; updatedAt: string }) => ({
+        (item: { cnes: number; updatedAt: string }) => ({
             url: `${baseUrl}/estabelecimento/${item.cnes}`,
             lastModified: new Date(item.updatedAt || new Date()),
             changeFrequency: 'weekly',
