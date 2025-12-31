@@ -9,7 +9,7 @@ import { css } from '../../../styled-system/css'
 import { AsideSearchBar } from './components/AsideSearchBar'
 
 export const metadata: Metadata = {
-    title: 'Mapa | Healtie',
+    title: 'Mapa',
     description:
         'Explore e encontre estabelecimentos de saúde próximos a você no mapa do Healtie.',
     keywords: [

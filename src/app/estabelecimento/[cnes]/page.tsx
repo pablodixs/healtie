@@ -12,7 +12,7 @@ export async function generateMetadata({
     const data = await getEstablishment(cnes)
 
     return {
-        title: `${data.name} | Healtie`,
+        title: `${data.name} em ${data.address?.city}`,
         description: `Informações e status de ${data.name} no Healtie.`,
         keywords: [
             'healtie',
@@ -23,7 +23,7 @@ export async function generateMetadata({
             data.type || 'unidade de saúde',
         ],
         openGraph: {
-            title: `${data.name} | Healtie`,
+            title: `${data.name}`,
             description: `Informações e status de ${data.name} no Healtie.`,
             images: [
                 {

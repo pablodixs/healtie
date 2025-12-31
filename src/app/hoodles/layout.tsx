@@ -8,7 +8,7 @@ export const metadata: Metadata = {
         'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
     keywords: ['saúde', 'doodle', 'hoodles', 'healtie', 'funcionamento'],
     openGraph: {
-        title: 'Hoodles | Healtie',
+        title: 'Hoodles',
         description:
             'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
         url: 'https://healtie.app/hoodles',

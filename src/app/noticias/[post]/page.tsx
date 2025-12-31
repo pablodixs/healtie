@@ -34,10 +34,10 @@ export async function generateMetadata({ params }: Props) {
     }
 
     return {
-        title: data.title + ' | Healtie',
+        title: data.title + '',
         description: data.description,
         openGraph: {
-            title: data.title + ' | Healtie',
+            title: data.title + '',
             description: data.description,
             type: 'article',
             images: [

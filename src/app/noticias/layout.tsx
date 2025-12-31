@@ -3,11 +3,11 @@ import { ReactNode } from 'react'
 import { css } from '../../../styled-system/css'
 
 export const metadata: Metadata = {
-    title: 'Newsroom | Healtie',
+    title: 'Newsroom',
     description: 'Fique por dentro das novidades e atualizações do Healtie.',
     keywords: ['saúde', 'sobre', 'healtie', 'funcionamento'],
     openGraph: {
-        title: 'Newsroom | Healtie',
+        title: 'Newsroom',
         description:
             'Fique por dentro das novidades e atualizações do Healtie.',
         url: 'https://healtie.app/noticias',

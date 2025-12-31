@@ -3,12 +3,12 @@ import { css } from '../../../../styled-system/css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Consultar estabelecimento no DataSUS | Healtie',
+    title: 'Consultar estabelecimento no DataSUS',
     description:
         'Consulte informações de estabelecimentos de saúde no banco de dados do DataSUS através do Healtie.',
     keywords: ['saúde', 'doodle', 'hoodles', 'healtie', 'funcionamento'],
     openGraph: {
-        title: 'Consultar estabelecimento no DataSUS | Healtie',
+        title: 'Consultar estabelecimento no DataSUS',
         description:
             'Consulte informações de estabelecimentos de saúde no banco de dados do DataSUS através do Healtie.',
         url: 'https://healtie.app/datasus/consulta',
