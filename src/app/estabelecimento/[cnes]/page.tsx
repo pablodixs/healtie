@@ -11,6 +11,8 @@ export async function generateMetadata({
     const { cnes } = await params
     const data = await getEstablishment(cnes)
 
+    const baseUrl = 'https://healtie.app'
+
     return {
         title: `${data.name} em ${data.address?.city}`,
         description: `Informações e status de ${data.name} no Healtie.`,
@@ -22,6 +24,9 @@ export async function generateMetadata({
             data.address?.city ? String(data.address.city) : '',
             data.type || 'unidade de saúde',
         ],
+        alternates: {
+            canonical: `${baseUrl}/estabelecimento/${cnes}`,
+        },
         openGraph: {
             title: `${data.name}`,
             description: `Informações e status de ${data.name} no Healtie.`,
