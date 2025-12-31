@@ -3,14 +3,14 @@ import { css } from '../../../styled-system/css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Disponibilidade - Healtie',
+    title: 'Disponibilidade',
     description:
-        'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
+        'Explore onde o Healtie está disponível em diferentes cidades do Brasil.',
     keywords: ['saúde', 'cidades', 'disponiveis', 'healtie'],
     openGraph: {
         title: 'Disponibilidade',
         description:
-            'Explore os doodles do Healtie feitos para concientizar e celebrar datas importantes da saúde.',
+            'Explore onde o Healtie está disponível em diferentes cidades do Brasil.',
         url: 'https://healtie.app/regioes',
         siteName: 'Healtie',
         images: [
