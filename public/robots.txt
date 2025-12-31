@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /
+Disallow: /datasus/
 
 Sitemap: https://healtie.app/sitemap.xml
+Sitemap: https://healtie.app/estabelecimento/sitemap.xml
