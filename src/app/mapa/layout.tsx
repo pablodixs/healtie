@@ -12,16 +12,6 @@ export const metadata: Metadata = {
     title: 'Mapa',
     description:
         'Explore e encontre estabelecimentos de saúde próximos a você no mapa do Healtie.',
-    keywords: [
-        'mapa',
-        'saúde',
-        'estabelecimentos de saúde',
-        'ubs',
-        'upa',
-        'hospital',
-        'localização',
-        'healtie',
-    ],
     openGraph: {
         title: 'Mapa do Healtie',
         description:
