@@ -20,6 +20,7 @@ import { Paragraph } from '@/components/Typography/Paragraph'
 import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
 import { Banner } from '@/components/Banner'
 import {
+    ArrowUpRightIcon,
     CaretRightIcon,
     CircleNotchIcon,
     MapPinIcon,
@@ -29,21 +30,23 @@ import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import Link from 'next/link'
-import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
 import {
     calculateDistance,
     formatDistance,
 } from '@/utils/functions/calculateDistance'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
-import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import {
     AmbulanceIcon,
+    ArrowsDownUpIcon,
+    CaretDownIcon,
+    CrosshairIcon,
     FirstAidIcon,
     HospitalIcon,
     MapTrifoldIcon,
 } from '@phosphor-icons/react'
 import { markerContainer } from '@/components/Map/maker.styles'
 import { Button } from '@/components/Button'
+import { Divider } from '@/components/Divider'
 
 export default function Page() {
     const router = useRouter()
@@ -102,29 +105,6 @@ export default function Page() {
         fetcher
     )
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setDebounced(localQuery)
-
-    //         // Atualizar a URL do navegador
-    //         const params = new URLSearchParams()
-    //         if (localQuery) {
-    //             params.set('q', localQuery)
-    //         }
-
-    //         if (establishmentFilter) {
-    //             params.set('filter', establishmentFilter)
-    //         }
-
-    //         const newUrl = params.toString()
-    //             ? `/buscar?${params.toString()}`
-    //             : '/buscar'
-
-    //         router.replace(newUrl, { scroll: false })
-    //     }, 300)
-    //     return () => clearTimeout(timer)
-    // }, [localQuery, establishmentFilter, router])
-
     const handleSearch = () => {
         router.replace(
             `/buscar?q=${encodeURIComponent(localQuery)}${
@@ -144,7 +124,6 @@ export default function Page() {
                 flexDirection: 'column',
                 flex: 1,
                 alignItems: 'center',
-                gap: '1rem',
                 minHeight: '95dvh',
             })}
         >
@@ -183,9 +162,25 @@ export default function Page() {
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <Paragraph size="caption" subtle>
-                            {data.length} resultados{' '}
-                        </Paragraph>
+                        <div
+                            className={css({
+                                display: 'flex',
+                                gap: '1rem',
+                                alignItems: 'center',
+                            })}
+                        >
+                            <Button variant="bordered">
+                                <CrosshairIcon /> Seu local <CaretDownIcon />
+                            </Button>
+                            <Button variant="bordered">
+                                <ArrowsDownUpIcon /> Mais próximos{' '}
+                                <CaretDownIcon />
+                            </Button>
+                            <Paragraph size="caption" subtle>
+                                {data.length} resultados
+                            </Paragraph>
+                        </div>
+                        <Divider margin="compact" />
                         <div
                             className={css({
                                 alignItems: 'flex-start',
@@ -415,14 +410,103 @@ export default function Page() {
                         exit={{ opacity: 0 }}
                         transition={{ delay: 1 }}
                         className={css({
-                            // maxWidth: '800px',
-                            minWidth: '100%',
-                            padding: {
-                                md: '0 1rem',
-                                base: '1rem',
-                            },
+                            width: '100%',
+                            maxWidth: '800px',
                         })}
                     >
+                        <AnimatePresence>
+                            {localQuery && (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        height: 0,
+                                        marginBottom: 0,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        height: '1.75rem',
+                                        marginBottom: '1.5rem',
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        height: 0,
+                                        marginBottom: 0,
+                                    }}
+                                    transition={{
+                                        duration: 0.4,
+                                        type: 'spring',
+                                        bounce: 0,
+                                    }}
+                                    className={css({
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        maxWidth: '800px',
+                                        display: 'flex',
+                                        justifyContent: 'flex-start',
+                                        gap: '.5rem',
+                                        '& button': {
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '1ch',
+                                            padding: '0.125rem 0.75rem',
+                                            bg: 'neutral.100',
+                                            borderRadius: '9999px',
+                                            cursor: 'pointer',
+                                        },
+                                    })}
+                                >
+                                    <button>&quot;{localQuery}&quot;</button>
+                                    <AnimatePresence>
+                                        {localQuery.length > 3 && (
+                                            <motion.button
+                                                initial={{
+                                                    scale: 0.9,
+                                                    opacity: 0,
+                                                    filter: 'blur(2px)',
+                                                }}
+                                                animate={{
+                                                    scale: 1,
+                                                    opacity: 1,
+                                                    filter: 'blur(0px)',
+                                                }}
+                                                exit={{
+                                                    scale: 0.9,
+                                                    opacity: 0,
+                                                    filter: 'blur(2px)',
+                                                }}
+                                            >
+                                                Sugestão 1{' '}
+                                                <ArrowUpRightIcon weight="bold" />
+                                            </motion.button>
+                                        )}
+                                    </AnimatePresence>
+                                    <AnimatePresence>
+                                        {localQuery.length > 5 && (
+                                            <motion.button
+                                                initial={{
+                                                    scale: 0.9,
+                                                    opacity: 0,
+                                                    filter: 'blur(2px)',
+                                                }}
+                                                animate={{
+                                                    scale: 1,
+                                                    opacity: 1,
+                                                    filter: 'blur(0px)',
+                                                }}
+                                                exit={{
+                                                    scale: 0.9,
+                                                    opacity: 0,
+                                                    filter: 'blur(2px)',
+                                                }}
+                                            >
+                                                Sugestão 2{' '}
+                                                <ArrowUpRightIcon weight="bold" />
+                                            </motion.button>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                         <NearEstablishmentsBanner />
                     </motion.div>
                 )}

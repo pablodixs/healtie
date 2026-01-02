@@ -53,7 +53,7 @@ export function NearEstablishmentsBanner() {
                 <div
                     className={css({
                         padding: '1rem',
-                        backgroundColor: 'background',
+                        backgroundColor: 'neutral.50',
                         borderRadius: '22px',
                         maxW: '800px',
                         margin: '0 auto',
