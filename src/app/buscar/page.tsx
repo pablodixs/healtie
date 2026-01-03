@@ -26,7 +26,10 @@ import {
     MapPinIcon,
     QuestionIcon,
 } from '@phosphor-icons/react/dist/ssr'
-import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import {
+    EstablishmentPointResponse,
+    PageableEstablishmentResponse,
+} from '@/interfaces/Establishment'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import Link from 'next/link'
@@ -145,7 +148,7 @@ export default function Page() {
         const timeoutId = setTimeout(() => {
             axios
                 .get<SuggestionResponse[]>(
-                    `http://localhost:8080/v1/establishment/search/suggestions?q=${encodeURIComponent(
+                    `${API_URL}/establishment/search/suggestions?q=${encodeURIComponent(
                         localQuery
                     )}${coords ? `&lat=${coords.latitude}&lon=${coords.longitude}` : ''}`,
                     { signal: controller.signal }
@@ -177,13 +180,17 @@ export default function Page() {
         []
     )
 
-    const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading, error } = useSWR<PageableEstablishmentResponse>(
         debounced && debounced.length >= 3
             ? `${API_URL}/establishment/search?q=${encodeURIComponent(
                   debounced
               )}${
                   establishmentFilter
                       ? `&t=${encodeURIComponent(establishmentFilter)}`
+                      : ''
+              }${
+                  coords
+                      ? `&lat=${coords.latitude}&lon=${coords.longitude}`
                       : ''
               }`
             : null,
@@ -352,7 +359,7 @@ export default function Page() {
                 </AnimatePresence>
             </div>
             <AnimatePresence mode="sync">
-                {data && data.length > 0 ? (
+                {data && data.content.length > 0 ? (
                     <motion.div
                         className={css({
                             width: '100%',
@@ -383,7 +390,7 @@ export default function Page() {
                                 <CaretDownIcon />
                             </Button>
                             <Paragraph size="caption" subtle>
-                                {data.length} resultados
+                                {data.content.length} resultados
                             </Paragraph>
                         </div>
                         <Divider margin="compact" />
@@ -396,7 +403,7 @@ export default function Page() {
                                 gap: '1rem',
                             })}
                         >
-                            {data.map((establishment, index) => (
+                            {data.content.map((establishment, index) => (
                                 <Link
                                     href={`/estabelecimento/${establishment.cnes}`}
                                     key={establishment.cnes}
