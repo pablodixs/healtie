@@ -278,7 +278,7 @@ const optionCont = css({
 const filterButtonSelect = cva({
     base: {
         maxHeight: '3.375rem',
-        backgroundColor: 'background',
+        backgroundColor: 'neutral.100',
         color: 'primary',
         padding: '.75rem',
         borderRadius: 'full',
@@ -326,7 +326,7 @@ const searchBarContainer = css({
     display: { md: 'flex', base: 'none' },
     alignItems: 'center',
     gap: '0.5rem 1rem',
-    backgroundColor: 'background',
+    backgroundColor: 'neutral.100',
     padding: '.5rem',
     borderRadius: 'full',
     paddingLeft: '1.5rem',

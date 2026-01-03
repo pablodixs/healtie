@@ -31,6 +31,8 @@ interface ApiResponse {
     total_records: number
 }
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export default function Page() {
     const [isLoading, setIsLoading] = useState(false)
     const [response, setResponse] = useState<ApiResponse | null>(null)
@@ -49,14 +51,11 @@ export default function Page() {
         setResponse(null)
 
         axios
-            .post(
-                `https://healtie-bh7zc.ondigitalocean.app/v1/datasus/get-all`,
-                {
-                    stateCode: formData.stateCode,
-                    cityCode: formData.cityCode,
-                    establishmentTypeCode: formData.establishmentTypeCode,
-                }
-            )
+            .post(`${API_URL}/datasus/get-all`, {
+                stateCode: formData.stateCode,
+                cityCode: formData.cityCode,
+                establishmentTypeCode: formData.establishmentTypeCode,
+            })
             .catch((error) => {
                 setError(error.message)
             })

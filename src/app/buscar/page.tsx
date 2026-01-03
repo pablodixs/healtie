@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, stagger } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { css } from '../../../styled-system/css'
@@ -42,11 +42,55 @@ import {
     CrosshairIcon,
     FirstAidIcon,
     HospitalIcon,
+    MagnifyingGlassIcon,
     MapTrifoldIcon,
 } from '@phosphor-icons/react'
 import { markerContainer } from '@/components/Map/maker.styles'
 import { Button } from '@/components/Button'
 import { Divider } from '@/components/Divider'
+import axios from 'axios'
+
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
+interface SuggestionResponse {
+    cnes: number
+    name: string
+    type: string
+}
+
+const suggestionsContainer = {
+    visible: {
+        transition: {
+            when: 'beforeChildren',
+            delayChildren: stagger(0.1),
+            type: 'spring',
+            bounce: 0,
+        },
+    },
+    hidden: {
+        transition: {
+            when: 'afterChildren',
+        },
+    },
+} as const
+
+const suggestionsOptions = {
+    visible: {
+        y: 0,
+        opacity: 1,
+        filter: 'blur(0px)',
+    },
+    hidden: {
+        y: 20,
+        opacity: 0,
+        filter: 'blur(2px)',
+    },
+    exit: {
+        y: 0,
+        opacity: 0,
+        filter: 'blur(2px)',
+    },
+}
 
 export default function Page() {
     const router = useRouter()
@@ -58,6 +102,10 @@ export default function Page() {
     const [debounced, setDebounced] = useState('')
     const [localQuery, setLocalQuery] = useState(initialQuery)
     const { coords } = useUserGeolocation()
+
+    const [suggestions, setSuggestions] = useState<SuggestionResponse[] | null>(
+        null
+    )
 
     const query = searchParams.get('q') || ''
     const rawFilterParam = searchParams.get('filter')
@@ -73,11 +121,40 @@ export default function Page() {
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value
-            setLocalQuery(value)
+            setLocalQuery(e.target.value)
         },
         []
     )
+
+    useEffect(() => {
+        const controller = new AbortController()
+
+        if (!localQuery) {
+            setSuggestions(null)
+            return () => controller.abort()
+        }
+
+        const timeoutId = setTimeout(() => {
+            axios
+                .get<SuggestionResponse[]>(
+                    `http://localhost:8080/v1/establishment/search/suggestions?q=${encodeURIComponent(
+                        localQuery
+                    )}${coords ? `&lat=${coords.latitude}&lon=${coords.longitude}` : ''}`,
+                    { signal: controller.signal }
+                )
+                .then((response) => {
+                    setSuggestions(response.data)
+                })
+                .catch(() => {
+                    setSuggestions(null)
+                })
+        }, 300)
+
+        return () => {
+            clearTimeout(timeoutId)
+            controller.abort()
+        }
+    }, [localQuery])
 
     const handleFilterChange = useCallback(
         (
@@ -94,7 +171,7 @@ export default function Page() {
 
     const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
         debounced && debounced.length >= 3
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/search?q=${encodeURIComponent(
+            ? `${API_URL}/establishment/search?q=${encodeURIComponent(
                   debounced
               )}${
                   establishmentFilter
@@ -104,6 +181,8 @@ export default function Page() {
             : null,
         fetcher
     )
+
+    console.log(data)
 
     const handleSearch = () => {
         router.replace(
@@ -142,7 +221,7 @@ export default function Page() {
                 onFilterChange={handleFilterChange}
                 autoFocus
                 value={localQuery}
-                onChange={(e) => setLocalQuery(e.target.value)}
+                onChange={(e) => handleChange(e)}
                 searchAction={handleSearch}
             />
             <AnimatePresence mode="sync">
@@ -405,14 +484,14 @@ export default function Page() {
                     </div>
                 ) : (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ delay: 1 }}
                         className={css({
                             width: '100%',
                             maxWidth: '800px',
                         })}
+                        initial="hidden"
+                        animate="visible"
                     >
                         <AnimatePresence>
                             {localQuery && (
@@ -424,7 +503,7 @@ export default function Page() {
                                     }}
                                     animate={{
                                         opacity: 1,
-                                        height: '1.75rem',
+                                        height: '30rem',
                                         marginBottom: '1.5rem',
                                     }}
                                     exit={{
@@ -437,77 +516,104 @@ export default function Page() {
                                         type: 'spring',
                                         bounce: 0,
                                     }}
+                                    variants={suggestionsContainer}
                                     className={css({
                                         overflow: 'hidden',
                                         width: '100%',
                                         maxWidth: '800px',
                                         display: 'flex',
-                                        justifyContent: 'flex-start',
-                                        gap: '.5rem',
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        gap: '1rem',
                                         '& button': {
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: '1ch',
-                                            padding: '0.125rem 0.75rem',
+                                            padding: '0.25rem 0.5rem',
                                             bg: 'neutral.100',
                                             borderRadius: '9999px',
                                             cursor: 'pointer',
+                                            textWrap: 'nowrap',
                                         },
                                     })}
                                 >
-                                    <button>&quot;{localQuery}&quot;</button>
-                                    <AnimatePresence>
-                                        {localQuery.length > 3 && (
-                                            <motion.button
-                                                initial={{
-                                                    scale: 0.9,
-                                                    opacity: 0,
-                                                    filter: 'blur(2px)',
-                                                }}
-                                                animate={{
-                                                    scale: 1,
-                                                    opacity: 1,
-                                                    filter: 'blur(0px)',
-                                                }}
-                                                exit={{
-                                                    scale: 0.9,
-                                                    opacity: 0,
-                                                    filter: 'blur(2px)',
-                                                }}
+                                    <button onClick={handleSearch}>
+                                        <MagnifyingGlassIcon weight="bold" />
+                                        <span>
+                                            Buscar por{' '}
+                                            <b
+                                                className={css({
+                                                    fontWeight: 500,
+                                                })}
                                             >
-                                                Sugestão 1{' '}
-                                                <ArrowUpRightIcon weight="bold" />
-                                            </motion.button>
-                                        )}
-                                    </AnimatePresence>
-                                    <AnimatePresence>
-                                        {localQuery.length > 5 && (
-                                            <motion.button
-                                                initial={{
-                                                    scale: 0.9,
-                                                    opacity: 0,
-                                                    filter: 'blur(2px)',
-                                                }}
-                                                animate={{
-                                                    scale: 1,
-                                                    opacity: 1,
-                                                    filter: 'blur(0px)',
-                                                }}
-                                                exit={{
-                                                    scale: 0.9,
-                                                    opacity: 0,
-                                                    filter: 'blur(2px)',
-                                                }}
-                                            >
-                                                Sugestão 2{' '}
-                                                <ArrowUpRightIcon weight="bold" />
-                                            </motion.button>
-                                        )}
+                                                &quot;{localQuery}&quot;
+                                            </b>
+                                        </span>
+                                    </button>
+                                    <AnimatePresence mode="wait">
+                                        {suggestions &&
+                                            suggestions.map((suggestion) => (
+                                                <motion.button
+                                                    onClick={() =>
+                                                        router.push(
+                                                            `/estabelecimento/${suggestion.cnes}`
+                                                        )
+                                                    }
+                                                    transition={{
+                                                        duration: 0.4,
+                                                        type: 'spring',
+                                                        bounce: 0,
+                                                    }}
+                                                    variants={
+                                                        suggestionsOptions
+                                                    }
+                                                    key={suggestion.cnes}
+                                                >
+                                                    {
+                                                        <div
+                                                            className={markerContainer(
+                                                                {
+                                                                    type: suggestion.type as
+                                                                        | 'Hospital Geral'
+                                                                        | 'Unidade Básica de Saúde'
+                                                                        | 'Unidade de Pronto Atendimento',
+                                                                    size: 'xs',
+                                                                    square: true,
+                                                                }
+                                                            )}
+                                                        >
+                                                            {suggestion.type ===
+                                                                'Hospital Geral' && (
+                                                                <HospitalIcon weight="fill" />
+                                                            )}
+                                                            {suggestion.type ===
+                                                                'Unidade Básica de Saúde' && (
+                                                                <FirstAidIcon weight="fill" />
+                                                            )}
+                                                            {suggestion.type ===
+                                                                'Unidade de Pronto Atendimento' && (
+                                                                <AmbulanceIcon weight="fill" />
+                                                            )}
+                                                        </div>
+                                                    }
+                                                    {suggestion.name}
+                                                    <ArrowUpRightIcon weight="bold" />
+                                                </motion.button>
+                                            ))}
                                     </AnimatePresence>
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                        <NearEstablishmentsBanner />
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                opacity: localQuery ? 0 : 1,
+                                filter: `blur(${localQuery ? 4 : 0}px)`,
+                            }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <NearEstablishmentsBanner />
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>

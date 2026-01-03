@@ -11,6 +11,8 @@ import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 interface IndicatorsTabProps {
     establishment: EstablishmentResponse | undefined
     setSelectedTab: (
@@ -28,7 +30,7 @@ export interface IndicatorsData {
 
 export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
     const { data } = useSWR<IndicatorsData>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/indicators`,
+        `${API_URL}/establishment/${establishment?.cnes}/indicators`,
         fetcher
     )
 

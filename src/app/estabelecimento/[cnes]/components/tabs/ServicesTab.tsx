@@ -19,6 +19,8 @@ import {
 import { Spinner } from '@/components/spinner'
 import { Button } from '@/components/Button'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 interface ServicesTabProps {
     cnes: number
     establishment: EstablishmentResponse | undefined
@@ -29,7 +31,7 @@ interface ServicesTabProps {
 
 export function ServicesTab({ cnes }: ServicesTabProps) {
     const { data, isLoading } = useSWR<EstablishmentServices>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${cnes}/services`,
+        `${API_URL}/establishment/${cnes}/services`,
         fetcher
     )
     return (

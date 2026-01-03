@@ -15,6 +15,8 @@ import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { Link } from '@/components/Link'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export function AsideSearchBar() {
     const [isInputFocused, setIsInputFocused] = useState(false)
 
@@ -25,7 +27,7 @@ export function AsideSearchBar() {
 
     const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
         debounced
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/search?q=${debounced}&limit=5`
+            ? `${API_URL}/establishment/search?q=${debounced}&limit=5`
             : null,
         fetcher
     )

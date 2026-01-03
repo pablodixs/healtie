@@ -26,6 +26,8 @@ import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import axios from 'axios'
 import { Label } from '@/components/Form/Label'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 interface ReportModalProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
@@ -66,7 +68,7 @@ export function ReportModal({
 
     const postIndicators = async () => {
         await axios.post(
-            `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment.cnes}/indicators`,
+            `${API_URL}/establishment/${establishment.cnes}/indicators`,
             { indicators }
         )
     }

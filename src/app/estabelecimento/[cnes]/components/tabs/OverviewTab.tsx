@@ -25,6 +25,8 @@ import { EstablishmentServices } from '@/interfaces/EstablishmentServices'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 interface OverviewTabProps {
     establishment: EstablishmentResponse | undefined
     setSelectedTab: (
@@ -37,11 +39,11 @@ export function OverviewTab({
     setSelectedTab,
 }: OverviewTabProps) {
     const { data: indicatorsData } = useSWR<IndicatorsData>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/indicators`,
+        `${API_URL}/establishment/${establishment?.cnes}/indicators`,
         fetcher
     )
     const { data: servicesData, isLoading } = useSWR<EstablishmentServices>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${establishment?.cnes}/services`,
+        `${API_URL}/establishment/${establishment?.cnes}/services`,
         fetcher
     )
 

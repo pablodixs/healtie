@@ -1,12 +1,11 @@
 import { MetadataRoute } from 'next'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 async function getAllEstablishmentIds() {
-    const res = await fetch(
-        'https://healtie-bh7zc.ondigitalocean.app/v1/establishment/all',
-        {
-            next: { revalidate: 86400 },
-        }
-    )
+    const res = await fetch(`${API_URL}/establishment/all`, {
+        next: { revalidate: 86400 },
+    })
     return res.json()
 }
 

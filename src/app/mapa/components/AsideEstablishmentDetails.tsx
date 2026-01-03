@@ -34,6 +34,8 @@ import { ErrorState } from './states/ErrorState'
 import { Paragraph } from '@/components/Typography'
 import { LoadingState } from './states/LoadingState'
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 interface AsideEstablishmentDetailsProps {
     selectedEstablishmentCnes: number | string
 }
@@ -42,7 +44,7 @@ export function AsideEstablishmentDetails({
     selectedEstablishmentCnes,
 }: AsideEstablishmentDetailsProps) {
     const { data, isLoading } = useSWR<EstablishmentResponse>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/${selectedEstablishmentCnes}`,
+        `${API_URL}/establishment/${selectedEstablishmentCnes}`,
         fetcher
     )
 

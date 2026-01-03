@@ -77,9 +77,11 @@ export function MapComponent() {
 
     const { viewState, setViewState } = useMapView(initialView)
 
+    const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
     const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
         bbox && viewState.zoom >= 13
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
+            ? `${API_URL}/establishment/bbox?minLat=${bbox.minLat}&maxLat=${bbox.maxLat}&minLong=${bbox.minLon}&maxLong=${bbox.maxLon}`
             : null,
         fetcher,
         { revalidateOnFocus: false, keepPreviousData: true }

@@ -24,6 +24,8 @@ import { markerContainer } from '../Map/maker.styles'
 
 export type NearbyEstablishment = Establishment & { distance: number }
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export function NearEstablishmentsBanner() {
     const {
         coords,
@@ -35,7 +37,7 @@ export function NearEstablishmentsBanner() {
 
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords?.latitude}&longitude=${coords?.longitude}&radiusInKm=5000`
+            ? `${API_URL}/establishment/nearby?latitude=${coords?.latitude}&longitude=${coords?.longitude}&radiusInKm=5000`
             : null,
         fetcher,
         {

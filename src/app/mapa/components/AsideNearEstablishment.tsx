@@ -27,11 +27,13 @@ export interface NearbyEstablishmentsResponse {
     }
 }
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export function AsideNearEstablishments({
     coords,
 }: AsideNearEstablishmentsProps) {
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
-        `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
+        `${API_URL}/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=5000`,
         fetcher
     )
 

@@ -86,11 +86,13 @@ const infoBoxStyles = css({
     textAlign: 'left',
 })
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 function HospitalResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
+            ? `${API_URL}/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=HOSPITAL`
             : null,
         fetcher
     )
@@ -241,7 +243,7 @@ function UpaResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UPA`
+            ? `${API_URL}/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UPA`
             : null,
         fetcher
     )
@@ -389,7 +391,7 @@ function UbsResult({ onRestart }: { onRestart: () => void }) {
     const { coords } = useUserGeolocation()
     const { data, isLoading } = useSWR<NearbyEstablishmentsResponse[]>(
         coords
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UBS`
+            ? `${API_URL}/establishment/nearby?latitude=${coords.latitude}&longitude=${coords.longitude}&radiusInKm=30000&type=UBS`
             : null,
         fetcher
     )

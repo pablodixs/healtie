@@ -44,6 +44,8 @@ interface ApiResponse {
     available_on_healtie: boolean
 }
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export default function Page() {
     const [cnesNumber, setCnesNumber] = useState<number | null>(null)
     const [isFetching, setIsFetching] = useState<boolean>(false)
@@ -58,9 +60,7 @@ export default function Page() {
         setResponse(null)
 
         axios
-            .get(
-                `https://healtie-bh7zc.ondigitalocean.app/v1/datasus/establishment/${cnesNumber}`
-            )
+            .get(`${API_URL}/datasus/establishment/${cnesNumber}`)
             .catch((error) => {
                 setError(
                     error.response?.data?.message ||

@@ -30,6 +30,8 @@ const FILTER_OPTIONS = {
     null: { label: 'todo o Healtie' },
 }
 
+const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+
 export function HeroSearchContainer() {
     const [debounced, setDebounced] = useState('')
     const [isSearchBarFocused, setIsSearchBarFocused] = useState(false)
@@ -40,7 +42,7 @@ export function HeroSearchContainer() {
 
     const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
         debounced && debounced.length >= 3
-            ? `https://healtie-bh7zc.ondigitalocean.app/v1/establishment/search?q=${encodeURIComponent(
+            ? `${API_URL}/establishment/search?q=${encodeURIComponent(
                   debounced
               )}${filterValue ? `&filter=${encodeURIComponent(filterValue)}` : ''}&limit=5`
             : null,
