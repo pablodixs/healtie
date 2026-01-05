@@ -20,6 +20,13 @@ export interface Establishment {
 export interface EstablishmentPointResponse {
     cnes: number
     name: string
+    geolocation: Geolocation
+    type: string
+}
+
+export interface EstablishmentSearchResponse {
+    cnes: number
+    name: string
     coordinates: Geolocation
     type: string
     phone: string | null
@@ -34,7 +41,7 @@ interface Geolocation {
 }
 
 export interface PageableEstablishmentResponse {
-    content: EstablishmentPointResponse[]
+    content: EstablishmentSearchResponse[]
     empty: boolean
     first: boolean
     last: boolean
