@@ -1,661 +1,185 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { AnimatePresence, motion, stagger } from 'motion/react'
+import useSWR from 'swr'
+import { AnimatePresence } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
-import { css } from '../../../styled-system/css'
-
-import { HeroSearchBar } from '../ui/components/HeroSearchBar'
+import { fetcher } from '@/lib/swrFetcher'
+import { API_ENDPOINTS } from '@/lib/apiConfig'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
+import { SuggestionResponse } from '@/interfaces/SearchSuggestions'
+import { PageableEstablishmentResponse } from '@/interfaces/Establishment'
 
 import { Heading } from '@/components/Typography/Heading'
+import { HeroSearchBar } from '../ui/components/HeroSearchBar'
+
+import {
+    headingHiddenContainer,
+    mainContainer,
+    searchBarContainer,
+} from './styles'
+
+import { SearchSuggestions } from './components/search-suggestions'
+import { SearchResults } from './components/search-results'
+import { SearchEmpty } from './components/search-empty'
+import { SearchLoadingView } from './components/search-loading-view'
+import { SearchDefaultView } from './components/search-default-view'
 
 const allowedFilters = ['HOSPITAL', 'UPA', 'UBS'] as const
 type AllowedFilter = (typeof allowedFilters)[number]
+
 function isAllowedFilter(value: string | null): value is AllowedFilter {
     return !!value && allowedFilters.includes(value as AllowedFilter)
 }
-import { NoResultsEmptyState } from './components/NoResultsEmpytState'
-import { Paragraph } from '@/components/Typography/Paragraph'
-import { NearEstablishmentsBanner } from '@/components/NearEstablishmentsBanner'
-import { Banner } from '@/components/Banner'
-import {
-    ArrowUpRightIcon,
-    CaretRightIcon,
-    CircleNotchIcon,
-    MapPinIcon,
-    PhoneIcon,
-    QuestionIcon,
-} from '@phosphor-icons/react/dist/ssr'
-import {
-    EstablishmentPointResponse,
-    PageableEstablishmentResponse,
-} from '@/interfaces/Establishment'
-import useSWR from 'swr'
-import { fetcher } from '@/lib/swrFetcher'
-import Link from 'next/link'
-import {
-    calculateDistance,
-    formatDistance,
-} from '@/utils/functions/calculateDistance'
-import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
-import {
-    AmbulanceIcon,
-    ArrowsDownUpIcon,
-    CaretDownIcon,
-    CrosshairIcon,
-    FirstAidIcon,
-    HospitalIcon,
-    MagnifyingGlassIcon,
-    MapTrifoldIcon,
-} from '@phosphor-icons/react'
-import { markerContainer } from '@/components/Map/maker.styles'
-import { Button } from '@/components/Button'
-import { Divider } from '@/components/Divider'
-import axios from 'axios'
 
-const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
-
-interface SuggestionResponse {
-    cnes: number
-    name: string
-    type: string
-}
-
-const suggestionsContainer = {
-    visible: {
-        opacity: 1,
-        filter: 'blur(0px)',
-        y: 0,
-        transition: {
-            when: 'beforeChildren',
-            delayChildren: stagger(0.1),
-        },
-    },
-    hidden: {
-        opacity: 0,
-        filter: 'blur(2px)',
-        y: -10,
-        transition: {
-            when: 'afterChildren',
-            delayChildren: stagger(0.1),
-        },
-    },
-} as const
-
-const suggestionsOptions = {
-    visible: {
-        y: 0,
-        opacity: 1,
-        filter: 'blur(0px)',
-    },
-    hidden: {
-        y: '-100%',
-        opacity: 0,
-        filter: 'blur(2px)',
-    },
-    exit: {
-        y: 0,
-        opacity: 0,
-        filter: 'blur(2px)',
-    },
-}
+const DEBOUNCE_DELAY = 300
+const MIN_QUERY_LENGTH = 3
 
 export default function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const [establishmentFilter, setEstablishmentFilter] = useState<
-        string | null
-    >(null)
-    const initialQuery = searchParams.get('q') || ''
-    const [debounced, setDebounced] = useState('')
-    const [localQuery, setLocalQuery] = useState(initialQuery)
     const { coords } = useUserGeolocation()
 
-    const [suggestions, setSuggestions] = useState<SuggestionResponse[] | null>(
-        null
-    )
-
-    const query = searchParams.get('q') || ''
+    const urlQuery = searchParams.get('q') || ''
     const rawFilterParam = searchParams.get('filter')
     const filterParam = isAllowedFilter(rawFilterParam) ? rawFilterParam : null
-    const [inputFocused, setInputFocused] = useState<boolean | undefined>(
-        undefined
-    )
+
+    const [query, setQuery] = useState(urlQuery)
+    const [establishmentFilter, setEstablishmentFilter] = useState<
+        string | null
+    >(filterParam)
+    const [inputFocused, setInputFocused] = useState(false)
+
+    const debouncedQuery = useDebounce(query, DEBOUNCE_DELAY)
 
     useEffect(() => {
-        setLocalQuery(query)
-    }, [query])
+        setQuery(urlQuery)
+    }, [urlQuery])
 
     useEffect(() => {
         setEstablishmentFilter(filterParam)
     }, [filterParam])
 
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            setLocalQuery(e.target.value)
-        },
-        []
-    )
-
-    useEffect(() => {
-        const controller = new AbortController()
-
-        if (!localQuery) {
-            setSuggestions(null)
-            return () => controller.abort()
+    const suggestionsUrl = useMemo(() => {
+        if (!debouncedQuery || debouncedQuery.length < MIN_QUERY_LENGTH) {
+            return null
         }
 
-        const timeoutId = setTimeout(() => {
-            axios
-                .get<SuggestionResponse[]>(
-                    `${API_URL}/establishment/search/suggestions?q=${encodeURIComponent(
-                        localQuery
-                    )}${coords ? `&lat=${coords.latitude}&lon=${coords.longitude}` : ''}`,
-                    { signal: controller.signal }
-                )
-                .then((response) => {
-                    setSuggestions(response.data)
-                })
-                .catch(() => {
-                    setSuggestions(null)
-                })
-        }, 200)
+        const params = new URLSearchParams({
+            q: debouncedQuery,
+        })
 
-        return () => {
-            clearTimeout(timeoutId)
-            controller.abort()
+        if (coords) {
+            params.append('lat', coords.latitude.toString())
+            params.append('lon', coords.longitude.toString())
         }
-    }, [localQuery, coords])
 
-    const handleFilterChange = useCallback(
-        (
-            newFilter: string | null | ((prev: string | null) => string | null)
-        ) => {
-            if (typeof newFilter === 'function') {
-                setEstablishmentFilter((prev) => newFilter(prev))
-            } else {
-                setEstablishmentFilter(newFilter)
-            }
-        },
-        []
+        return `${API_ENDPOINTS.establishment.suggestions}?${params.toString()}`
+    }, [debouncedQuery, coords])
+
+    const searchUrl = useMemo(() => {
+        if (!urlQuery || urlQuery.length < MIN_QUERY_LENGTH) {
+            return null
+        }
+
+        const params = new URLSearchParams({
+            q: urlQuery,
+        })
+
+        if (establishmentFilter) {
+            params.append('t', establishmentFilter)
+        }
+
+        if (coords) {
+            params.append('lat', coords.latitude.toString())
+            params.append('lon', coords.longitude.toString())
+        }
+
+        return `${API_ENDPOINTS.establishment.search}?${params.toString()}`
+    }, [urlQuery, establishmentFilter, coords])
+
+    const { data: suggestions } = useSWR<SuggestionResponse[]>(
+        suggestionsUrl,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            dedupingInterval: 500,
+        }
     )
 
     const { data, isLoading, error } = useSWR<PageableEstablishmentResponse>(
-        debounced && debounced.length >= 3
-            ? `${API_URL}/establishment/search?q=${encodeURIComponent(
-                  debounced
-              )}${
-                  establishmentFilter
-                      ? `&t=${encodeURIComponent(establishmentFilter)}`
-                      : ''
-              }${
-                  coords
-                      ? `&lat=${coords.latitude}&lon=${coords.longitude}`
-                      : ''
-              }`
-            : null,
+        searchUrl,
         fetcher
     )
 
-    const handleSearch = () => {
-        router.replace(
-            `/buscar?q=${encodeURIComponent(localQuery)}${
-                establishmentFilter
-                    ? `&filter=${encodeURIComponent(establishmentFilter)}`
-                    : ''
-            }`,
-            { scroll: false }
-        )
-        setDebounced(localQuery)
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setQuery(e.target.value)
+        },
+        []
+    )
+
+    const handleSearch = useCallback(() => {
+        const params = new URLSearchParams()
+
+        if (query) {
+            params.append('q', query)
+        }
+
+        if (establishmentFilter) {
+            params.append('filter', establishmentFilter)
+        }
+
+        router.replace(`/buscar?${params.toString()}`, { scroll: false })
+    }, [query, establishmentFilter, router])
+
+    const handleInputFocusChange = useCallback(() => {
+        setInputFocused((prev) => !prev)
+    }, [])
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <SearchLoadingView />
+        }
+
+        if (error) {
+            return <SearchEmpty query={query} />
+        }
+
+        if (data && data.content.length > 0) {
+            return <SearchResults data={data} coords={coords} />
+        }
+
+        return <SearchDefaultView />
     }
 
     return (
-        <main
-            className={css({
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-                alignItems: 'center',
-                minHeight: '95dvh',
-            })}
-        >
-            <div
-                className={css({
-                    display: 'none',
-                    alignItems: 'center',
-                    gap: '1ch',
-                })}
-            >
+        <main className={mainContainer}>
+            <div className={headingHiddenContainer}>
                 <Heading>Buscar</Heading>
             </div>
-            <div className={css({ position: 'relative' })}>
+            <div className={searchBarContainer}>
                 <HeroSearchBar
                     showFilterOptions
                     filterValue={establishmentFilter}
-                    onFilterChange={handleFilterChange}
+                    onFilterChange={setEstablishmentFilter}
                     autoFocus
-                    value={localQuery}
-                    onChange={(e) => handleChange(e)}
+                    value={query}
+                    onChange={handleChange}
                     searchAction={handleSearch}
                     isInputFocused={inputFocused}
-                    onInputFocusChange={() => setInputFocused(!inputFocused)}
+                    onInputFocusChange={handleInputFocusChange}
                 />
-                <AnimatePresence>
-                    {localQuery && inputFocused && (
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            exit="hidden"
-                            transition={{
-                                type: 'spring',
-                            }}
-                            variants={suggestionsContainer}
-                            className={css({
-                                position: 'absolute',
-                                top: '4rem',
-                                zIndex: 50,
-                                width: '100%',
-                                maxWidth: '800px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-start',
-                                gap: '.5rem',
-
-                                _after: {
-                                    content: "''",
-                                    position: 'absolute',
-                                    bottom: '-2rem',
-                                    left: '-2rem',
-                                    right: '-2rem',
-                                    width: '100%',
-                                    height: '100%',
-                                    bg: 'rgba(255, 255, 255, 0.8)',
-                                    zIndex: -1,
-                                    filter: 'blur(20px)',
-                                },
-
-                                '& button': {
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '1ch',
-                                    padding: '0.5rem 0.75rem',
-                                    bg: 'white',
-                                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                                    borderRadius: '9999px',
-                                    cursor: 'pointer',
-                                    textWrap: 'nowrap',
-                                    boxShadow: '0 0 20px rgba(0, 0, 0, 0.05)',
-                                    transition: 'border-color 0.1s',
-
-                                    _hover: {
-                                        borderColor: 'rgba(0, 0, 0, 0.2)',
-                                    },
-                                },
-                            })}
-                        >
-                            <button
-                                onClick={handleSearch}
-                                className={css({ zIndex: 51 })}
-                            >
-                                <MagnifyingGlassIcon weight="bold" />
-                                <span>
-                                    Buscar por{' '}
-                                    <b
-                                        className={css({
-                                            fontWeight: 500,
-                                        })}
-                                    >
-                                        &quot;{localQuery}&quot;
-                                    </b>
-                                </span>
-                            </button>
-                            <AnimatePresence mode="wait">
-                                {suggestions &&
-                                    suggestions.map((suggestion) => (
-                                        <motion.button
-                                            onClick={() =>
-                                                router.push(
-                                                    `/estabelecimento/${suggestion.cnes}`
-                                                )
-                                            }
-                                            initial="hidden"
-                                            animate="visible"
-                                            exit="exit"
-                                            transition={{
-                                                duration: 0.4,
-                                                type: 'spring',
-                                            }}
-                                            variants={suggestionsOptions}
-                                            key={suggestion.cnes}
-                                        >
-                                            {
-                                                <div
-                                                    className={markerContainer({
-                                                        type: suggestion.type as
-                                                            | 'Hospital Geral'
-                                                            | 'Unidade Básica de Saúde'
-                                                            | 'Unidade de Pronto Atendimento',
-                                                        size: 'xs',
-                                                        square: true,
-                                                    })}
-                                                >
-                                                    {suggestion.type ===
-                                                        'Hospital Geral' && (
-                                                        <HospitalIcon weight="fill" />
-                                                    )}
-                                                    {suggestion.type ===
-                                                        'Unidade Básica de Saúde' && (
-                                                        <FirstAidIcon weight="fill" />
-                                                    )}
-                                                    {suggestion.type ===
-                                                        'Unidade de Pronto Atendimento' && (
-                                                        <AmbulanceIcon weight="fill" />
-                                                    )}
-                                                </div>
-                                            }
-                                            {suggestion.name}
-                                            <ArrowUpRightIcon weight="bold" />
-                                        </motion.button>
-                                    ))}
-                            </AnimatePresence>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                <SearchSuggestions
+                    localQuery={query}
+                    inputFocused={inputFocused}
+                    handleSearch={handleSearch}
+                    suggestions={suggestions ?? null}
+                />
             </div>
-            <AnimatePresence mode="sync">
-                {data && data.content.length > 0 ? (
-                    <motion.div
-                        className={css({
-                            width: '100%',
-                            maxWidth: '1280px',
-                            padding: {
-                                md: '0 1rem',
-                                base: '1rem',
-                            },
-                        })}
-                        key="results"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <div
-                            className={css({
-                                display: 'flex',
-                                gap: '1rem',
-                                alignItems: 'center',
-                            })}
-                        >
-                            <Paragraph size="caption" subtle>
-                                {data.content.length} resultados
-                            </Paragraph>
-                        </div>
-                        <Divider margin="ultracompact" />
-                        <div
-                            className={css({
-                                alignItems: 'flex-start',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '100%',
-                                gap: '1rem',
-                            })}
-                        >
-                            {data.content.map((establishment, index) => (
-                                <Link
-                                    href={`/estabelecimento/${establishment.cnes}`}
-                                    key={establishment.cnes}
-                                    className={css({
-                                        paddingY: '1rem',
-                                        width: '100%',
-                                        gap: '.25rem',
-                                        borderBottom: '1px solid',
-                                        borderColor: 'neutral.50',
-
-                                        _hover: {
-                                            '& b': {
-                                                color: 'oklch(0.543 0.196 252.7)',
-                                                textDecoration: 'underline',
-                                                textDecorationColor:
-                                                    'oklch(0.950 0.024 252.7)',
-                                                textDecorationThickness: '2px',
-                                                textUnderlineOffset: '3px',
-                                            },
-                                        },
-                                    })}
-                                >
-                                    <div
-                                        className={css({
-                                            display: 'flex',
-                                            gap: '0.75rem',
-                                            alignItems: 'center',
-                                        })}
-                                    >
-                                        <span
-                                            className={css({
-                                                display: 'flex',
-                                                gap: '0.5rem',
-                                                alignItems: 'center',
-                                                marginBottom: '0.25rem',
-                                            })}
-                                        >
-                                            <div
-                                                className={markerContainer({
-                                                    type: establishment.type as
-                                                        | 'Hospital Geral'
-                                                        | 'Unidade Básica de Saúde'
-                                                        | 'Unidade de Pronto Atendimento',
-                                                    size: 'xs',
-                                                    square: true,
-                                                })}
-                                            >
-                                                {establishment.type ===
-                                                    'Hospital Geral' && (
-                                                    <HospitalIcon weight="fill" />
-                                                )}
-                                                {establishment.type ===
-                                                    'Unidade Básica de Saúde' && (
-                                                    <FirstAidIcon weight="fill" />
-                                                )}
-                                                {establishment.type ===
-                                                    'Unidade de Pronto Atendimento' && (
-                                                    <AmbulanceIcon weight="fill" />
-                                                )}
-                                            </div>
-                                            <Paragraph
-                                                size="caption"
-                                                marginCompact
-                                                bolder
-                                            >
-                                                {establishment.type}
-                                            </Paragraph>
-                                        </span>
-                                    </div>
-                                    <div
-                                        className={css({
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                        })}
-                                    >
-                                        <div
-                                            className={css({
-                                                flex: 1,
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                            })}
-                                        >
-                                            <b
-                                                className={css({
-                                                    fontWeight: 500,
-                                                    fontSize: '1.125rem',
-                                                    color: 'oklch(0.643 0.196 252.7)',
-                                                })}
-                                            >
-                                                {establishment.name}
-                                            </b>
-                                            <div>
-                                                <div
-                                                    className={css({
-                                                        display: 'flex',
-                                                        gap: '1ch',
-                                                        alignItems: 'center',
-                                                        marginTop: '0.25rem',
-                                                        fontSize: '0.875rem',
-                                                        color: 'neutral.600',
-                                                    })}
-                                                >
-                                                    <span>
-                                                        {establishment.street}{' '}
-                                                        &bull;{' '}
-                                                        {establishment.district}
-                                                        , {establishment.city}
-                                                    </span>
-                                                    {establishment.phone && (
-                                                        <span
-                                                            className={css({
-                                                                display: 'flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                gap: '0.25rem',
-                                                            })}
-                                                        >
-                                                            <PhoneIcon
-                                                                size={16}
-                                                            />{' '}
-                                                            {
-                                                                establishment.phone
-                                                            }
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                {coords && (
-                                                    <div
-                                                        className={css({
-                                                            display: 'flex',
-                                                            gap: '1ch',
-                                                            alignItems:
-                                                                'center',
-                                                            marginTop:
-                                                                '0.25rem',
-                                                        })}
-                                                    >
-                                                        <span
-                                                            className={css({
-                                                                fontSize:
-                                                                    '0.875rem',
-                                                                color: 'green.600',
-                                                            })}
-                                                        >
-                                                            A{' '}
-                                                            {formatDistance(
-                                                                calculateDistance(
-                                                                    coords?.latitude,
-                                                                    coords?.longitude,
-                                                                    establishment
-                                                                        .coordinates
-                                                                        ?.latitude,
-                                                                    establishment
-                                                                        .coordinates
-                                                                        ?.longitude
-                                                                )
-                                                            )}{' '}
-                                                            de distância
-                                                        </span>
-                                                        {index === 0 && (
-                                                            <div
-                                                                className={css({
-                                                                    padding:
-                                                                        '4px 8px',
-                                                                    backgroundColor:
-                                                                        'green.50',
-                                                                    fontSize:
-                                                                        '0.875rem',
-                                                                    lineHeight:
-                                                                        '1',
-                                                                    marginY:
-                                                                        '0.25rem',
-                                                                    borderRadius:
-                                                                        '9999px',
-                                                                    color: 'green.700',
-                                                                    fontWeight: 500,
-                                                                    display:
-                                                                        'flex',
-                                                                    alignItems:
-                                                                        'center',
-                                                                    gap: '0.25rem',
-                                                                })}
-                                                            >
-                                                                <MapPinIcon weight="bold" />
-                                                                <p>
-                                                                    Mais próximo
-                                                                    de você
-                                                                </p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={css({
-                                                display: 'flex',
-                                                gap: '1rem',
-                                                alignItems: 'center',
-                                            })}
-                                        >
-                                            <Button
-                                                variant="bordered"
-                                                iconButton
-                                            >
-                                                <CaretRightIcon />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    </motion.div>
-                ) : error ? (
-                    <motion.div
-                        key="no-results"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <NoResultsEmptyState query={localQuery} />
-                    </motion.div>
-                ) : isLoading ? (
-                    <div
-                        className={css({
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        })}
-                    >
-                        <CircleNotchIcon
-                            className={css({
-                                animation: 'spin',
-                                color: 'neutral.300',
-                            })}
-                            weight="bold"
-                            size={32}
-                        />
-                    </div>
-                ) : (
-                    <motion.div
-                        exit={{ opacity: 0 }}
-                        transition={{ delay: 1 }}
-                        className={css({
-                            width: '100%',
-                            maxWidth: '800px',
-                            position: 'relative',
-                        })}
-                    >
-                        <NearEstablishmentsBanner />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <AnimatePresence mode="sync">{renderContent()}</AnimatePresence>
         </main>
     )
 }
