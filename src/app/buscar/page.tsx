@@ -24,6 +24,7 @@ import {
     CaretRightIcon,
     CircleNotchIcon,
     MapPinIcon,
+    PhoneIcon,
     QuestionIcon,
 } from '@phosphor-icons/react/dist/ssr'
 import {
@@ -159,7 +160,7 @@ export default function Page() {
                 .catch(() => {
                     setSuggestions(null)
                 })
-        }, 300)
+        }, 200)
 
         return () => {
             clearTimeout(timeoutId)
@@ -272,7 +273,6 @@ export default function Page() {
                                     bg: 'rgba(255, 255, 255, 0.8)',
                                     zIndex: -1,
                                     filter: 'blur(20px)',
-                                    backdropBlur: '20px',
                                 },
 
                                 '& button': {
@@ -286,6 +286,11 @@ export default function Page() {
                                     cursor: 'pointer',
                                     textWrap: 'nowrap',
                                     boxShadow: '0 0 20px rgba(0, 0, 0, 0.05)',
+                                    transition: 'border-color 0.1s',
+
+                                    _hover: {
+                                        borderColor: 'rgba(0, 0, 0, 0.2)',
+                                    },
                                 },
                             })}
                         >
@@ -382,18 +387,11 @@ export default function Page() {
                                 alignItems: 'center',
                             })}
                         >
-                            <Button variant="bordered">
-                                <CrosshairIcon /> Seu local <CaretDownIcon />
-                            </Button>
-                            <Button variant="bordered">
-                                <ArrowsDownUpIcon /> Mais próximos{' '}
-                                <CaretDownIcon />
-                            </Button>
                             <Paragraph size="caption" subtle>
                                 {data.content.length} resultados
                             </Paragraph>
                         </div>
-                        <Divider margin="compact" />
+                        <Divider margin="ultracompact" />
                         <div
                             className={css({
                                 alignItems: 'flex-start',
@@ -467,6 +465,7 @@ export default function Page() {
                                             <Paragraph
                                                 size="caption"
                                                 marginCompact
+                                                bolder
                                             >
                                                 {establishment.type}
                                             </Paragraph>
@@ -494,68 +493,108 @@ export default function Page() {
                                             >
                                                 {establishment.name}
                                             </b>
-                                            {coords && (
+                                            <div>
                                                 <div
                                                     className={css({
                                                         display: 'flex',
-                                                        gap: '0.25rem',
+                                                        gap: '1ch',
                                                         alignItems: 'center',
                                                         marginTop: '0.25rem',
+                                                        fontSize: '0.875rem',
+                                                        color: 'neutral.600',
                                                     })}
                                                 >
-                                                    <span
-                                                        className={css({
-                                                            fontSize:
-                                                                '0.875rem',
-                                                            color: 'green.600',
-                                                        })}
-                                                    >
-                                                        A{' '}
-                                                        {formatDistance(
-                                                            calculateDistance(
-                                                                coords?.latitude,
-                                                                coords?.longitude,
-                                                                establishment
-                                                                    .geolocation
-                                                                    ?.latitude,
-                                                                establishment
-                                                                    .geolocation
-                                                                    ?.longitude
-                                                            )
-                                                        )}{' '}
-                                                        de distância
+                                                    <span>
+                                                        {establishment.street}{' '}
+                                                        &bull;{' '}
+                                                        {establishment.district}
+                                                        , {establishment.city}
                                                     </span>
-                                                    {index === 0 && (
-                                                        <div
+                                                    {establishment.phone && (
+                                                        <span
                                                             className={css({
-                                                                padding:
-                                                                    '4px 8px',
-                                                                backgroundColor:
-                                                                    'green.50',
-                                                                fontSize:
-                                                                    '0.875rem',
-                                                                lineHeight: '1',
-                                                                marginY:
-                                                                    '0.25rem',
-                                                                borderRadius:
-                                                                    '9999px',
-                                                                color: 'green.700',
-                                                                fontWeight: 500,
                                                                 display: 'flex',
                                                                 alignItems:
                                                                     'center',
                                                                 gap: '0.25rem',
                                                             })}
                                                         >
-                                                            <MapPinIcon weight="bold" />
-                                                            <p>
-                                                                Mais próximo de
-                                                                você
-                                                            </p>
-                                                        </div>
+                                                            <PhoneIcon
+                                                                size={16}
+                                                            />{' '}
+                                                            {
+                                                                establishment.phone
+                                                            }
+                                                        </span>
                                                     )}
                                                 </div>
-                                            )}
+                                                {coords && (
+                                                    <div
+                                                        className={css({
+                                                            display: 'flex',
+                                                            gap: '1ch',
+                                                            alignItems:
+                                                                'center',
+                                                            marginTop:
+                                                                '0.25rem',
+                                                        })}
+                                                    >
+                                                        <span
+                                                            className={css({
+                                                                fontSize:
+                                                                    '0.875rem',
+                                                                color: 'green.600',
+                                                            })}
+                                                        >
+                                                            A{' '}
+                                                            {formatDistance(
+                                                                calculateDistance(
+                                                                    coords?.latitude,
+                                                                    coords?.longitude,
+                                                                    establishment
+                                                                        .coordinates
+                                                                        ?.latitude,
+                                                                    establishment
+                                                                        .coordinates
+                                                                        ?.longitude
+                                                                )
+                                                            )}{' '}
+                                                            de distância
+                                                        </span>
+                                                        {index === 0 && (
+                                                            <div
+                                                                className={css({
+                                                                    padding:
+                                                                        '4px 8px',
+                                                                    backgroundColor:
+                                                                        'green.50',
+                                                                    fontSize:
+                                                                        '0.875rem',
+                                                                    lineHeight:
+                                                                        '1',
+                                                                    marginY:
+                                                                        '0.25rem',
+                                                                    borderRadius:
+                                                                        '9999px',
+                                                                    color: 'green.700',
+                                                                    fontWeight: 500,
+                                                                    display:
+                                                                        'flex',
+                                                                    alignItems:
+                                                                        'center',
+                                                                    gap: '0.25rem',
+                                                                })}
+                                                            >
+                                                                <MapPinIcon weight="bold" />
+                                                                <p>
+                                                                    Mais próximo
+                                                                    de você
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                         <div
                                             className={css({
@@ -568,25 +607,12 @@ export default function Page() {
                                                 variant="bordered"
                                                 iconButton
                                             >
-                                                <MapTrifoldIcon />
-                                            </Button>
-                                            <Button
-                                                variant="bordered"
-                                                iconButton
-                                            >
                                                 <CaretRightIcon />
                                             </Button>
                                         </div>
                                     </div>
                                 </Link>
                             ))}
-                            <Banner
-                                icon={<QuestionIcon />}
-                                title="Não sabe onde ir?"
-                                message={
-                                    'Com o Onde Ir você sabe qual o melhor estabelecimento pra você a partir dos seus sintomas.'
-                                }
-                            />
                         </div>
                     </motion.div>
                 ) : error ? (

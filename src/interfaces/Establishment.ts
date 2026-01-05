@@ -20,8 +20,12 @@ export interface Establishment {
 export interface EstablishmentPointResponse {
     cnes: number
     name: string
-    geolocation: Geolocation
+    coordinates: Geolocation
     type: string
+    phone: string | null
+    street: string
+    district: string
+    city: string
 }
 
 interface Geolocation {
