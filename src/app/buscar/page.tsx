@@ -109,7 +109,7 @@ export default function Page() {
         }
     )
 
-    const { data, isLoading, error } = useSWR<PageableEstablishmentResponse>(
+    const { data, isLoading } = useSWR<PageableEstablishmentResponse>(
         searchUrl,
         fetcher
     )
@@ -132,6 +132,7 @@ export default function Page() {
             params.append('filter', establishmentFilter)
         }
 
+        setInputFocused(false)
         router.replace(`/buscar?${params.toString()}`, { scroll: false })
     }, [query, establishmentFilter, router])
 
@@ -141,11 +142,11 @@ export default function Page() {
 
     const renderContent = () => {
         if (isLoading) {
-            return <SearchLoadingView />
+            return <SearchLoadingView query={query} />
         }
 
-        if (error) {
-            return <SearchEmpty query={query} />
+        if (data?.empty) {
+            return <SearchEmpty />
         }
 
         if (data && data.content.length > 0) {
