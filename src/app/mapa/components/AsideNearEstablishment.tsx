@@ -147,6 +147,7 @@ export const EstablishmentItem = ({
                         fontWeight: 550,
                         color: 'primary',
                         fontSize: '0.9375rem',
+                        lineHeight: '120%',
                     })}
                 >
                     {establishment.name}

@@ -1,19 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { HTMLAttributes, useEffect, useState } from 'react'
 
 import { MapSearchBar } from '@/components/Map'
 import { ProgressiveBlur } from '@/components/ProgressiveBlur'
 import { searchBarContainer } from '../styles'
 import { css } from '../../../../styled-system/css'
-import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import {
+    EstablishmentSearchResponse,
+    PageableEstablishmentResponse,
+} from '@/interfaces/Establishment'
 import { useMapContext } from '@/context/MapContext'
 
-import { EstablishmentItem } from './AsideNearEstablishment'
 import { Paragraph } from '@/components/Typography'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { Link } from '@/components/Link'
+import { Tooltip } from '@/components/Tooltip'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
@@ -25,7 +29,7 @@ export function AsideSearchBar() {
 
     const [showResults, setShowResults] = useState(false)
 
-    const { data, isLoading } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading } = useSWR<PageableEstablishmentResponse>(
         debounced
             ? `${API_URL}/establishment/search?q=${debounced}&limit=5`
             : null,
@@ -63,17 +67,16 @@ export function AsideSearchBar() {
                     className={wrapper}
                     style={{ backdropFilter: 'blur(10px)' }}
                 >
-                    {data && data.length > 0 && (
+                    {data && data.content.length > 0 && (
                         <div className={resultsContainer}>
                             <Paragraph marginCompact subtle>
                                 Resultados
                             </Paragraph>
-                            {data.slice(0, 8).map((establishment) => (
+                            {data.content.map((establishment) => (
                                 <EstablishmentItem
                                     key={establishment.cnes}
                                     establishment={{
                                         ...establishment,
-                                        distance: 0,
                                     }}
                                 />
                             ))}
@@ -87,7 +90,7 @@ export function AsideSearchBar() {
                         </div>
                     )}
 
-                    {data?.length === 0 && (
+                    {data?.empty && (
                         <div className={resultsContainer}>
                             <div className={noResults}>
                                 Nenhuma unidade encontrada
@@ -97,6 +100,65 @@ export function AsideSearchBar() {
                 </div>
             )}
         </section>
+    )
+}
+
+export const EstablishmentItem = ({
+    establishment,
+}: {
+    establishment: EstablishmentSearchResponse
+} & HTMLAttributes<HTMLDivElement>) => {
+    const { setSelectedEstablishment } = useMapContext()
+
+    const handleClick = () => {
+        // setSelectedEstablishment(establishment)
+    }
+
+    return (
+        <Link
+            onClick={handleClick}
+            variant="asChild"
+            href={`/mapa?establishment=${establishment.cnes}`}
+            className={css({
+                paddingY: '0.5rem',
+                alignItems: 'center',
+                borderRadius: '12px',
+                display: 'flex',
+                gap: '.75rem',
+            })}
+        >
+            <Tooltip content={establishment.type}>
+                <EstablishmentIcon
+                    animation={false}
+                    decoration
+                    size="small"
+                    type={
+                        establishment.type as
+                            | 'Hospital Geral'
+                            | 'Unidade Básica de Saúde'
+                            | 'Unidade de Pronto Atendimento'
+                    }
+                />
+            </Tooltip>
+            <div
+                className={css({
+                    display: 'flex',
+                    flexDir: 'column',
+                    alignItems: 'flex-start',
+                })}
+            >
+                <strong
+                    className={css({
+                        fontWeight: 550,
+                        color: 'primary',
+                        fontSize: '0.9375rem',
+                        lineHeight: '120%',
+                    })}
+                >
+                    {establishment.name}
+                </strong>
+            </div>
+        </Link>
     )
 }
 
