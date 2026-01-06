@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import { styles } from './styles'
 import { AsideEstablishmentDetails } from './components/AsideEstablishmentDetails'
 import { AsideDefault } from './components/AsideDefaultState'
-
 export default function Page() {
     const param = useSearchParams()
     const establishmentCnes = param.get('establishment')

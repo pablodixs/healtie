@@ -46,6 +46,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         marginLeft: '1rem',
                         borderRadius: '32px',
                         minHeight: '74px',
+                        display: {
+                            base: 'none',
+                            md: 'block',
+                        },
                     })}
                 >
                     <AsideSearchBar />

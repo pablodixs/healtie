@@ -44,6 +44,10 @@ export const styles = css({
     boxShadow: '0 0 0 1px rgba(0,0,0,0.05)',
     borderRadius: '32px',
     overflow: 'hidden',
+    display: {
+        base: 'none',
+        md: 'block',
+    },
 })
 
 export const contentContainer = css({
