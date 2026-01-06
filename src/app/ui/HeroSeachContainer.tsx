@@ -14,7 +14,7 @@ import { HeroSearchBar } from './components/HeroSearchBar'
 import { Paragraph } from '@/components/Typography/Paragraph'
 import { Link as CustomLink } from '@/components/Link'
 
-import { EstablishmentPointResponse } from '@/interfaces/Establishment'
+import { PageableEstablishmentResponse } from '@/interfaces/Establishment'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/swrFetcher'
 import { MapMarkerDecoration } from '@/components/Map/MapMarkerDecoration'
@@ -40,7 +40,7 @@ export function HeroSearchContainer() {
     const [isLocationDialogOpen, setIsLocationDialogOpen] = useState(true)
     const { isReady, hasSelectedCity } = useSelectedCity()
 
-    const { data, isLoading, error } = useSWR<EstablishmentPointResponse[]>(
+    const { data, isLoading, error } = useSWR<PageableEstablishmentResponse>(
         debounced && debounced.length >= 3
             ? `${API_URL}/establishment/search?q=${encodeURIComponent(
                   debounced
@@ -175,12 +175,12 @@ export function HeroSearchContainer() {
                                             }
                                         </Paragraph>
                                         <Paragraph subtle>
-                                            {(data && data.length) || 0}{' '}
+                                            {(data && data.content.length) || 0}{' '}
                                             resultados
                                         </Paragraph>
                                     </header>
                                     <div className="results_list">
-                                        {data?.map((establishment) => (
+                                        {data?.content.map((establishment) => (
                                             <Link
                                                 href={`/estabelecimento/${establishment.cnes}`}
                                                 key={establishment.cnes}
