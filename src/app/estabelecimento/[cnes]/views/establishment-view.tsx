@@ -24,7 +24,7 @@ export default function EstablishmentView({ data }: Props) {
     >('overview')
 
     const [isReportModalOpen, setIsReportModalOpen] = useState(false)
-    const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
+    // const [isIAmHereModalOpen, setIsIAmHereModalOpen] = useState<boolean>(false)
 
     return (
         <MapContextProvider>
@@ -32,7 +32,7 @@ export default function EstablishmentView({ data }: Props) {
                 <HeaderView
                     establishment={data}
                     setIsReportModalOpen={setIsReportModalOpen}
-                    setIsIAmHereModalOpen={setIsIAmHereModalOpen}
+                    // setIsIAmHereModalOpen={setIsIAmHereModalOpen}
                 />
                 <NavigationTabs>
                     <NavigationTabItem

@@ -31,8 +31,10 @@ import useSWR from 'swr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { fetcher } from '@/lib/swrFetcher'
 import { ErrorState } from './states/ErrorState'
-import { Paragraph } from '@/components/Typography'
 import { LoadingState } from './states/LoadingState'
+import { useMapContext } from '@/context/MapContext'
+import { useEffect } from 'react'
+import { EstablishmentPointResponse } from '@/interfaces/Establishment'
 
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
@@ -49,10 +51,26 @@ export function AsideEstablishmentDetails({
     )
 
     const [isIAmHereDialogOpen, setIsIAmHereDialogOpen] = useState(false)
+    const { setSelectedEstablishment } = useMapContext()
 
     const { distance } = useEstablishmentDistance({
         establishmentCoords: data?.coordinates,
     })
+
+    useEffect(() => {
+        if (data) {
+            const pointResponse: EstablishmentPointResponse = {
+                cnes: data.cnes,
+                geolocation: {
+                    latitude: data.coordinates.latitude,
+                    longitude: data.coordinates.longitude,
+                },
+                name: data.name,
+                type: data.type || '',
+            }
+            setSelectedEstablishment(pointResponse)
+        }
+    }, [data, setSelectedEstablishment])
 
     if (isLoading)
         return (

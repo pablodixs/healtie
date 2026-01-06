@@ -9,6 +9,7 @@ import { css } from '../../../../styled-system/css'
 import {
     EstablishmentSearchResponse,
     PageableEstablishmentResponse,
+    EstablishmentPointResponse,
 } from '@/interfaces/Establishment'
 import { useMapContext } from '@/context/MapContext'
 
@@ -111,7 +112,16 @@ export const EstablishmentItem = ({
     const { setSelectedEstablishment } = useMapContext()
 
     const handleClick = () => {
-        // setSelectedEstablishment(establishment)
+        const pointResponse: EstablishmentPointResponse = {
+            cnes: establishment.cnes,
+            geolocation: {
+                latitude: establishment.coordinates.latitude,
+                longitude: establishment.coordinates.longitude,
+            },
+            type: establishment.type,
+            name: establishment.name,
+        }
+        setSelectedEstablishment(pointResponse)
     }
 
     return (

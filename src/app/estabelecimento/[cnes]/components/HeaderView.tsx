@@ -3,7 +3,6 @@ import {
     CarIcon,
     ChatCircleIcon,
     ClockCountdownIcon,
-    MapPinAreaIcon,
     MapPinSimpleAreaIcon,
     MapTrifoldIcon,
     SpeedometerIcon,
@@ -20,21 +19,23 @@ import {
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { Link } from '@/components/Link'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { useRouter } from 'next/navigation'
+import { useMapContext } from '@/context/MapContext'
 
 interface HeaderViewProps {
     establishment: EstablishmentResponse | undefined
     setIsReportModalOpen: (isOpen: boolean) => void
-    setIsIAmHereModalOpen: (isOpen: boolean) => void
 }
 
 export function HeaderView({
     establishment,
     setIsReportModalOpen,
-    setIsIAmHereModalOpen,
 }: HeaderViewProps) {
     const { coords } = useUserGeolocation({
         immediate: true,
     })
+    const router = useRouter()
+    const { setSelectedEstablishment } = useMapContext()
 
     if (!establishment) return null
 
@@ -46,6 +47,21 @@ export function HeaderView({
               coords.longitude
           )
         : null
+
+    const handleViewMap = () => {
+        setSelectedEstablishment({
+            cnes: establishment.cnes,
+            geolocation: {
+                latitude: establishment.coordinates.latitude,
+                longitude: establishment.coordinates.longitude,
+            },
+            name: establishment.name,
+            type: establishment.type || '',
+        })
+        router.push(
+            `/mapa?establishment=${establishment.cnes}&from=search-page`
+        )
+    }
 
     return (
         <section>
@@ -105,13 +121,9 @@ export function HeaderView({
                 >
                     <SpeedometerIcon size={20} /> Reportar
                 </Button>
-                <Link
-                    href={`/mapa?establishment=${establishment.cnes}&from=search-page`}
-                    variant="bordered"
-                    size="sm"
-                >
+                <Button onClick={handleViewMap} variant="bordered">
                     <MapTrifoldIcon size={20} /> Ver no Mapa
-                </Link>
+                </Button>
                 <Link
                     target="_blank"
                     href={`https://www.google.com/maps/dir/?api=1&destination=${establishment.coordinates?.latitude},${establishment.coordinates.longitude}`}
