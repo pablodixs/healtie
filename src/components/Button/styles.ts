@@ -76,6 +76,14 @@ export const buttonStyles = cva({
                 backgroundColor: 'cream',
                 color: '#151515',
             },
+            danger: {
+                backgroundColor: 'red.600',
+                color: 'white',
+
+                _hover: {
+                    backgroundColor: 'red.700',
+                },
+            },
             bordered: {
                 boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)',
                 transition: 'all 0.2s ease-in-out',

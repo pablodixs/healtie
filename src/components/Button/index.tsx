@@ -11,6 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
         | 'ghost'
         | 'textSubtle'
         | 'bordered'
+        | 'danger'
     size?: 'small' | 'medium' | 'large' | 'larger'
     iconButton?: boolean
     fullWidth?: boolean

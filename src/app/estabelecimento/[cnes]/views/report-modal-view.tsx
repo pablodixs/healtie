@@ -1,8 +1,10 @@
 'use client'
 
 import { ReactNode, useEffect, useState } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import {
+    CaretLeftIcon,
+    CaretRightIcon,
     ClockCountdownIcon,
     PillIcon,
     ProhibitInsetIcon,
@@ -21,6 +23,7 @@ import axios from 'axios'
 import { Label } from '@/components/Form/Label'
 import { css } from '../../../../../styled-system/css'
 import Image from 'next/image'
+import { ProgressiveBlur } from '@/components/ProgressiveBlur'
 
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
@@ -134,7 +137,7 @@ export function ReportModalView({
                 animate={{ y: '0%' }}
                 exit={{ y: '200%' }}
                 transition={{
-                    duration: 0.4,
+                    duration: 0.6,
                     type: 'spring',
                     bounce: 0,
                 }}
@@ -143,47 +146,73 @@ export function ReportModalView({
                 role="dialog"
                 aria-modal="true"
             >
-                <div>
-                    <Subheading>Reportar</Subheading>
-                    <div
-                        className={css({
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '1ch',
-                        })}
-                    >
-                        <EstablishmentIcon
-                            type={
-                                establishment.type as
-                                    | 'Hospital Geral'
-                                    | 'Unidade Básica de Saúde'
-                                    | 'Unidade de Pronto Atendimento'
-                            }
-                            size="small"
-                            decoration
-                            animation={false}
-                        />
-                        <Paragraph marginCompact bolder>
-                            {establishment.name}
-                        </Paragraph>
-                    </div>
-                </div>
-
                 <div className={bodyWrapperStyles}>
                     <header className={headerStyles}>
-                        <Tooltip placement="bottom" content="Fechar">
-                            <Button
-                                variant="ghost"
-                                iconButton
-                                onClick={() => onOpenChange?.(false)}
-                                aria-label="Fechar "
-                            >
-                                <XIcon weight="bold" />
-                            </Button>
-                        </Tooltip>
+                        <div className={css({ display: 'flex', gap: '1ch' })}>
+                            <AnimatePresence>
+                                {currentIndicator !== null && (
+                                    <motion.div
+                                        initial={{
+                                            opacity: 0,
+                                            filter: 'blur(2px)',
+                                            scale: 0.9,
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            filter: 'blur(0px)',
+                                            scale: 1,
+                                        }}
+                                        exit={{
+                                            opacity: 0,
+                                            filter: 'blur(2px)',
+                                            scale: 0.9,
+                                        }}
+                                    >
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() => {
+                                                if (currentIndicator !== null) {
+                                                    setCurrentIndicator(null)
+                                                }
+                                            }}
+                                        >
+                                            <CaretLeftIcon weight="bold" />{' '}
+                                            Voltar
+                                        </Button>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                        <div
+                            className={css({
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '1ch',
+                            })}
+                        >
+                            <EstablishmentIcon
+                                type={
+                                    establishment.type as
+                                        | 'Hospital Geral'
+                                        | 'Unidade Básica de Saúde'
+                                        | 'Unidade de Pronto Atendimento'
+                                }
+                                size="small"
+                                decoration
+                                animation={false}
+                            />
+                            <Paragraph marginCompact bolder>
+                                {establishment.name}
+                            </Paragraph>
+                        </div>
+                        <Button
+                            onClick={() => onOpenChange?.(false)}
+                            variant="danger"
+                        >
+                            Cancelar
+                        </Button>
+                        <ProgressiveBlur />
                     </header>
-
                     {currentIndicator === null && (
                         <section
                             className={css({
@@ -200,12 +229,15 @@ export function ReportModalView({
                                 className={css({
                                     display: 'grid',
                                     gridTemplateColumns:
-                                        'repeat(auto-fit, minmax(200px  , 1fr))',
+                                        'repeat(auto-fit, minmax(200px, 1fr))',
                                     gap: '1rem',
                                 })}
                             >
                                 {reportOptions.map((option) => (
                                     <button
+                                        onClick={() =>
+                                            setCurrentIndicator(option.key)
+                                        }
                                         key={option.key}
                                         className={css({
                                             padding: '0.5rem',
@@ -301,25 +333,6 @@ export function ReportModalView({
                         </div>
                     )}
                 </div>
-                <footer className={footerStyles}>
-                    <div
-                        className={css({
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            gap: '.5rem',
-                        })}
-                    >
-                        <Button
-                            variant="ghost"
-                            onClick={() => onOpenChange?.(false)}
-                        >
-                            Cancelar
-                        </Button>
-                        {currentIndicator !== null && (
-                            <Button onClick={handleSubmit}>Enviar</Button>
-                        )}
-                    </div>
-                </footer>
             </motion.div>
         </motion.div>
     )
@@ -328,12 +341,19 @@ export function ReportModalView({
 const modalContainer = css({
     backgroundColor: 'white',
     p: '1.5rem',
-    width: '100vw',
-    height: '100vh',
+    width: '100%',
+    maxWidth: { md: '800px' },
+    height: '100%',
+    maxHeight: { md: '80vh', base: '100vh' },
     display: 'flex',
+    flexDirection: {
+        base: 'column',
+        md: 'row',
+    },
     position: 'relative',
-    py: '4.5rem',
-    gap: '3rem',
+    gap: '1rem',
+    borderRadius: '12px',
+    paddingY: { base: '4.5rem' },
 })
 
 const overlay = css({
@@ -352,6 +372,7 @@ const headerStyles = css({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    position: 'absolute',
 })
 
 const buttonStyles = css({
@@ -381,21 +402,17 @@ const buttonStyles = css({
     },
 })
 
-const footerStyles = css({
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    backgroundColor: 'white',
-    padding: '1rem',
-    borderTop: '1px solid',
-    borderColor: 'gray.100',
-    borderRadius: '0 0 0.75rem 0.75rem',
+const asideContainer = css({
+    padding: '1.5rem',
+    bg: 'neutral.50',
+    borderRadius: '12px',
+    maxWidth: { md: '25rem' },
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
 })
 
 const bodyWrapperStyles = css({
     flex: 1,
-    margin: '0 auto',
     overflowY: 'auto',
 })

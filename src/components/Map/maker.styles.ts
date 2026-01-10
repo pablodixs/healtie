@@ -13,6 +13,7 @@ export const markerContainer = cva({
         border: '2px solid white',
         cursor: 'pointer',
         position: 'relative',
+        aspectRatio: '1 / 1',
 
         '& svg': {
             fontSize: '1.5rem',
