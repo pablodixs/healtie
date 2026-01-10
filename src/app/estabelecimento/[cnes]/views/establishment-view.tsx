@@ -8,11 +8,11 @@ import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { Portal } from '@/components/Portal'
 import { Divider } from '@/components/Divider'
 import { HeaderView } from '../components/HeaderView'
-import { ReportModal } from '../../components/ReportModal'
-import { ServicesTab } from '../components/tabs/ServicesTab'
 import { IndicatorsTab, OverviewTab } from '../components/tabs'
 import { contentContainer, mainContainer } from '../components/styles'
 import { NavigationTabItem, NavigationTabs } from '@/components/NavigationTabs'
+import { ReportModalView } from './report-modal-view'
+import { ServicesTab } from '../components/tabs/ServicesTab'
 
 type Props = {
     data: EstablishmentResponse
@@ -89,7 +89,7 @@ export default function EstablishmentView({ data }: Props) {
             <Divider />
             <Portal>
                 {isReportModalOpen && (
-                    <ReportModal
+                    <ReportModalView
                         isOpen={isReportModalOpen}
                         onOpenChange={setIsReportModalOpen}
                         establishment={data}

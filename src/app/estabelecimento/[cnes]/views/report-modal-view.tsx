@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import {
-    CaretRightIcon,
     ClockCountdownIcon,
     PillIcon,
     ProhibitInsetIcon,
@@ -11,20 +10,17 @@ import {
     XIcon,
 } from '@phosphor-icons/react'
 
-import { css } from '../../../../styled-system/css'
-
-import { Paragraph } from '@/components/Typography'
+import { Paragraph, Subheading } from '@/components/Typography'
 import { Button } from '@/components/Button'
 import { Tooltip } from '@/components/Tooltip'
 
-import {
-    DotsThreeCircleIcon,
-    UsersFourIcon,
-} from '@phosphor-icons/react/dist/ssr'
+import { UsersFourIcon } from '@phosphor-icons/react/dist/ssr'
 import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
 import { EstablishmentIcon } from '@/components/EstablishmentIcon'
 import axios from 'axios'
 import { Label } from '@/components/Form/Label'
+import { css } from '../../../../../styled-system/css'
+import Image from 'next/image'
 
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
@@ -40,7 +36,53 @@ interface IndicatorsRequestBody {
     resolution_index?: number | null
 }
 
-export function ReportModal({
+interface ReportOption {
+    label: string
+    icon: ReactNode
+    key: string
+    description: string
+    imageUrl: string
+}
+
+const reportOptions: ReportOption[] = [
+    {
+        label: 'Tempo de espera',
+        icon: <ClockCountdownIcon />,
+        key: 'waitTime',
+        imageUrl: '/images/il/wait-time.png',
+        description: 'Reportar tempo de espera para atendimento nesta unidade.',
+    },
+    {
+        label: 'Falta de medicamentos',
+        icon: <PillIcon />,
+        key: 'medicationShortage',
+        imageUrl: '/images/il/medication-shortage.png',
+        description: 'Reportar falta de medicamentos nesta unidade.',
+    },
+    {
+        label: 'Ocupação',
+        icon: <UsersFourIcon />,
+        key: 'occupancy',
+        imageUrl: '/images/il/occupancy.png',
+        description: 'Reportar taxa de ocupação desta unidade.',
+    },
+    {
+        label: 'Falta de serviços',
+        icon: <ProhibitInsetIcon />,
+        key: 'serviceShortage',
+        imageUrl: '/images/il/wait-time.png',
+        description: 'Reportar falta de serviços nesta unidade.',
+    },
+    {
+        label: 'Sem médicos',
+        icon: <StethoscopeIcon />,
+        key: 'noDoctors',
+        imageUrl: '/images/il/wait-time.png',
+        description: 'Reportar ausência de médicos nesta unidade.',
+    },
+]
+
+export function ReportModalView({
     isOpen,
     onOpenChange,
     establishment,
@@ -85,26 +127,51 @@ export function ReportModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
             onClick={() => onOpenChange?.(false)}
         >
             <motion.div
-                initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                initial={{ y: '200%' }}
+                animate={{ y: '0%' }}
+                exit={{ y: '200%' }}
                 transition={{
-                    duration: 0.2,
+                    duration: 0.4,
+                    type: 'spring',
+                    bounce: 0,
                 }}
                 className={modalContainer}
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
             >
+                <div>
+                    <Subheading>Reportar</Subheading>
+                    <div
+                        className={css({
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '1ch',
+                        })}
+                    >
+                        <EstablishmentIcon
+                            type={
+                                establishment.type as
+                                    | 'Hospital Geral'
+                                    | 'Unidade Básica de Saúde'
+                                    | 'Unidade de Pronto Atendimento'
+                            }
+                            size="small"
+                            decoration
+                            animation={false}
+                        />
+                        <Paragraph marginCompact bolder>
+                            {establishment.name}
+                        </Paragraph>
+                    </div>
+                </div>
+
                 <div className={bodyWrapperStyles}>
                     <header className={headerStyles}>
-                        <Paragraph bolder marginCompact subtle>
-                            Reportar
-                        </Paragraph>
                         <Tooltip placement="bottom" content="Fechar">
                             <Button
                                 variant="ghost"
@@ -116,33 +183,7 @@ export function ReportModal({
                             </Button>
                         </Tooltip>
                     </header>
-                    <section
-                        className={css({
-                            mt: '3rem',
-                        })}
-                    >
-                        <EstablishmentIcon
-                            type={
-                                establishment.type as
-                                    | 'Hospital Geral'
-                                    | 'Unidade Básica de Saúde'
-                                    | 'Unidade de Pronto Atendimento'
-                            }
-                            delay
-                        />
-                        <h1
-                            className={css({
-                                fontSize: '1.5rem',
-                                fontWeight: '600',
-                                letterSpacing: '-0.02em',
-                                color: 'primary',
-                                textAlign: 'center',
-                                mt: '0.5rem',
-                            })}
-                        >
-                            {establishment.name}
-                        </h1>
-                    </section>
+
                     {currentIndicator === null && (
                         <section
                             className={css({
@@ -155,55 +196,56 @@ export function ReportModal({
                             <Paragraph bolder subtle marginCompact>
                                 O que você quer reportar?
                             </Paragraph>
-                            <button
-                                onClick={() => setCurrentIndicator('waitTime')}
-                                className={buttonStyles}
+                            <div
+                                className={css({
+                                    display: 'grid',
+                                    gridTemplateColumns:
+                                        'repeat(auto-fit, minmax(200px  , 1fr))',
+                                    gap: '1rem',
+                                })}
                             >
-                                <span>
-                                    <ClockCountdownIcon />
-                                </span>
-                                Tempo de espera
-                            </button>
-                            <button
-                                onClick={() =>
-                                    setCurrentIndicator('medicationShortage')
-                                }
-                                className={buttonStyles}
-                            >
-                                <span>
-                                    <PillIcon />
-                                </span>
-                                Falta de medicamentos
-                            </button>
-                            <button
-                                onClick={() => setCurrentIndicator('occupancy')}
-                                className={buttonStyles}
-                            >
-                                <span>
-                                    <UsersFourIcon />
-                                </span>
-                                Ocupação
-                            </button>
-                            <button
-                                onClick={() =>
-                                    setCurrentIndicator('serviceShortage')
-                                }
-                                className={buttonStyles}
-                            >
-                                <span>
-                                    <ProhibitInsetIcon />
-                                </span>
-                                Falta de serviços
-                            </button>
-                            <button
-                                onClick={() => setCurrentIndicator('noDoctors')}
-                                className={buttonStyles}
-                            >
-                                <span>
-                                    <StethoscopeIcon />
-                                </span>
-                                Sem médicos
-                            </button>
+                                {reportOptions.map((option) => (
+                                    <button
+                                        key={option.key}
+                                        className={css({
+                                            padding: '0.5rem',
+                                            border: '1px solid rgba(0, 0, 0, 0.1)',
+                                            borderRadius: '1rem',
+                                            cursor: 'pointer',
+                                            transition: 'border-color 0.1s',
+
+                                            _hover: {
+                                                borderColor:
+                                                    'rgba(0, 0, 0, 0.3)',
+                                            },
+                                        })}
+                                    >
+                                        <Image
+                                            className={css({
+                                                borderRadius: '8px',
+                                                marginBottom: '0.5rem',
+                                                width: '100%',
+                                                height: 'auto',
+                                            })}
+                                            src={option.imageUrl}
+                                            alt={option.label}
+                                            width={200}
+                                            height={120}
+                                            quality={80}
+                                        />
+                                        <Paragraph bolder>
+                                            {option.label}
+                                        </Paragraph>
+                                        <Paragraph
+                                            marginCompact
+                                            subtle
+                                            size="caption"
+                                        >
+                                            {option.description}
+                                        </Paragraph>
+                                    </button>
+                                ))}
+                            </div>
                         </section>
                     )}
                     {currentIndicator === 'waitTime' && (
@@ -286,15 +328,12 @@ export function ReportModal({
 const modalContainer = css({
     backgroundColor: 'white',
     p: '1.5rem',
-    borderRadius: '0.75rem',
-    width: '100%',
-    minW: '600px',
-    maxW: '500px',
-    maxHeight: '90vh',
+    width: '100vw',
+    height: '100vh',
     display: 'flex',
-    flexDirection: 'column',
     position: 'relative',
-    pb: '6rem',
+    py: '4.5rem',
+    gap: '3rem',
 })
 
 const overlay = css({
@@ -303,19 +342,16 @@ const overlay = css({
     backgroundColor: 'rgba(0, 0, 0, 0.35)',
     position: 'fixed',
     inset: 0,
-    zIndex: 5000,
+    zIndex: 1000,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '1rem',
-    backdropFilter: 'blur(2px)',
 })
 
 const headerStyles = css({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '1rem',
 })
 
 const buttonStyles = css({
@@ -359,6 +395,7 @@ const footerStyles = css({
 })
 
 const bodyWrapperStyles = css({
+    flex: 1,
+    margin: '0 auto',
     overflowY: 'auto',
-    maxHeight: 'calc(90vh - 5rem)',
 })
