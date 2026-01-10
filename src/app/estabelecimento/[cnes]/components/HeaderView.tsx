@@ -116,23 +116,23 @@ export function HeaderView({
                     <MapPinAreaIcon weight="bold" size={20} /> Estou Aqui
                 </Button> */}
                 <Button
-                    variant="bordered"
+                    variant="subtle"
                     onClick={() => setIsReportModalOpen(true)}
                 >
                     <SpeedometerIcon size={20} /> Reportar
                 </Button>
-                <Button onClick={handleViewMap} variant="bordered">
+                <Button onClick={handleViewMap} variant="subtle">
                     <MapTrifoldIcon size={20} /> Ver no Mapa
                 </Button>
                 <Link
                     target="_blank"
                     href={`https://www.google.com/maps/dir/?api=1&destination=${establishment.coordinates?.latitude},${establishment.coordinates.longitude}`}
-                    variant="bordered"
+                    variant="subtle"
                     size="sm"
                 >
                     <CarIcon size={20} /> Rotas
                 </Link>
-                <Button variant="bordered">
+                <Button variant="subtle">
                     <ChatCircleIcon size={20} /> Comentar
                 </Button>
             </div>
