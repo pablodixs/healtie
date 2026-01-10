@@ -161,17 +161,19 @@ const distanceSpanStyle = css({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '0.25rem',
-    marginY: '1rem',
 })
 
 const toolbarContainer = css({
-    display: 'flex',
+    display: { base: 'grid', md: 'flex' },
     flexDir: {
         base: 'column',
         md: 'row',
     },
-    gap: '.5rem',
+    gap: { base: '1rem', md: '.5rem' },
     marginBottom: '2rem',
+    gridTemplateColumns: {
+        base: '1fr 1fr',
+    },
 
     '& button': {
         width: {
