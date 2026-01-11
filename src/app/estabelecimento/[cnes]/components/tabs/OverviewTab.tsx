@@ -38,11 +38,14 @@ export function OverviewTab({
     establishment,
     setSelectedTab,
 }: OverviewTabProps) {
-    const { data: indicatorsData, isLoading: isLoadingIndicators } =
-        useSWR<IndicatorsData>(
-            `${API_URL}/establishment/${establishment?.cnes}/indicators`,
-            fetcher
-        )
+    const {
+        data: indicatorsData,
+        isLoading: isLoadingIndicators,
+        isValidating,
+    } = useSWR<IndicatorsData>(
+        `${API_URL}/establishment/${establishment?.cnes}/indicators`,
+        fetcher
+    )
     const { data: servicesData, isLoading } = useSWR<EstablishmentServices>(
         `${API_URL}/establishment/${establishment?.cnes}/services`,
         fetcher
@@ -63,8 +66,9 @@ export function OverviewTab({
                             Indicadores
                         </Paragraph>
                         <Paragraph marginCompact size="caption" subtle>
-                            Atualizado{' '}
-                            {indicatorsData?.last_updated &&
+                            {isValidating ? 'Atualizando...' : 'Atualizado '}
+                            {!isValidating &&
+                                indicatorsData?.last_updated &&
                                 formatDistanceToNow(
                                     new Date(indicatorsData.last_updated),
                                     {
