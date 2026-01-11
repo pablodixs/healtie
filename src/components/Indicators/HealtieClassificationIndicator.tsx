@@ -1,6 +1,5 @@
 'use client'
 import { motion } from 'motion/react'
-import { GaugeIcon } from '@phosphor-icons/react/dist/ssr'
 import { css } from '../../../styled-system/css'
 import {
     titleContainer,
@@ -10,6 +9,7 @@ import {
     descriptionContainer,
 } from './styles'
 import { Spinner } from '../spinner'
+import { StarIcon } from '@phosphor-icons/react'
 
 export interface IndicatorsProps {
     data: number | null | undefined
@@ -38,7 +38,7 @@ export function HealtieClassificationIndicator({
                         fontWeight: 500,
                     })}
                 >
-                    <GaugeIcon />
+                    <StarIcon />
                     <p>Classificação do Healtie </p>
                 </div>
                 {isLoading ? (
