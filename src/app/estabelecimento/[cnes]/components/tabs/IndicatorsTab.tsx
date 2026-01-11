@@ -29,7 +29,7 @@ export interface IndicatorsData {
 }
 
 export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
-    const { data } = useSWR<IndicatorsData>(
+    const { data, isLoading } = useSWR<IndicatorsData>(
         `${API_URL}/establishment/${establishment?.cnes}/indicators`,
         fetcher
     )
@@ -44,10 +44,22 @@ export function IndicatorsTab({ establishment }: IndicatorsTabProps) {
                     mt: '1rem',
                 })}
             >
-                <HealtieClassificationIndicator data={data} />
-                <WaitTimeIndicator data={data} />
-                <OccupancyIndexIndicator data={data} />
-                <ResolutionIndexIndicator data={data} />
+                <HealtieClassificationIndicator
+                    isLoading={isLoading}
+                    data={data?.rating}
+                />
+                <WaitTimeIndicator
+                    isLoading={isLoading}
+                    data={data?.wait_time}
+                />
+                <OccupancyIndexIndicator
+                    isLoading={isLoading}
+                    data={data?.occupation}
+                />
+                <ResolutionIndexIndicator
+                    isLoading={isLoading}
+                    data={data?.resolution_index}
+                />
             </div>
             <div>
                 <Paragraph bolder size="caption">

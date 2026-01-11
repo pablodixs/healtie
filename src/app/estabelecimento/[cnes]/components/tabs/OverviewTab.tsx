@@ -38,10 +38,11 @@ export function OverviewTab({
     establishment,
     setSelectedTab,
 }: OverviewTabProps) {
-    const { data: indicatorsData } = useSWR<IndicatorsData>(
-        `${API_URL}/establishment/${establishment?.cnes}/indicators`,
-        fetcher
-    )
+    const { data: indicatorsData, isLoading: isLoadingIndicators } =
+        useSWR<IndicatorsData>(
+            `${API_URL}/establishment/${establishment?.cnes}/indicators`,
+            fetcher
+        )
     const { data: servicesData, isLoading } = useSWR<EstablishmentServices>(
         `${API_URL}/establishment/${establishment?.cnes}/services`,
         fetcher
@@ -91,10 +92,22 @@ export function OverviewTab({
                         mt: '1rem',
                     })}
                 >
-                    <HealtieClassificationIndicator data={indicatorsData} />
-                    <WaitTimeIndicator data={indicatorsData} />
-                    <OccupancyIndexIndicator data={indicatorsData} />
-                    <ResolutionIndexIndicator data={indicatorsData} />
+                    <HealtieClassificationIndicator
+                        data={indicatorsData?.rating}
+                        isLoading={isLoadingIndicators}
+                    />
+                    <WaitTimeIndicator
+                        data={indicatorsData?.wait_time}
+                        isLoading={isLoadingIndicators}
+                    />
+                    <OccupancyIndexIndicator
+                        data={indicatorsData?.occupation}
+                        isLoading={isLoadingIndicators}
+                    />
+                    <ResolutionIndexIndicator
+                        data={indicatorsData?.resolution_index}
+                        isLoading={isLoadingIndicators}
+                    />
                 </div>
                 <section
                     className={css({

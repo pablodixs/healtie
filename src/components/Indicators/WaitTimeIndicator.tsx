@@ -10,8 +10,9 @@ import {
     descriptionContainer,
 } from './styles'
 import { IndicatorsProps } from './HealtieClassificationIndicator'
+import { Spinner } from '../spinner'
 
-export function WaitTimeIndicator({ data }: IndicatorsProps) {
+export function WaitTimeIndicator({ data, isLoading }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -40,27 +41,31 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                         alignItems: 'flex-end',
                     })}
                 >
-                    <strong
-                        className={css({
-                            color: data?.wait_time ? 'inherit' : 'neutral.400',
-                        })}
-                    >
-                        {data?.wait_time
-                            ? data.wait_time < 25
-                                ? 'Baixo'
-                                : data.wait_time < 50
-                                  ? 'Médio'
-                                  : 'Alto'
-                            : 'Sem dados'}
-                    </strong>
-                    {data?.wait_time && (
+                    {isLoading ? (
+                        <Spinner color="subtle" />
+                    ) : (
+                        <strong
+                            className={css({
+                                color: data ? 'inherit' : 'neutral.400',
+                            })}
+                        >
+                            {data
+                                ? data < 25
+                                    ? 'Baixo'
+                                    : data < 50
+                                      ? 'Médio'
+                                      : 'Alto'
+                                : 'Sem dados'}
+                        </strong>
+                    )}
+                    {data && (
                         <span
                             className={css({
                                 fontSize: '0.875rem',
                                 color: 'neutral.500',
                             })}
                         >
-                            Cerca de {data.wait_time} min
+                            Cerca de {data} min
                         </span>
                     )}
                 </div>
@@ -68,7 +73,7 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: `${data?.wait_time || 0}%` }}
+                    animate={{ width: `${data || 0}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
@@ -77,10 +82,10 @@ export function WaitTimeIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: data?.wait_time
-                            ? data?.wait_time < 30
+                        background: data
+                            ? data < 30
                                 ? '#4caf50'
-                                : data?.wait_time < 60
+                                : data < 60
                                   ? '#f48c06'
                                   : '#e5383b'
                             : 'transparent',

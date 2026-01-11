@@ -11,8 +11,9 @@ import {
     descriptionContainer,
 } from './styles'
 import { IndicatorsProps } from './HealtieClassificationIndicator'
+import { Spinner } from '../spinner'
 
-export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
+export function ResolutionIndexIndicator({ data, isLoading }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -34,21 +35,23 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                     <CheckCircleIcon />
                     <p>Índice de Resolução</p>
                 </div>
-                <strong
-                    className={css({
-                        color: data?.resolution_index
-                            ? 'inherit'
-                            : 'neutral.400',
-                    })}
-                >
-                    {data?.resolution_index
-                        ? data.resolution_index < 50
-                            ? 'Baixo'
-                            : data.resolution_index < 75
-                              ? 'Médio'
-                              : 'Alto'
-                        : 'Sem dados'}
-                </strong>
+                {isLoading ? (
+                    <Spinner color="subtle" />
+                ) : (
+                    <strong
+                        className={css({
+                            color: data ? 'inherit' : 'neutral.400',
+                        })}
+                    >
+                        {data
+                            ? data < 50
+                                ? 'Baixo'
+                                : data < 75
+                                  ? 'Médio'
+                                  : 'Alto'
+                            : 'Sem dados'}
+                    </strong>
+                )}
             </header>
             <div className={barContainer}>
                 <motion.div
@@ -62,15 +65,15 @@ export function ResolutionIndexIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: data?.resolution_index
-                            ? data?.resolution_index < 50
+                        background: data
+                            ? data < 50
                                 ? '#e5383b'
-                                : data?.resolution_index < 75
+                                : data < 75
                                   ? '#f48c06'
                                   : '#4caf50'
                             : 'transparent',
                         width: '20%',
-                        left: `${data?.resolution_index || 0}%`,
+                        left: `${data || 0}%`,
                     }}
                 />
                 <div className={barBackground} />

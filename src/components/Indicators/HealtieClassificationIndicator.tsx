@@ -9,13 +9,17 @@ import {
     barBackground,
     descriptionContainer,
 } from './styles'
-import { IndicatorsData } from '@/app/estabelecimento/[cnes]/components/tabs/IndicatorsTab'
+import { Spinner } from '../spinner'
 
 export interface IndicatorsProps {
-    data: IndicatorsData | undefined
+    data: number | null | undefined
+    isLoading: boolean
 }
 
-export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
+export function HealtieClassificationIndicator({
+    data,
+    isLoading,
+}: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -37,18 +41,22 @@ export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
                     <GaugeIcon />
                     <p>Classificação do Healtie </p>
                 </div>
-                <strong
-                    className={css({
-                        color: data?.rating ? 'inherit' : 'neutral.400',
-                    })}
-                >
-                    {data?.rating || 'Sem dados'}
-                </strong>
+                {isLoading ? (
+                    <Spinner color="subtle" />
+                ) : (
+                    <strong
+                        className={css({
+                            color: data ? 'inherit' : 'neutral.400',
+                        })}
+                    >
+                        {data || 'Sem dados'}
+                    </strong>
+                )}
             </header>
             <div className={barContainer}>
                 <motion.div
                     initial={{ width: '0%' }}
-                    animate={{ width: `${data?.rating}%` }}
+                    animate={{ width: `${data}%` }}
                     transition={{
                         delay: 0.3,
                         duration: 0.4,
@@ -57,10 +65,10 @@ export function HealtieClassificationIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: data?.rating
-                            ? data?.rating < 30
+                        background: data
+                            ? data < 30
                                 ? '#e5383b'
-                                : data?.rating < 60
+                                : data < 60
                                   ? '#f48c06'
                                   : '#4caf50'
                             : 'transparent',

@@ -11,8 +11,9 @@ import {
     descriptionContainer,
 } from './styles'
 import { IndicatorsProps } from './HealtieClassificationIndicator'
+import { Spinner } from '../spinner'
 
-export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
+export function OccupancyIndexIndicator({ data, isLoading }: IndicatorsProps) {
     return (
         <div
             className={css({
@@ -34,19 +35,23 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                     <UsersFourIcon />
                     <p>Ocupação</p>
                 </div>
-                <strong
-                    className={css({
-                        color: data?.occupation ? 'inherit' : 'neutral.400',
-                    })}
-                >
-                    {data?.occupation
-                        ? data.occupation < 30
-                            ? 'Vazio'
-                            : data.occupation > 30 && data.occupation < 70
-                              ? 'Moderado'
-                              : 'Lotado'
-                        : 'Sem dados'}
-                </strong>
+                {isLoading ? (
+                    <Spinner color="subtle" />
+                ) : (
+                    <strong
+                        className={css({
+                            color: data ? 'inherit' : 'neutral.400',
+                        })}
+                    >
+                        {data
+                            ? data < 30
+                                ? 'Vazio'
+                                : data > 30 && data < 70
+                                  ? 'Moderado'
+                                  : 'Lotado'
+                            : 'Sem dados'}
+                    </strong>
+                )}
             </header>
             <div className={barContainer}>
                 <motion.div
@@ -60,15 +65,15 @@ export function OccupancyIndexIndicator({ data }: IndicatorsProps) {
                     }}
                     className={barFill}
                     style={{
-                        background: data?.occupation
-                            ? data?.occupation < 30
+                        background: data
+                            ? data < 30
                                 ? '#4caf50'
-                                : data?.occupation < 70
+                                : data < 70
                                   ? '#f48c06'
                                   : '#e5383b'
                             : 'transparent',
                         width: '20%',
-                        left: `${data?.occupation || 0}%`,
+                        left: `${data || 0}%`,
                     }}
                 />
                 <div className={barBackground} />
