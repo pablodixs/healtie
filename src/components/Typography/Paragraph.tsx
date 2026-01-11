@@ -10,7 +10,7 @@ interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
     bolder?: boolean
     compact?: boolean
     marginCompact?: boolean
-    variant?: 'default' | 'highlighted'
+    variant?: 'default' | 'highlighted' | 'danger'
 }
 
 export function Paragraph({
@@ -100,6 +100,9 @@ const paragraphStyles = cva({
                 color: 'tint',
             },
             default: {},
+            danger: {
+                color: 'red.600',
+            },
         },
     },
 })

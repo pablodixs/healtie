@@ -24,6 +24,7 @@ import { Label } from '@/components/Form/Label'
 import { css } from '../../../../../styled-system/css'
 import Image from 'next/image'
 import { ProgressiveBlur } from '@/components/ProgressiveBlur'
+import { WaitTimeOptionView } from './options/wait-time-option-view'
 
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
@@ -137,7 +138,7 @@ export function ReportModalView({
                 animate={{ y: '0%' }}
                 exit={{ y: '200%' }}
                 transition={{
-                    duration: 0.6,
+                    duration: 0.45,
                     type: 'spring',
                     bounce: 0,
                 }}
@@ -146,8 +147,14 @@ export function ReportModalView({
                 role="dialog"
                 aria-modal="true"
             >
-                <div className={bodyWrapperStyles}>
-                    <header className={headerStyles}>
+                <header className={headerStyles}>
+                    <div
+                        className={css({
+                            display: 'grid',
+                            gridTemplateColumns: '34px 1fr 34px',
+                            alignItems: 'flex-start',
+                        })}
+                    >
                         <div className={css({ display: 'flex', gap: '1ch' })}>
                             <AnimatePresence>
                                 {currentIndicator !== null && (
@@ -169,15 +176,15 @@ export function ReportModalView({
                                         }}
                                     >
                                         <Button
-                                            variant="secondary"
+                                            iconButton
+                                            variant="subtle"
                                             onClick={() => {
                                                 if (currentIndicator !== null) {
                                                     setCurrentIndicator(null)
                                                 }
                                             }}
                                         >
-                                            <CaretLeftIcon weight="bold" />{' '}
-                                            Voltar
+                                            <CaretLeftIcon weight="bold" />
                                         </Button>
                                     </motion.div>
                                 )}
@@ -187,7 +194,9 @@ export function ReportModalView({
                             className={css({
                                 display: 'flex',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 gap: '1ch',
+                                flex: 1,
                             })}
                         >
                             <EstablishmentIcon
@@ -206,15 +215,21 @@ export function ReportModalView({
                             </Paragraph>
                         </div>
                         <Button
+                            iconButton
                             onClick={() => onOpenChange?.(false)}
-                            variant="danger"
+                            variant="subtle"
                         >
-                            Cancelar
+                            <XIcon weight="bold" />
                         </Button>
-                        <ProgressiveBlur />
-                    </header>
+                    </div>
+                    <ProgressiveBlur />
+                </header>
+                <div className={bodyWrapperStyles}>
                     {currentIndicator === null && (
-                        <section
+                        <motion.section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                             className={css({
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -222,14 +237,15 @@ export function ReportModalView({
                                 mt: '.5rem',
                             })}
                         >
-                            <Paragraph bolder subtle marginCompact>
+                            <Subheading centered>
                                 O que você quer reportar?
-                            </Paragraph>
+                            </Subheading>
                             <div
                                 className={css({
+                                    mt: '1rem',
                                     display: 'grid',
                                     gridTemplateColumns:
-                                        'repeat(auto-fit, minmax(200px, 1fr))',
+                                        'repeat(auto-fit, minmax(160px, 1fr))',
                                     gap: '1rem',
                                 })}
                             >
@@ -245,6 +261,12 @@ export function ReportModalView({
                                             borderRadius: '1rem',
                                             cursor: 'pointer',
                                             transition: 'border-color 0.1s',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'flex-start',
+                                            alignItems: 'flex-start',
+                                            textAlign: 'left',
+                                            gap: 0,
 
                                             _hover: {
                                                 borderColor:
@@ -265,7 +287,7 @@ export function ReportModalView({
                                             height={120}
                                             quality={80}
                                         />
-                                        <Paragraph bolder>
+                                        <Paragraph marginCompact bolder>
                                             {option.label}
                                         </Paragraph>
                                         <Paragraph
@@ -278,34 +300,14 @@ export function ReportModalView({
                                     </button>
                                 ))}
                             </div>
-                        </section>
+                        </motion.section>
                     )}
-                    {currentIndicator === 'waitTime' && (
-                        <div>
-                            <Paragraph bolder subtle marginCompact>
-                                Reportar tempo de espera
-                            </Paragraph>
-                            <Label htmlFor="waitTime">
-                                Tempo de espera (minutos)
-                            </Label>
-                            <input
-                                id="waitTime"
-                                className={css({
-                                    padding: '1rem',
-                                    borderRadius: '12px',
-                                    background: 'neutral.100',
-                                    width: '100%',
-                                })}
-                                type="number"
-                                onChange={(e) =>
-                                    setIndicators((prev) => ({
-                                        ...prev,
-                                        wait_time: Number(e.target.value),
-                                    }))
-                                }
-                            />
-                        </div>
-                    )}
+                    <AnimatePresence initial={false} mode="wait">
+                        {currentIndicator === 'waitTime' && (
+                            <WaitTimeOptionView establishment={establishment} />
+                        )}
+                    </AnimatePresence>
+
                     {currentIndicator === 'occupancy' && (
                         <div>
                             <Paragraph bolder subtle marginCompact>
@@ -340,11 +342,10 @@ export function ReportModalView({
 
 const modalContainer = css({
     backgroundColor: 'white',
-    p: '1.5rem',
     width: '100%',
-    maxWidth: { md: '800px' },
+    maxWidth: { md: '600px' },
     height: '100%',
-    maxHeight: { md: '80vh', base: '100vh' },
+    maxHeight: { md: '90dvh', base: '100vh' },
     display: 'flex',
     flexDirection: {
         base: 'column',
@@ -352,8 +353,10 @@ const modalContainer = css({
     },
     position: 'relative',
     gap: '1rem',
-    borderRadius: '12px',
-    paddingY: { base: '4.5rem' },
+    borderRadius: { base: '0', md: '26px' },
+    paddingTop: { base: '4.5rem', md: '1rem' },
+    overflow: 'hidden',
+    boxShadow: 'xl',
 })
 
 const overlay = css({
@@ -362,57 +365,26 @@ const overlay = css({
     backgroundColor: 'rgba(0, 0, 0, 0.35)',
     position: 'fixed',
     inset: 0,
-    zIndex: 1000,
+    zIndex: 5000,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 })
 
 const headerStyles = css({
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     position: 'absolute',
-})
-
-const buttonStyles = css({
-    display: 'flex',
-    alignItems: 'center',
-    gap: '.5rem',
-    padding: '.5rem',
-    fontWeight: 500,
-    color: 'primary',
-    cursor: 'pointer',
-    borderRadius: '0.75rem',
-
-    '& span': {
-        display: 'block',
-        width: 'fit-content',
-        padding: '0.375rem',
-        borderRadius: '50%',
-        background: 'neutral.100',
-
-        '& svg': {
-            fontSize: '1.25rem',
-        },
-    },
-
-    _hover: {
-        backgroundColor: 'neutral.50',
-    },
-})
-
-const asideContainer = css({
-    padding: '1.5rem',
-    bg: 'neutral.50',
-    borderRadius: '12px',
-    maxWidth: { md: '25rem' },
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: '1rem',
+    zIndex: 1,
 })
 
 const bodyWrapperStyles = css({
+    position: 'relative',
     flex: 1,
     overflowY: 'auto',
+    pt: { base: '0', md: '3.25rem' },
+    px: '1rem',
+    pb: '1rem',
 })
