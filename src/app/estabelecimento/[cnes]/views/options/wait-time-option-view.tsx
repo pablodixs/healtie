@@ -96,7 +96,6 @@ export function WaitTimeOptionView({
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 height: '100%',
-                mb: '1rem',
             })}
         >
             <div
