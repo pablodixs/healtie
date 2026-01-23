@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { useDebounce } from './useDebounce'
 
 interface MapViewState {
     longitude: number
@@ -63,10 +64,12 @@ export function useMapView(initialViewState: MapViewState): UseMapViewReturn {
 
     const [viewState, setViewState] = useState<MapViewState>(getInitialState)
 
+    const debouncedViewState = useDebounce(viewState, 300)
+
     // Salvar automaticamente quando o viewState mudar
     useEffect(() => {
-        saveLocationToStorage(viewState)
-    }, [viewState])
+        saveLocationToStorage(debouncedViewState)
+    }, [debouncedViewState])
 
     // Função personalizada para atualizar o viewState
     const updateViewState = useCallback((newViewState: MapViewState) => {
