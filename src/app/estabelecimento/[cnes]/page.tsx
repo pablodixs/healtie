@@ -81,7 +81,7 @@ export default async function Page({
             </>
         )
     } catch (error) {
-        console.error(error)
+        // Error occurred, show not found page
         return notFound()
     }
 }

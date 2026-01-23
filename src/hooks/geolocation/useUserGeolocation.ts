@@ -323,7 +323,8 @@ export function useUserGeolocation(
                     }
                 }
             } catch (err) {
-                console.error('Error fetching location:', err)
+                // Silently handle reverse geocoding errors
+                // The location string will remain null
             } finally {
                 setIsLoadingLocation(false)
             }

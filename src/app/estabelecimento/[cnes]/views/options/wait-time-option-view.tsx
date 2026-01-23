@@ -41,10 +41,7 @@ export function WaitTimeOptionView({
                 occupation: null,
             })
             .catch((error) => {
-                console.error(
-                    'There was an error reporting the wait time:',
-                    error
-                )
+                // Handle error by setting error state for user feedback
                 setError(error.response.data)
                 setIsLoading(false)
             })

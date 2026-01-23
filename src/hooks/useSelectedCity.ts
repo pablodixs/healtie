@@ -10,7 +10,7 @@ function readCity(): string | null {
         const value = localStorage.getItem(STORAGE_KEY)
         return value
     } catch (error) {
-        console.error('Error retrieving selected city:', error)
+        // Silently handle localStorage errors
         return null
     }
 }
@@ -24,7 +24,7 @@ function writeCity(city: string | null) {
             localStorage.removeItem(STORAGE_KEY)
         }
     } catch (error) {
-        console.error('Error saving selected city:', error)
+        // Silently handle localStorage errors (quota exceeded, etc.)
     }
 }
 
