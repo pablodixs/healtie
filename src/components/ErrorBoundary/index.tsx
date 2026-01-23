@@ -31,10 +31,11 @@ export class ErrorBoundary extends React.Component<
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        // Log error to monitoring service in production
-        // For now, we just store it in state
+        // In development, errors will be visible in the React DevTools
+        // In production, integrate with an error monitoring service (e.g., Sentry)
         if (process.env.NODE_ENV === 'development') {
-            // In development, log to console
+            // Only log in development for debugging
+            // eslint-disable-next-line no-console
             console.error('ErrorBoundary caught an error:', error, errorInfo)
         }
     }

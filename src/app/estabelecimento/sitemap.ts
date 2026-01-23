@@ -5,7 +5,6 @@ const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 async function getAllEstablishmentIds() {
     // If API_URL is not defined (e.g., during build), return empty array
     if (!API_URL) {
-        console.warn('NEXT_PUBLIC_HEALTIE_API_URL not defined, skipping establishment sitemap generation')
         return []
     }
     
@@ -15,13 +14,12 @@ async function getAllEstablishmentIds() {
         })
         
         if (!res.ok) {
-            console.warn(`Failed to fetch establishments for sitemap: ${res.status}`)
             return []
         }
         
         return res.json()
-    } catch (error) {
-        console.warn('Error fetching establishments for sitemap:', error)
+    } catch {
+        // Silently handle fetch errors during build
         return []
     }
 }
