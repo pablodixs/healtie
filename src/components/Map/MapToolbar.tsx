@@ -1,14 +1,13 @@
 'use client'
 
 import { GpsIcon, MinusIcon, PlusIcon } from '@phosphor-icons/react/dist/ssr'
-import type { MapRef } from 'react-map-gl/mapbox'
 import { Button } from '../Button'
 import { toolbarContainer } from './styles'
 import { useUserGeolocation } from '@/hooks/geolocation/useUserGeolocation'
 import { Tooltip } from '../Tooltip'
 
 interface MapToolbarProps {
-    mapRef: React.RefObject<MapRef | null>
+    mapRef: React.RefObject<mapboxgl.Map | null>
 }
 
 export function MapToolbar({ mapRef }: MapToolbarProps) {
@@ -18,24 +17,21 @@ export function MapToolbar({ mapRef }: MapToolbarProps) {
     })
 
     const handleZoomIn = () => {
-        const map = mapRef.current?.getMap()
-        if (map) {
-            map.zoomIn()
+        if (mapRef.current) {
+            mapRef.current.zoomIn()
         }
     }
 
     const handleZoomOut = () => {
-        const map = mapRef.current?.getMap()
-        if (map) {
-            map.zoomOut()
+        if (mapRef.current) {
+            mapRef.current.zoomOut()
         }
     }
 
     const handleShowUserLocation = () => {
-        const map = mapRef.current?.getMap()
-        if (coords && map) {
+        if (coords && mapRef.current) {
             // Centraliza o mapa na localização do usuário
-            map.flyTo({
+            mapRef.current.flyTo({
                 center: [coords.longitude, coords.latitude],
                 zoom: 15,
                 essential: true,
