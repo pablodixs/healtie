@@ -322,9 +322,10 @@ export function useUserGeolocation(
                         // Ignore localStorage errors
                     }
                 }
-            } catch (err) {
-                console.error('Error fetching location:', err)
-            } finally {
+    } catch {
+        // Silently handle reverse geocoding errors
+        // The location string will remain null
+    } finally {
                 setIsLoadingLocation(false)
             }
         }

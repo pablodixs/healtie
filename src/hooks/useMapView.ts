@@ -35,11 +35,8 @@ const getLastLocationFromStorage = (): MapViewState | null => {
                 return parsed
             }
         }
-    } catch (error) {
-        console.warn(
-            'Erro ao recuperar última localização do localStorage:',
-            error
-        )
+    } catch {
+        // Silently handle localStorage errors
     }
 
     return null
@@ -50,8 +47,8 @@ const saveLocationToStorage = (viewState: MapViewState): void => {
 
     try {
         localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(viewState))
-    } catch (error) {
-        console.warn('Erro ao salvar localização no localStorage:', error)
+    } catch {
+        // Silently handle localStorage errors (quota exceeded, etc.)
     }
 }
 
