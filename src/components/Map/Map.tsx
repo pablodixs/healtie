@@ -129,30 +129,36 @@ export function MapComponent() {
         if (!bbox) return
 
         setCachedEstablishments((previous) => {
-            const filtered = previous.filter((establishment) =>
-                establishment?.geolocation
-                    ? isInsideBoundingBox(establishment.geolocation, bbox)
-                    : false
-            )
-
-            if (!data) return filtered
+            if (!data) {
+                return previous.filter((establishment) =>
+                    establishment?.geolocation
+                        ? isInsideBoundingBox(establishment.geolocation, bbox)
+                        : false
+                )
+            }
 
             const deduped = new globalThis.Map<
                 number,
                 EstablishmentPointResponse
-            >(
-                filtered.map((establishment) => [
-                    establishment.cnes,
-                    establishment,
-                ])
-            )
+            >()
 
-            data.forEach((establishment) => {
-                if (!establishment?.geolocation) return
-                if (!isInsideBoundingBox(establishment.geolocation, bbox))
-                    return
-                deduped.set(establishment.cnes, establishment)
-            })
+            for (const establishment of previous) {
+                if (
+                    establishment?.geolocation &&
+                    isInsideBoundingBox(establishment.geolocation, bbox)
+                ) {
+                    deduped.set(establishment.cnes, establishment)
+                }
+            }
+
+            for (const establishment of data) {
+                if (
+                    establishment?.geolocation &&
+                    isInsideBoundingBox(establishment.geolocation, bbox)
+                ) {
+                    deduped.set(establishment.cnes, establishment)
+                }
+            }
 
             return Array.from(deduped.values())
         })
