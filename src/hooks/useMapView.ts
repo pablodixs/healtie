@@ -34,7 +34,7 @@ const getLastLocationFromStorage = (): MapViewState | null => {
                 return parsed
             }
         }
-    } catch (error) {
+    } catch {
         // Silently handle localStorage errors
     }
 
@@ -46,7 +46,7 @@ const saveLocationToStorage = (viewState: MapViewState): void => {
 
     try {
         localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(viewState))
-    } catch (error) {
+    } catch {
         // Silently handle localStorage errors (quota exceeded, etc.)
     }
 }

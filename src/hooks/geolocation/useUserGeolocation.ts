@@ -322,10 +322,10 @@ export function useUserGeolocation(
                         // Ignore localStorage errors
                     }
                 }
-            } catch (err) {
-                // Silently handle reverse geocoding errors
-                // The location string will remain null
-            } finally {
+    } catch {
+        // Silently handle reverse geocoding errors
+        // The location string will remain null
+    } finally {
                 setIsLoadingLocation(false)
             }
         }

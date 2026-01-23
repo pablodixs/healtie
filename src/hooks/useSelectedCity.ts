@@ -9,7 +9,7 @@ function readCity(): string | null {
     try {
         const value = localStorage.getItem(STORAGE_KEY)
         return value
-    } catch (error) {
+    } catch {
         // Silently handle localStorage errors
         return null
     }
@@ -23,7 +23,7 @@ function writeCity(city: string | null) {
         } else {
             localStorage.removeItem(STORAGE_KEY)
         }
-    } catch (error) {
+    } catch {
         // Silently handle localStorage errors (quota exceeded, etc.)
     }
 }

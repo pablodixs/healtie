@@ -1,6 +1,7 @@
 'use client'
 
-import Map, { MapRef, ScaleControl } from 'react-map-gl/mapbox'
+import Map, { ScaleControl } from 'react-map-gl/mapbox'
+import type { MapRef as MapRefType } from 'react-map-gl/mapbox'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -38,7 +39,7 @@ interface BoundingBox {
 
 export function MapComponent() {
     const param = useSearchParams()
-    const mapRef = useRef<MapRef>(null)
+    const mapRef = useRef<MapRefType>(null)
     const { selectedEstablishment } = useMapContext()
     const { coords } = useUserGeolocation()
     const latitudeParam = param.get('lat')
