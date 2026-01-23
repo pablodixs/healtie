@@ -298,10 +298,13 @@ export function MapComponent() {
                             )}
                         {coords && (
                             <MapUserMarker
-                                userLocation={{
-                                    longitude: coords.longitude,
-                                    latitude: coords.latitude,
-                                }}
+                                userLocation={useMemo(
+                                    () => ({
+                                        longitude: coords.longitude,
+                                        latitude: coords.latitude,
+                                    }),
+                                    [coords.latitude, coords.longitude]
+                                )}
                             />
                         )}
                         <ScaleControl />
