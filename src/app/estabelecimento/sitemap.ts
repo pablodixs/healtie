@@ -3,10 +3,25 @@ import { MetadataRoute } from 'next'
 const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
 
 async function getAllEstablishmentIds() {
-    const res = await fetch(`${API_URL}/establishment/all`, {
-        next: { revalidate: 86400 },
-    })
-    return res.json()
+    // If API_URL is not defined (e.g., during build), return empty array
+    if (!API_URL) {
+        return []
+    }
+    
+    try {
+        const res = await fetch(`${API_URL}/establishment/all`, {
+            next: { revalidate: 86400 },
+        })
+        
+        if (!res.ok) {
+            return []
+        }
+        
+        return res.json()
+    } catch {
+        // Silently handle fetch errors during build
+        return []
+    }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
