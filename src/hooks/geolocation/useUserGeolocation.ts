@@ -74,70 +74,8 @@ export function useUserGeolocation(
     }, [watch, startWatching, stopWatching])
 
     useEffect(() => {
-        const fetchLocation = async () => {
-            if (!coords) return
-
-            const { latitude: lat, longitude: lng } = coords
-            const cacheKey = `location_${lat.toFixed(4)}_${lng.toFixed(4)}`
-
-            // Check localStorage cache first
-            if (isBrowser) {
-                try {
-                    const cached = localStorage.getItem(cacheKey)
-                    if (cached) {
-                        const { location: cachedLocation, timestamp } =
-                            JSON.parse(cached)
-                        // Cache valid for 7 days
-                        const isValid =
-                            timestamp &&
-                            Date.now() - timestamp < 7 * 24 * 60 * 60 * 1000
-                        if (isValid) {
-                            setLocation(cachedLocation)
-                            return
-                        }
-                        localStorage.removeItem(cacheKey)
-                    }
-                } catch {
-                    // Ignore localStorage errors
-                }
-            }
-
-            // Fetch from API if not cached
-            setIsLoadingLocation(true)
-            try {
-                const res = await fetch(
-                    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
-                )
-                const data = await res.json()
-                const city =
-                    data.address.city ||
-                    data.address.town ||
-                    data.address.village
-                const state = data.address.state
-                const locationString = `${city}, ${state}`
-
-                setLocation(locationString)
-
-                // Save to localStorage
-                if (isBrowser) {
-                    try {
-                        localStorage.setItem(
-                            cacheKey,
-                            JSON.stringify({
-                                location: locationString,
-                                timestamp: Date.now(),
-                            })
-                        )
-                    } catch {
-                        // Ignore localStorage errors
-                    }
-                }
-    } catch {
-        // Silently handle reverse geocoding errors
-        // The location string will remain null
-    } finally {
-                setIsLoadingLocation(false)
-            }
+        if (immediate && !watch) {
+            requestLocation()
         }
     }, [immediate, watch, requestLocation])
 

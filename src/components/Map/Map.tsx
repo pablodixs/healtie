@@ -1,7 +1,6 @@
 'use client'
 
 import Map, { ScaleControl } from 'react-map-gl/mapbox'
-import type { MapRef as MapRefType } from 'react-map-gl/mapbox'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -39,7 +38,7 @@ interface BoundingBox {
 
 export function MapComponent() {
     const param = useSearchParams()
-    const mapRef = useRef<MapRefType>(null)
+    const mapRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
     const { selectedEstablishment } = useMapContext()
     const { coords } = useUserGeolocation()
     const latitudeParam = param.get('lat')
@@ -130,36 +129,30 @@ export function MapComponent() {
         if (!bbox) return
 
         setCachedEstablishments((previous) => {
-            if (!data) {
-                return previous.filter((establishment) =>
-                    establishment?.geolocation
-                        ? isInsideBoundingBox(establishment.geolocation, bbox)
-                        : false
-                )
-            }
+            const filtered = previous.filter((establishment) =>
+                establishment?.geolocation
+                    ? isInsideBoundingBox(establishment.geolocation, bbox)
+                    : false
+            )
+
+            if (!data) return filtered
 
             const deduped = new globalThis.Map<
                 number,
                 EstablishmentPointResponse
-            >()
+            >(
+                filtered.map((establishment) => [
+                    establishment.cnes,
+                    establishment,
+                ])
+            )
 
-            for (const establishment of previous) {
-                if (
-                    establishment?.geolocation &&
-                    isInsideBoundingBox(establishment.geolocation, bbox)
-                ) {
-                    deduped.set(establishment.cnes, establishment)
-                }
-            }
-
-            for (const establishment of data) {
-                if (
-                    establishment?.geolocation &&
-                    isInsideBoundingBox(establishment.geolocation, bbox)
-                ) {
-                    deduped.set(establishment.cnes, establishment)
-                }
-            }
+            data.forEach((establishment) => {
+                if (!establishment?.geolocation) return
+                if (!isInsideBoundingBox(establishment.geolocation, bbox))
+                    return
+                deduped.set(establishment.cnes, establishment)
+            })
 
             return Array.from(deduped.values())
         })
@@ -305,13 +298,10 @@ export function MapComponent() {
                             )}
                         {coords && (
                             <MapUserMarker
-                                userLocation={useMemo(
-                                    () => ({
-                                        longitude: coords.longitude,
-                                        latitude: coords.latitude,
-                                    }),
-                                    [coords.latitude, coords.longitude]
-                                )}
+                                userLocation={{
+                                    longitude: coords.longitude,
+                                    latitude: coords.latitude,
+                                }}
                             />
                         )}
                         <ScaleControl />

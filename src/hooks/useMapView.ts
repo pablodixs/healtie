@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useDebounce } from './useDebounce'
 
 interface MapViewState {
     longitude: number
@@ -35,8 +34,11 @@ const getLastLocationFromStorage = (): MapViewState | null => {
                 return parsed
             }
         }
-    } catch {
-        // Silently handle localStorage errors
+    } catch (error) {
+        console.warn(
+            'Erro ao recuperar última localização do localStorage:',
+            error
+        )
     }
 
     return null
@@ -47,8 +49,8 @@ const saveLocationToStorage = (viewState: MapViewState): void => {
 
     try {
         localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(viewState))
-    } catch {
-        // Silently handle localStorage errors (quota exceeded, etc.)
+    } catch (error) {
+        console.warn('Erro ao salvar localização no localStorage:', error)
     }
 }
 
@@ -61,12 +63,10 @@ export function useMapView(initialViewState: MapViewState): UseMapViewReturn {
 
     const [viewState, setViewState] = useState<MapViewState>(getInitialState)
 
-    const debouncedViewState = useDebounce(viewState, 300)
-
     // Salvar automaticamente quando o viewState mudar
     useEffect(() => {
-        saveLocationToStorage(debouncedViewState)
-    }, [debouncedViewState])
+        saveLocationToStorage(viewState)
+    }, [viewState])
 
     // Função personalizada para atualizar o viewState
     const updateViewState = useCallback((newViewState: MapViewState) => {

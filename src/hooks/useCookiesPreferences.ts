@@ -11,8 +11,8 @@ function readPreference(): CookiePreference {
     try {
         const value = localStorage.getItem(STORAGE_KEY)
         return value === 'accepted' || value === 'rejected' ? value : null
-    } catch {
-        // Silently handle localStorage errors
+    } catch (error) {
+        console.error('Error retrieving cookies preferences:', error)
         return null
     }
 }
@@ -21,8 +21,8 @@ function writePreference(accepted: boolean) {
     if (typeof window === 'undefined') return
     try {
         localStorage.setItem(STORAGE_KEY, accepted ? 'accepted' : 'rejected')
-    } catch {
-        // Silently handle localStorage errors (quota exceeded, etc.)
+    } catch (error) {
+        console.error('Error saving cookies preferences:', error)
     }
 }
 

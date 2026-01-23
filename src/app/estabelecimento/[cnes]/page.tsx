@@ -80,8 +80,8 @@ export default async function Page({
                 <EstablishmentView data={data} />
             </>
         )
-    } catch {
-        // Error occurred, show not found page
+    } catch (error) {
+        console.error(error)
         return notFound()
     }
 }
