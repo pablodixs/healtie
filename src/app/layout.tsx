@@ -6,6 +6,7 @@ import { MainLayout } from '@/components/Layout'
 import { MobileNav } from '@/components/Header/MobileNav'
 import { HydrationFix } from '@/components/HydrationFix'
 import { Analytics } from '@vercel/analytics/next'
+import { UserGeolocationProvider } from '@/context/UserGeolocationContext'
 
 export const metadata: Metadata = {
     title: {
@@ -55,9 +56,11 @@ export default function RootLayout({
             <Analytics />
             <body suppressHydrationWarning>
                 <HydrationFix />
-                <div id="portal" />
-                <MobileNav />
-                <MainLayout>{children}</MainLayout>
+                <UserGeolocationProvider>
+                    <div id="portal" />
+                    <MobileNav />
+                    <MainLayout>{children}</MainLayout>
+                </UserGeolocationProvider>
             </body>
         </html>
     )
