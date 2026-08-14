@@ -130,7 +130,7 @@ export function Footer() {
                     <span>Legal</span>
                     <ul>
                         <li>
-                            <Link href="/">Termos de Uso</Link>
+                            <Link href="/termos">Termos de Uso</Link>
                         </li>
                         <li>
                             <Link href="/">Política de Privacidade</Link>
@@ -153,7 +153,7 @@ export function Footer() {
                     paddingRight: { base: '0', md: '1rem' },
                 })}
             >
-                <p>&copy; 2025 Scriptles</p>
+                <p>&copy; 2026 Scriptles</p>
                 <p>
                     Feito com{' '}
                     <HeartIcon weight="fill" color="#FF3938" size={18} /> em
