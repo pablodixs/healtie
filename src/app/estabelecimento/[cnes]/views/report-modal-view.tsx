@@ -115,7 +115,7 @@ export function ReportModalView({
     const postIndicators = async () => {
         await axios.post(
             `${API_URL}/establishment/${establishment.cnes}/indicators`,
-            { indicators }
+            indicators
         )
     }
 

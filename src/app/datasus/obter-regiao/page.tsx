@@ -19,6 +19,7 @@ import { FormEvent, useState } from 'react'
 import axios from 'axios'
 import { Banner } from '@/components/Banner'
 import { Spinner } from '@/components/spinner'
+import { useRouter } from 'next/navigation'
 
 interface FormData {
     stateCode: number
@@ -30,47 +31,103 @@ interface ApiResponse {
     message: string
     total_records: number
 }
-
-const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+interface JobResponse {
+    job_id: string
+    status: 'queued' | 'running' | 'completed' | 'failed'
+    total_records?: number
+    error?: string
+}
 
 export default function Page() {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [response, setResponse] = useState<ApiResponse | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [job, setJob] = useState<JobResponse | null>(null)
     const [formData, setFormData] = useState<FormData>({
         stateCode: 0,
         cityCode: 0,
         establishmentTypeCode: 0,
     })
+    const logout = async () => {
+        await fetch('/api/admin/session', { method: 'DELETE' })
+        router.replace('/admin/login')
+    }
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
 
         setIsLoading(true)
         setError(null)
         setResponse(null)
 
-        axios
-            .post(`${API_URL}/datasus/get-all`, {
-                stateCode: formData.stateCode,
-                cityCode: formData.cityCode,
-                establishmentTypeCode: formData.establishmentTypeCode,
+        try {
+            const accepted = await axios.post<JobResponse>(
+                '/api/admin/datasus/import',
+                {
+                    stateCode: formData.stateCode,
+                    cityCode: formData.cityCode,
+                    establishmentTypeCode: formData.establishmentTypeCode,
+                }
+            )
+            setJob(accepted.data)
+            let current = accepted.data
+            while (
+                current.status === 'queued' ||
+                current.status === 'running'
+            ) {
+                await new Promise((resolve) => setTimeout(resolve, 2000))
+                const status = await axios.get<JobResponse>(
+                    `/api/admin/datasus/jobs/${current.job_id}`
+                )
+                current = status.data
+                setJob(current)
+            }
+            if (current.status === 'failed')
+                throw new Error(current.error ?? 'A importação falhou.')
+            setResponse({
+                message: 'Estabelecimentos importados com sucesso.',
+                total_records: current.total_records ?? 0,
             })
-            .catch((error) => {
-                setError(error.message)
-            })
-            .then((response) => {
-                if (!response?.data) return
-                setResponse(response.data)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        } catch (requestError) {
+            if (
+                axios.isAxiosError(requestError) &&
+                requestError.response?.status === 401
+            )
+                router.replace('/admin/login?next=/datasus/obter-regiao')
+            else if (
+                axios.isAxiosError(requestError) &&
+                requestError.response?.status === 429
+            )
+                setError(
+                    'Limite de importações atingido. Tente novamente mais tarde.'
+                )
+            else
+                setError(
+                    requestError instanceof Error
+                        ? requestError.message
+                        : 'Não foi possível importar os dados.'
+                )
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
         <div>
-            <Heading centered>Obter estabelecimentos por região</Heading>
+            <div
+                className={css({
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '1rem',
+                })}
+            >
+                <Heading centered>Obter estabelecimentos por região</Heading>
+                <Button type="button" variant="secondary" onClick={logout}>
+                    Sair
+                </Button>
+            </div>
             <Divider />
             <section>
                 <Link
@@ -171,7 +228,11 @@ export default function Page() {
                     <Banner
                         icon={<Spinner color="subtle" />}
                         title={'Buscando estabelecimentos na API do DataSUS...'}
-                        message={'Isso pode demorar um pouco.'}
+                        message={
+                            job
+                                ? `Status: ${job.status}`
+                                : 'Isso pode demorar um pouco.'
+                        }
                     />
                 )}
                 {error && (
