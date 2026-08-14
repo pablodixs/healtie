@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next'
-
-const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+import { API_URL } from '@/lib/apiConfig'
 
 async function getAllEstablishmentIds() {
+    if (!API_URL) return []
+
     const res = await fetch(`${API_URL}/establishment/all`, {
         next: { revalidate: 86400 },
     })
