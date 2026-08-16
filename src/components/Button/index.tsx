@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react'
 import { buttonStyles } from './styles'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,7 +18,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     align?: 'left' | 'center' | 'right'
 }
 
-export function Button({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
     children,
     variant = 'primary',
     size,
@@ -26,9 +26,10 @@ export function Button({
     fullWidth = false,
     align,
     ...props
-}: ButtonProps) {
+}, ref) {
     return (
         <button
+            ref={ref}
             className={buttonStyles({
                 variant,
                 size,
@@ -41,4 +42,4 @@ export function Button({
             {children}
         </button>
     )
-}
+})

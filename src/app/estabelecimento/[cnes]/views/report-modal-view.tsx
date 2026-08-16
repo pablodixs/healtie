@@ -1,32 +1,16 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
-import {
-    CaretLeftIcon,
-    CaretRightIcon,
-    ClockCountdownIcon,
-    PillIcon,
-    ProhibitInsetIcon,
-    StethoscopeIcon,
-    XIcon,
-} from '@phosphor-icons/react'
-
-import { Paragraph, Subheading } from '@/components/Typography'
-import { Button } from '@/components/Button'
-import { Tooltip } from '@/components/Tooltip'
-
-import { UsersFourIcon } from '@phosphor-icons/react/dist/ssr'
-import { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
-import { EstablishmentIcon } from '@/components/EstablishmentIcon'
-import axios from 'axios'
-import { Label } from '@/components/Form/Label'
-import { css } from '../../../../../styled-system/css'
+import { KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { CaretLeftIcon, XIcon } from '@phosphor-icons/react'
 import Image from 'next/image'
-import { ProgressiveBlur } from '@/components/ProgressiveBlur'
-import { WaitTimeOptionView } from './options/wait-time-option-view'
-
-const API_URL = process.env.NEXT_PUBLIC_HEALTIE_API_URL
+import { css } from '../../../../../styled-system/css'
+import { Button } from '@/components/Button'
+import { EstablishmentIcon } from '@/components/EstablishmentIcon'
+import { Paragraph, Subheading } from '@/components/Typography'
+import type { EstablishmentResponse } from '@/interfaces/EstablishmentAPIResponse'
+import { REPORT_OPTIONS, type ReportType } from '../reports/report-types'
+import { ReportOptionView } from './options/report-option-view'
 
 interface ReportModalProps {
     isOpen: boolean
@@ -34,357 +18,121 @@ interface ReportModalProps {
     establishment: EstablishmentResponse
 }
 
-interface IndicatorsRequestBody {
-    occupation?: number | null
-    wait_time?: number | null
-    resolution_index?: number | null
-}
+const focusableSelector = 'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
 
-interface ReportOption {
-    label: string
-    icon: ReactNode
-    key: string
-    description: string
-    imageUrl: string
-}
-
-const reportOptions: ReportOption[] = [
-    {
-        label: 'Tempo de espera',
-        icon: <ClockCountdownIcon />,
-        key: 'waitTime',
-        imageUrl: '/images/il/wait-time.png',
-        description: 'Reportar tempo de espera para atendimento nesta unidade.',
-    },
-    {
-        label: 'Falta de medicamentos',
-        icon: <PillIcon />,
-        key: 'medicationShortage',
-        imageUrl: '/images/il/medication-shortage.png',
-        description: 'Reportar falta de medicamentos nesta unidade.',
-    },
-    {
-        label: 'Ocupação',
-        icon: <UsersFourIcon />,
-        key: 'occupancy',
-        imageUrl: '/images/il/occupancy.png',
-        description: 'Reportar taxa de ocupação desta unidade.',
-    },
-    {
-        label: 'Falta de serviços',
-        icon: <ProhibitInsetIcon />,
-        key: 'serviceShortage',
-        imageUrl: '/images/il/wait-time.png',
-        description: 'Reportar falta de serviços nesta unidade.',
-    },
-    {
-        label: 'Sem médicos',
-        icon: <StethoscopeIcon />,
-        key: 'noDoctors',
-        imageUrl: '/images/il/wait-time.png',
-        description: 'Reportar ausência de médicos nesta unidade.',
-    },
-]
-
-export function ReportModalView({
-    isOpen,
-    onOpenChange,
-    establishment,
-}: ReportModalProps) {
-    const [currentIndicator, setCurrentIndicator] = useState<string | null>(
-        null
-    )
-    const [indicators, setIndicators] = useState<IndicatorsRequestBody>({
-        occupation: null,
-        wait_time: null,
-        resolution_index: null,
-    })
+export function ReportModalView({ isOpen, onOpenChange, establishment }: ReportModalProps) {
+    const [selectedType, setSelectedType] = useState<ReportType | null>(null)
+    const dialogRef = useRef<HTMLDivElement>(null)
+    const closeButtonRef = useRef<HTMLButtonElement>(null)
+    const previousFocusRef = useRef<HTMLElement | null>(null)
+    const reduceMotion = useReducedMotion()
+    const selectedOption = REPORT_OPTIONS.find((option) => option.type === selectedType)
 
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = 'unset'
-        }
-
+        if (!isOpen) return
+        previousFocusRef.current = document.activeElement as HTMLElement
+        const previousOverflow = document.body.style.overflow
+        const backgroundElements = Array.from(document.body.children).filter(
+            (element) => element.id !== 'portal'
+        ) as HTMLElement[]
+        document.body.style.overflow = 'hidden'
+        backgroundElements.forEach((element) => {
+            element.inert = true
+        })
+        window.requestAnimationFrame(() => closeButtonRef.current?.focus())
         return () => {
-            document.body.style.overflow = 'unset'
+            document.body.style.overflow = previousOverflow
+            backgroundElements.forEach((element) => {
+                element.inert = false
+            })
+            previousFocusRef.current?.focus()
+            setSelectedType(null)
         }
     }, [isOpen])
 
-    const postIndicators = async () => {
-        await axios.post(
-            `${API_URL}/establishment/${establishment.cnes}/indicators`,
-            indicators
-        )
-    }
+    const close = () => onOpenChange(false)
 
-    const handleSubmit = () => {
-        postIndicators()
+    function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+        if (event.key === 'Escape') {
+            event.preventDefault()
+            close()
+            return
+        }
+        if (event.key !== 'Tab' || !dialogRef.current) return
+        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(focusableSelector))
+        if (!focusable.length) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+        }
     }
 
     if (!isOpen) return null
 
     return (
-        <motion.div
-            className={overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => onOpenChange?.(false)}
-        >
-            <motion.div
-                initial={{ y: '200%' }}
-                animate={{ y: '0%' }}
-                exit={{ y: '200%' }}
-                transition={{
-                    duration: 0.45,
-                    type: 'spring',
-                    bounce: 0,
-                }}
-                className={modalContainer}
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-            >
+        <motion.div className={overlayStyles} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduceMotion ? 0.12 : 0.2 }} onMouseDown={(event) => event.target === event.currentTarget && close()}>
+            <motion.div ref={dialogRef} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }} transition={{ duration: reduceMotion ? 0.12 : 0.28, ease: [0.23, 1, 0.32, 1] }} className={modalStyles} role="dialog" aria-modal="true" aria-label={selectedOption?.label ?? 'Enviar relato sobre a unidade'} aria-describedby={!selectedOption ? 'report-dialog-description' : undefined} onKeyDown={handleKeyDown}>
                 <header className={headerStyles}>
-                    <div
-                        className={css({
-                            display: 'grid',
-                            gridTemplateColumns: '34px 1fr 34px',
-                            alignItems: 'flex-start',
-                        })}
-                    >
-                        <div className={css({ display: 'flex', gap: '1ch' })}>
-                            <AnimatePresence>
-                                {currentIndicator !== null && (
-                                    <motion.div
-                                        initial={{
-                                            opacity: 0,
-                                            filter: 'blur(2px)',
-                                            scale: 0.9,
-                                        }}
-                                        animate={{
-                                            opacity: 1,
-                                            filter: 'blur(0px)',
-                                            scale: 1,
-                                        }}
-                                        exit={{
-                                            opacity: 0,
-                                            filter: 'blur(2px)',
-                                            scale: 0.9,
-                                        }}
-                                    >
-                                        <Button
-                                            iconButton
-                                            variant="subtle"
-                                            onClick={() => {
-                                                if (currentIndicator !== null) {
-                                                    setCurrentIndicator(null)
-                                                }
-                                            }}
-                                        >
-                                            <CaretLeftIcon weight="bold" />
-                                        </Button>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                    <div className={headerGridStyles}>
+                        <div>
+                            {selectedType && <Button iconButton variant="subtle" aria-label="Voltar para tipos de relato" onClick={() => setSelectedType(null)}><CaretLeftIcon weight="bold" aria-hidden="true" /></Button>}
                         </div>
-                        <div
-                            className={css({
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '1ch',
-                                flex: 1,
-                            })}
-                        >
-                            <EstablishmentIcon
-                                type={
-                                    establishment.type as
-                                        | 'Hospital Geral'
-                                        | 'Unidade Básica de Saúde'
-                                        | 'Unidade de Pronto Atendimento'
-                                }
-                                size="small"
-                                decoration
-                                animation={false}
-                            />
-                            <Paragraph marginCompact bolder>
-                                {establishment.name}
-                            </Paragraph>
+                        <div className={establishmentStyles}>
+                            <EstablishmentIcon type={establishment.type as 'Hospital Geral' | 'Unidade Básica de Saúde' | 'Unidade de Pronto Atendimento'} size="small" decoration animation={false} />
+                            <Paragraph marginCompact bolder>{establishment.name}</Paragraph>
                         </div>
-                        <Button
-                            iconButton
-                            onClick={() => onOpenChange?.(false)}
-                            variant="subtle"
-                        >
-                            <XIcon weight="bold" />
-                        </Button>
+                        <Button ref={closeButtonRef} iconButton onClick={close} variant="subtle" aria-label="Fechar relatos"><XIcon weight="bold" aria-hidden="true" /></Button>
                     </div>
-                    <ProgressiveBlur />
                 </header>
-                <div className={bodyWrapperStyles}>
-                    {currentIndicator === null && (
-                        <motion.section
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className={css({
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '.5rem',
-                                mt: '.5rem',
-                            })}
-                        >
-                            <Subheading centered>
-                                O que você quer reportar?
-                            </Subheading>
-                            <div
-                                className={css({
-                                    mt: '1rem',
-                                    display: 'grid',
-                                    gridTemplateColumns:
-                                        'repeat(auto-fit, minmax(160px, 1fr))',
-                                    gap: '1rem',
-                                })}
-                            >
-                                {reportOptions.map((option) => (
-                                    <button
-                                        onClick={() =>
-                                            setCurrentIndicator(option.key)
-                                        }
-                                        key={option.key}
-                                        className={css({
-                                            padding: '0.5rem',
-                                            border: '1px solid rgba(0, 0, 0, 0.1)',
-                                            borderRadius: '1rem',
-                                            cursor: 'pointer',
-                                            transition: 'border-color 0.1s',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'flex-start',
-                                            alignItems: 'flex-start',
-                                            textAlign: 'left',
-                                            gap: 0,
-
-                                            _hover: {
-                                                borderColor:
-                                                    'rgba(0, 0, 0, 0.3)',
-                                            },
-                                        })}
-                                    >
-                                        <Image
-                                            className={css({
-                                                borderRadius: '8px',
-                                                marginBottom: '0.5rem',
-                                                width: '100%',
-                                                height: 'auto',
-                                            })}
-                                            src={option.imageUrl}
-                                            alt={option.label}
-                                            width={200}
-                                            height={120}
-                                            quality={80}
-                                        />
-                                        <Paragraph marginCompact bolder>
-                                            {option.label}
-                                        </Paragraph>
-                                        <Paragraph
-                                            marginCompact
-                                            subtle
-                                            size="caption"
-                                        >
-                                            {option.description}
-                                        </Paragraph>
-                                    </button>
-                                ))}
-                            </div>
-                        </motion.section>
-                    )}
+                <div className={bodyStyles}>
                     <AnimatePresence initial={false} mode="wait">
-                        {currentIndicator === 'waitTime' && (
-                            <WaitTimeOptionView establishment={establishment} />
+                        {!selectedOption ? (
+                            <motion.section key="options" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} aria-labelledby="report-dialog-title">
+                                <div className={titleStyles}>
+                                    <Subheading centered><span id="report-dialog-title">O que você observou?</span></Subheading>
+                                    <Paragraph id="report-dialog-description" centered subtle>Envie uma informação recente sobre esta unidade. Seu relato será anônimo.</Paragraph>
+                                </div>
+                                <div className={optionsGridStyles}>
+                                    {REPORT_OPTIONS.map((option) => {
+                                        const Icon = option.icon
+                                        return (
+                                            <button type="button" onClick={() => setSelectedType(option.type)} key={option.type} className={optionStyles} aria-label={`${option.label}. ${option.description}`}>
+                                                <Image className={optionImageStyles} src={option.imageUrl} alt="" width={240} height={132} quality={80} />
+                                                <span className={optionTitleStyles}><Icon size={20} weight="bold" aria-hidden="true" />{option.label}</span>
+                                                <span className={optionDescriptionStyles}>{option.description}</span>
+                                                <span className={optionExpiryStyles}>{option.expiryLabel}</span>
+                                            </button>
+                                        )
+                                    })}
+                                </div>
+                            </motion.section>
+                        ) : (
+                            <motion.div key={selectedOption.type} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                                <ReportOptionView establishment={establishment} option={selectedOption} onDone={close} />
+                            </motion.div>
                         )}
                     </AnimatePresence>
-
-                    {currentIndicator === 'occupancy' && (
-                        <div>
-                            <Paragraph bolder subtle marginCompact>
-                                Reportar Taxa de Ocupação
-                            </Paragraph>
-                            <Label htmlFor="occupancy">
-                                Taxa de Ocupação (%)
-                            </Label>
-                            <input
-                                id="occupancy"
-                                className={css({
-                                    padding: '1rem',
-                                    borderRadius: '12px',
-                                    background: 'neutral.100',
-                                    width: '100%',
-                                })}
-                                type="number"
-                                onChange={(e) =>
-                                    setIndicators((prev) => ({
-                                        ...prev,
-                                        occupancy: Number(e.target.value),
-                                    }))
-                                }
-                            />
-                        </div>
-                    )}
                 </div>
             </motion.div>
         </motion.div>
     )
 }
 
-const modalContainer = css({
-    backgroundColor: 'white',
-    width: '100%',
-    maxWidth: { md: '600px' },
-    height: '100%',
-    maxHeight: { md: '90dvh', base: '100vh' },
-    display: 'flex',
-    flexDirection: {
-        base: 'column',
-        md: 'row',
-    },
-    position: 'relative',
-    gap: '1rem',
-    borderRadius: { base: '0', md: '26px' },
-    paddingTop: { base: '4.5rem', md: '1rem' },
-    overflow: 'hidden',
-    boxShadow: 'xl',
-})
-
-const overlay = css({
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-    position: 'fixed',
-    inset: 0,
-    zIndex: 5000,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-})
-
-const headerStyles = css({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    padding: '1rem',
-    zIndex: 1,
-})
-
-const bodyWrapperStyles = css({
-    position: 'relative',
-    flex: 1,
-    overflowY: 'auto',
-    pt: { base: '0', md: '3.25rem' },
-    px: '1rem',
-    pb: '1rem',
-})
+const overlayStyles = css({ position: 'fixed', inset: 0, zIndex: 5000, display: 'grid', placeItems: 'center', p: { base: 0, md: '1.5rem' }, bg: 'rgba(0, 0, 0, 0.4)' })
+const modalStyles = css({ width: '100%', maxWidth: '42rem', height: { base: '100dvh', md: 'min(46rem, 92dvh)' }, display: 'flex', flexDirection: 'column', bg: 'white', borderRadius: { base: 0, md: '1.75rem' }, boxShadow: '2xl', overflow: 'hidden', overscrollBehavior: 'contain' })
+const headerStyles = css({ flexShrink: 0, p: '1rem', borderBottom: '1px solid', borderColor: 'neutral.100', bg: 'white' })
+const headerGridStyles = css({ display: 'grid', gridTemplateColumns: '2.75rem minmax(0, 1fr) 2.75rem', gap: '.75rem', alignItems: 'center' })
+const establishmentStyles = css({ minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '.5rem', '& p': { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } })
+const bodyStyles = css({ flex: 1, overflowY: 'auto', p: { base: '1rem', md: '1.5rem' }, pb: 'calc(1rem + env(safe-area-inset-bottom))' })
+const titleStyles = css({ maxWidth: '34rem', mx: 'auto', mb: '1.5rem', display: 'flex', flexDirection: 'column', gap: '.5rem', textWrap: 'pretty' })
+const optionsGridStyles = css({ display: 'grid', gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' }, gap: '1rem' })
+const optionStyles = css({ minWidth: 0, p: '.625rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'start', color: 'primary', bg: 'white', borderRadius: '1.25rem', boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.1)', cursor: 'pointer', outline: '2px solid transparent', outlineOffset: '2px', transitionProperty: 'box-shadow, background-color', transitionDuration: '150ms', _hover: { bg: 'neutral.50', boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.22)' }, _focusVisible: { outlineColor: 'tint' } })
+const optionImageStyles = css({ width: '100%', height: '7.5rem', objectFit: 'cover', borderRadius: '.875rem', mb: '.75rem', outline: '1px solid rgba(0, 0, 0, 0.08)', outlineOffset: '-1px' })
+const optionTitleStyles = css({ display: 'flex', alignItems: 'center', gap: '.5rem', fontWeight: 600, fontSize: '.9375rem' })
+const optionDescriptionStyles = css({ mt: '.25rem', color: 'neutral.600', fontSize: '.8125rem', lineHeight: 1.45, textWrap: 'pretty' })
+const optionExpiryStyles = css({ mt: '.75rem', color: 'neutral.500', fontSize: '.75rem', fontWeight: 500 })

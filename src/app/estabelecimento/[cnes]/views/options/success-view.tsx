@@ -1,12 +1,15 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { css } from '../../../../../../styled-system/css'
 import { Paragraph, Subheading } from '@/components/Typography'
 import { CheckIcon } from '@phosphor-icons/react'
 import { ReactNode } from 'react'
+import { Button } from '@/components/Button'
 
-export function SuccessView({ children }: { children?: ReactNode }) {
+export function SuccessView({ children, onDone }: { children?: ReactNode; onDone: () => void }) {
+    const reduceMotion = useReducedMotion()
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -37,8 +40,8 @@ export function SuccessView({ children }: { children?: ReactNode }) {
                 Obrigado por contribuir com o Healtie!
             </Subheading>
             <Paragraph centered subtle>
-                Sua contribuição ajuda a melhorar a experiência de outros
-                usuários e a promover a transparência nos serviços de saúde.
+                Seu relato foi recebido e ajudará outras pessoas a entender a
+                situação recente desta unidade.
             </Paragraph>
             <div
                 className={css({
@@ -50,9 +53,13 @@ export function SuccessView({ children }: { children?: ReactNode }) {
                 })}
             >
                 <motion.div
-                    initial={{ y: '200%' }}
-                    animate={{ y: '1%' }}
-                    transition={{ type: 'spring', bounce: 0, delay: 0.2 }}
+                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={
+                        reduceMotion
+                            ? { duration: 0.12 }
+                            : { type: 'spring', duration: 0.3, bounce: 0, delay: 0.1 }
+                    }
                     className={css({
                         bg: 'white',
                         boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.05)',
@@ -68,6 +75,9 @@ export function SuccessView({ children }: { children?: ReactNode }) {
                     {children}
                 </motion.div>
             </div>
+            <Button onClick={onDone} fullWidth>
+                Concluir
+            </Button>
         </motion.div>
     )
 }
